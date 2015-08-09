@@ -13,7 +13,11 @@ GET           /assets/*file        controllers.Assets.at(path="/public", file)
 #GET        /users               controllers.UsersController.list
 POST          /users               controllers.UsersController.create
 GET           /users/:id           controllers.UsersController.show(id)
-POST        /users/:id           controllers.UsersController.update(id)
+PUT           /users/:id           controllers.UsersController.update(id)
 DELETE        /users/:id           controllers.UsersController.delete(id)
 
-GET           /users2              controllers.UsersController.show2
+GET           /authComp            controllers.TestController.main
+GET           /authLogout          controllers.TestController.logout
+GET           /authFail            controllers.TestController.fail
+
+

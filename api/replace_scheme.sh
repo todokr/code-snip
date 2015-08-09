@@ -120,39 +120,39 @@ echo ""
 echo "<==== Insert ====>"
 echo ""
 
-es POST user/1 '
+es POST user '
 {
   "accountName": "江田島平八",
   "email": "edajima@otoko-juku.ed.jp",
-  "interests": ["java", "scala", "node.js"],
+  "interests": "java, scala, node.js",
   "cryptedPassword": "washigaotokojukujukucho"
 }'
 
-es POST user/2 '
+es POST user '
 {
   "accountName": "海原雄山",
   "email": "kaibara@bishoku.club",
-  "interests": ["html", "css", "javascript"],
+  "interests": "html, css, javascript",
   "cryptedPassword": "konoaraiwotsukuttanohadareda"
 }'
 
-es POST user/3 '
+es POST user '
 {
   "accountName": "マイク・ハガー",
   "email": "mike@metro-city.go.jp",
-  "interests": ["lisp"],
+  "interests": "lisp",
   "cryptedPassword": "watashihashicho"
 }'
 
-es POST user/4 '
+es POST user '
 {
   "accountName": "無責任艦長タイラー",
   "email": "tyler@musekinin.com",
-  "interests": [],
+  "interests": "",
   "cryptedPassword": "musekinin"
 }'
 
-es POST user/5 '
+es POST user '
 {
   "accountName": "草薙素子",
   "email": "kusanagi@kouan-9.go.jp",

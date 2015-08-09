@@ -1,22 +1,10 @@
 package controllers
 
-import models.User
-import org.elasticsearch.action.search.SearchResponse
-import org.elasticsearch.search.{SearchHit, SearchHits}
-import org.elasticsearch.transport.RemoteTransportException
 import play.api.mvc._
-
-import play.api.libs.json._
-import utils.ElasticsearchUtil
-
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
+import models.User
 import jp.co.bizreach.elasticsearch4s._
-import play.api.libs.json._
 import play.api.libs.functional.syntax._
-import play.api.Logger
-
-
+import play.api.libs.json._
 
 object UsersController extends Controller {
 
@@ -29,87 +17,113 @@ object UsersController extends Controller {
     (__ \ 'password).read[String]
     ) tupled
 
-  // OKとNGを分けたい
-//  def create = Action(parse.json) { implicit rs =>
-//    ESClient.init()
-//
-//    rs.body.validate[(String, String, String, String)].map {
-//      case (name, mail, interest, pass) =>
-//        ESClient.using(url) { client =>
-//          client.insert(config, User.create(accountName = name, email = mail, interests = interest, password = pass))
-//          ESClient.shutdown()
-//          Ok(Json.obj("result" -> "success"))
-//        }
-//    }.recoverTotal{
-//      ESClient.shutdown()
-//      e => BadRequest("Detected error:"+ JsError.toFlatJson(e))
-//    }
-//  }
-
+  // =====================================================================
+  //                                                               actions
+  //                                                               =======
   def create = Action(parse.json) { implicit rs =>
     ESClient.init()
-      rs.body.validate[(String, String, String, String)].map {
-        case (name, mail, interest, pass) =>
-          ESClient.using(url) { client =>
-            client.insert(config, User.create(accountName = name, email = mail, interests = interest, password = pass))
-          }
-      }
+    val result = rs.body.validate[(String, String, String, String)].map {
+      case (name, mail, interest, pass) =>
+        ESClient.using(url) { client =>
+          client.insert(config, User.create(accountName = name, email = mail, interests = interest, password = pass))
+        }
+      case _ => None
+    }
     ESClient.shutdown()
     Ok(Json.obj("result" -> "success")) // TODO ユーザー作成ができなかったときにNGにする
   }
 
-
   def show(id: String) = Action { implicit rs =>
     ESClient.init()
     val userData = ESClient.using(url) { client =>
-
-      val user: Option[User] = client.find[User](config){ searcher =>
-        searcher.setQuery(termQuery("userId", id))
-      }.map(_._2)
-      user match {
+      selectUserById(id) match {
         case None => Json.obj("result" -> "notFound")
         case Some(u) => Json.obj(
             "result" -> "success",
-            "userId" -> u.userId,
+            "accountName" -> u.accountName,
             "email" -> u.email,
-            "interests" -> u.interests
+            "interests" -> u.interests // TODO 配列を処理できるように
         )
       }
     }
     ESClient.shutdown()
-    Ok(userData.toString).as(JSON)
+    Ok(userData.toString).as(JSON) // TODO toStringは明らかにおかしい
   }
 
-  def show2 = Action { implicit rs =>
+  def showByEmail(mail: String) = Action { implicit rs =>
     ESClient.init()
     val userData = ESClient.using(url) { client =>
-      val user: Option[User] = client.find[User](config){ searcher =>
-        searcher.setQuery(termQuery("userId", "u20150806220956394"))
-      }.map(_._2)
-      implicit val jsonWrites = Json.writes[User]
-      user match {
+      selectUserByMail(mail) match {
         case None => Json.obj("result" -> "notFound")
-        //case Some(u) => Json.toJson(u) // TODO ここで落ちる
+        case Some(id) => Json.obj(
+          "result" -> "success",
+          "id" -> id
+        )
       }
     }
     ESClient.shutdown()
-    Ok(userData)
+    Ok(userData.toString).as(JSON) // TODO toStringは明らかにおかしい
   }
 
-  def update(id: String) = Action(parse.json) { implicit => rs
+  def update(id: String) = Action(parse.json) { implicit rs =>
     ESClient.init()
-    ESClient.using(url) { client =>
-      client.update(config, "1", User(userId = "hoge", accountName = "hoge", email = "hoge@hoge.com", interests = "hoge", password = "hoge"))
+    val result = selectUserById(id) match {
+      case None => None
+      case Some(u) => {
+        rs.body.validate[(String, String, String, String)].map {
+          case (name, mail, interest, pass) =>
+            ESClient.using(url) { client =>
+              client.update(config, id, User(accountName = name, email = mail, interests = interest, password = pass))
+            }
+          case _ => None
+        }
+
+      }
+    }
+    ESClient.shutdown()
+    result match {
+      case None => NotFound(Json.obj("result" -> "notFound")) // エラーの場合
+      case _ => Ok(Json.obj("result" -> "success"))
     }
   }
 
   def delete(id: String) = Action { implicit rs =>
     ESClient.init()
-    ESClient.using(url) { client =>
+    val result = ESClient.using(url) { client =>
       client.delete(config, id)
     }
     ESClient.shutdown()
-    Ok(Json.obj("result" -> "success")) // TODO 削除ができなかったときにNGにする
+    result match {
+      case Right(map) => Ok(Json.obj("result" -> "success"))
+      case Left => NotFound(Json.obj("result" -> "notFound")) // エラーの場合
+    }
+  }
+
+  // ============================================================================
+  //                                                                       helper
+  //                                                                       ======
+  protected def selectUserById(id: String): Option[User] = {
+    ESClient.using(url) { client =>
+      client.find[User](config){ searcher =>
+        searcher.setQuery(termQuery("_id", id))
+      }.map(_._2)
+    }
+  }
+
+  protected def selectUserByMail(mail: String): Option[String] = {
+    ESClient.using(url) { client =>
+      client.find[User](config){ searcher =>
+        searcher.setQuery(termQuery("email", mail))
+      }.map(_._1)
+    }
+  }
+
+  protected def selectUserByName(name: String): Option[String] = {
+    ESClient.using(url) { client =>
+      client.find[User](config){ searcher =>
+        searcher.setQuery(termQuery("accountName", name))
+      }.map(_._1)
+    }
   }
 }
 

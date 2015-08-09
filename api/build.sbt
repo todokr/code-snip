@@ -8,7 +8,8 @@ scalaVersion := "2.11.6"
 
 libraryDependencies ++= Seq(
   "jp.co.bizreach"              %%  "elastic-scala-httpclient"  % "1.0.4",
-  "com.sksamuel.elastic4s"      %%  "elastic4s"             % "1.5.6"
+  "com.sksamuel.elastic4s"      %%  "elastic4s"             % "1.5.6",
+  "jp.t2v" %% "play2-auth"        % "0.14.0"
     excludeAll(
     ExclusionRule(organization = "org.scala-lang", name = "scala-library"),
     //      ExclusionRule(organization = "org.apache.lucene", name = "lucene-analyzers-common"),
