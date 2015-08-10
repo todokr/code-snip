@@ -1,5 +1,8 @@
 package controllers
 
+import auth.AuthAction
+import models.User._
+import play.api.libs.json.Json
 import play.api.mvc.Controller
 
 /**
@@ -7,7 +10,11 @@ import play.api.mvc.Controller
  */
 object TestController extends Controller{
 
-  def main = TODO
+  def main = AuthAction { implicit rs =>
+    val email = getIdentifier(rs) // TODO 暫定的にEmailだが、この先どうするか考える
+    Ok(Json.obj("hoge" -> "fuga", "email" -> email))
+  }
+
   def logout = TODO
   def fail = TODO
 

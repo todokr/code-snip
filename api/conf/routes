@@ -20,7 +20,7 @@ DELETE        /users/:id           controllers.UsersController.delete(id)
 POST          /auth                controllers.AuthController.login
 
 # Dummy
-GET           /authComp            controllers.TestController.main
+GET           /actiontest            controllers.TestController.main
 GET           /authLogout          controllers.TestController.logout
 GET           /authFail            controllers.TestController.fail
 

@@ -32,6 +32,6 @@ object AuthController extends Controller{
   }
 
   def logout = Action { implicit rs =>
-    Ok("result" -> "logout").withNewSession
+    Ok(Json.obj("result" -> "logout")).withNewSession
   }
 }

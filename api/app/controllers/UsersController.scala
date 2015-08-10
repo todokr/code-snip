@@ -102,6 +102,7 @@ object UsersController extends Controller {
   // ============================================================================
   //                                                                       helper
   //                                                                       ======
+  @deprecated
   protected def selectUserById(id: String): Option[User] = {
     ESClient.using(url) { client =>
       client.find[User](config){ searcher =>
@@ -110,6 +111,7 @@ object UsersController extends Controller {
     }
   }
 
+  @deprecated
   protected def selectUserByMail(mail: String): Option[String] = {
     ESClient.using(url) { client =>
       client.find[User](config){ searcher =>
@@ -118,6 +120,7 @@ object UsersController extends Controller {
     }
   }
 
+  @deprecated
   protected def selectUserByName(name: String): Option[String] = {
     ESClient.using(url) { client =>
       client.find[User](config){ searcher =>

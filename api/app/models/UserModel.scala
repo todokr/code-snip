@@ -3,6 +3,7 @@ package models
 import jp.co.bizreach.elasticsearch4s._
 import play.Logger
 import play.api.libs.json.JsValue
+import play.api.mvc.Request
 
 case class User(accountName: String, email: String, interests: String, password: String)
 
@@ -35,5 +36,10 @@ object User {
     }
     ESClient.shutdown()
     user
+  }
+
+  def getIdentifier(request: Request[Any]): String = {
+    Logger.debug(request.toString)
+    request.session.get("auth").getOrElse("Guest")
   }
 }
