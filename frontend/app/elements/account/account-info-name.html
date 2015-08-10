@@ -1,0 +1,40 @@
+<dom-module id="account-info-name">
+  <style>
+    :host {
+      display: block;
+    }
+
+    :host ::content a {
+      display: table;
+      color: #444;
+    }
+
+    :host ::content img {
+      border-radius: 6px;
+      display: table-cell;
+      width: 50px;
+      vertical-align: middle;
+    }
+
+    :host ::content h2 {
+      display: table-cell;
+      vertical-align: middle;
+      padding-left: 10px;
+      font-size: 16px;
+      line-height: 1.2;
+    }
+  </style>
+  <template>
+    <div class="account-info">
+      <content select="a">
+        <content select="img"></content>
+        <content select="h2"></content>
+      </content>
+    </div>
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: 'account-info-name',
+  });
+</script>

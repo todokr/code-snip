@@ -1,0 +1,148 @@
+<link rel="import" href="../account/account-info-name.html">
+<dom-module id="snip-account">
+  <style>
+    :host {
+      display: block;
+      padding: 20px;
+    }
+
+    :host .account-follow {
+      width: 100%;
+      border-top: 3px #eaeaea double;
+      margin-top: 25px;
+      padding-top: 12px;
+      display: table;
+      table-layout: fixed;
+    }
+
+    :host .account-follow dl {
+      display: table-cell;
+      line-height: 1.2;
+    }
+
+    :host .account-follow dt {
+      font-size: 12px;
+      color: #b4b4b4;
+      font-weight: bold;
+    }
+
+    :host .account-follow dd {
+      font-size: 18px;
+      margin-top: 5px;
+      font-weight: bold;
+    }
+
+    :host .account-tag {
+      border-top: 3px #eaeaea double;
+      margin-top: 12px;
+      padding-top: 15px;
+    }
+
+    :host .account-tag h3 {
+      font-size: 12px;
+      color: #b4b4b4;
+      font-weight: bold;
+      margin: 0;
+    }
+    
+    :host .account-tag ul {
+      margin-top: 8px;
+    }
+
+    :host .account-tag li {
+      display: inline-block;
+      height: 20px;
+      line-height: 20px;
+    }
+
+    :host .account-tag a {
+      position: relative;
+      font-size: 12px;
+      font-weight: normal;
+      display: inline-block;
+      margin-left: 15px;
+      padding: 0 10px 0 12px;
+      background-color: var(--paper-teal-400);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 1px 3px 3px 1px;
+    }
+
+    :host .account-tag a:before{
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: -8px;
+      width: 0;
+      height: 0;
+      border-color: transparent var(--paper-teal-400) transparent transparent;
+      border-style: solid;
+      border-width: 10px 8px 10px 0;
+    }
+
+    :host .account-tag a:after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 0;
+      display: block;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #fff;
+    }
+    
+  </style>
+  <template>
+    <account-info-name>
+      <a href="/#">
+        <img src="http://placeimg.com/100/100/people" width="50" height="50">
+        <h2>はが太郎パイセン</h2>
+      </a>
+    </account-info-name>
+    <div class="account-follow">
+      <dl>
+        <dt>Follow</dt>
+        <dd><a href="#">{{follow}}</a></dd>
+      </dl>
+      <dl>
+        <dt>Follower</dt>
+        <dd><a href="#">{{follower}}</a></dd>
+      </dl>
+    </div>
+    <div class="account-tag">
+      <h3>Interested in</h3>
+      <ul>
+        <li><a href="#">HTML</a></li>
+        <li><a href="#">CSS</a></li>
+        <li><a href="#">Scala</a></li>
+        <li><a href="#">JavaScript</a></li>
+        <li><a href="#">COBOL</a></li>
+        <li><a href="#">AWS</a></li>
+        <li><a href="#">TypeScript</a></li>
+        <li><a href="#">Git</a></li>
+      </ul>
+    </div>
+  </template>
+
+  <script>
+    (function() {
+      Polymer({
+        is: 'snip-account',
+
+        properties: {
+          follow: {
+            type: Number,
+            value: 234
+          },
+          follower: {
+            type: Number,
+            value: 24
+          }
+        }
+      });
+    })();
+  </script>
+
+</dom-module>
