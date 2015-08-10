@@ -10,9 +10,11 @@ import play.api.mvc.{Action, Controller}
  */
 object TestController extends Controller{
 
-  def main = AuthAction { implicit rs =>
-    val email = getIdentifier(rs) // TODO 暫定的にEmailだが、この先どうするか考える
-    Ok(Json.obj("hoge" -> "fuga", "email" -> email))
+  def authNeed = AuthAction { implicit rs =>
+    Ok(Json.obj(
+      "hoge" -> "fuga",
+      "identifier" -> getIdentifier(rs)
+    ))
   }
 
   def logout = Action { implicit rs =>

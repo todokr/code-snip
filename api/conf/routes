@@ -21,7 +21,7 @@ POST          /auth                controllers.AuthController.login
 GET           /logout              controllers.TestController.logout
 
 # Dummy
-GET           /actiontest          controllers.TestController.main
+GET           /authneeded          controllers.TestController.authNeed
 GET           /authFail            controllers.TestController.fail
 
 
