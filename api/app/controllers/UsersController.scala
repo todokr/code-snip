@@ -48,7 +48,8 @@ object UsersController extends Controller {
       }
     }
     ESClient.shutdown()
-    Ok(userData.toString).as(JSON) // TODO toStringは明らかにおかしい
+    //Ok(userData.toString).as(JSON) // TODO toStringは明らかにおかしい
+    Ok(Json.toJson(userData))
   }
 
   def showByEmail(mail: String) = Action { implicit rs =>
