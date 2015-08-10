@@ -1,11 +1,10 @@
 package controllers
 
 import play.Logger
-import play.api.mvc.{DiscardingCookie, Cookie, Action, Controller}
+import play.api.mvc.{Action, Controller}
 import models.User._
 import play.api.libs.json._
 import play.api.libs.Crypto.sign
-import play.api.libs.json.JsValue
 
 /**
  * Created by shunsuke.tadokoro on 15/08/10.
@@ -21,7 +20,7 @@ object AuthController extends Controller{
     val user = findByEmail(email)
     user match {
       case Some(_) =>
-        if (user.get.password == pass) {
+        if (user.get.password == sign(pass)) {
 
           Ok(Json.obj("result" -> "success")).withSession("auth" -> user.get.email)
         } else {

@@ -5,6 +5,7 @@ import models.User
 import jp.co.bizreach.elasticsearch4s._
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import play.api.libs.Crypto._
 
 object UsersController extends Controller {
 
@@ -25,7 +26,7 @@ object UsersController extends Controller {
     val result = rs.body.validate[(String, String, String, String)].map {
       case (name, mail, interest, pass) =>
         ESClient.using(url) { client =>
-          client.insert(config, User.create(accountName = name, email = mail, interests = interest, password = pass))
+          client.insert(config, User.create(accountName = name, email = mail, interests = interest, password = sign(pass)))
         }
       case _ => None
     }
