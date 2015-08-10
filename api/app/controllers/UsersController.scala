@@ -74,7 +74,7 @@ object UsersController extends Controller {
         rs.body.validate[(String, String, String, String)].map {
           case (name, mail, interest, pass) =>
             ESClient.using(url) { client =>
-              client.update(config, id, User(accountName = name, email = mail, interests = interest, password = pass))
+              client.update(config, id, User(accountName = name, email = mail, interests = interest, password = sign(pass)))
             }
           case _ => None
         }
