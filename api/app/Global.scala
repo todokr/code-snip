@@ -1,7 +1,9 @@
+import filters.CORSFilter
+import play.api.mvc.WithFilters
 import play.api.{Application, GlobalSettings, Play}
 import utils.ElasticsearchUtil
 
-object Global extends GlobalSettings {
+object Global extends WithFilters(CORSFilter()) with GlobalSettings {
 
   lazy val logger = play.api.Logger(this.getClass)
 

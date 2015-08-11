@@ -1,13 +1,16 @@
 package controllers
 
-import play.Logger
-import play.api.mvc._
+import jp.co.bizreach.elasticsearch4s._
 import models.User
 import models.User._
-import jp.co.bizreach.elasticsearch4s._
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import play.api.libs.Crypto._
+import play.api.mvc._
+
+/**
+ * @author shunsuke tadokoro
+ */
+
 object UsersController extends Controller {
 
   val config = ESConfig("code_snip", "user")
@@ -30,11 +33,11 @@ object UsersController extends Controller {
       rs.body.validate[(String, String, Seq[String], String)].map {
         case (name, mail, interest, pass) =>
           ESClient.using(url) { client =>
-            client.insert(config, User.create(accountName = name, email = mail, interests = interest, password = sign(pass)))
+            client.insert(config, User.create(accountName = name, email = mail, interests = interest, password = pass))
           }
         case _ => None
       }
-      Ok(Json.obj("result" -> "success")) // TODO 作成できなかったらNGに
+      Ok(Json.obj("result" -> "success"))
     }
   }
 
@@ -62,7 +65,7 @@ object UsersController extends Controller {
         rs.body.validate[(String, String, Seq[String], String)].map {
           case (name, mail, interest, pass) =>
             ESClient.using(url) { client =>
-              client.update(config, id, User(accountName = name, email = mail, interests = interest, password = sign(pass)))
+              client.update(config, id, User.create(accountName = name, email = mail, interests = interest, password = pass))
             }
           case _ => None
         }
@@ -83,7 +86,7 @@ object UsersController extends Controller {
     ESClient.shutdown()
     result match {
       case Right(map) => Ok(Json.obj("result" -> "success"))
-      case Left => NotFound(Json.obj("result" -> "notFound"))
+      case Left(_) => NotFound(Json.obj("result" -> "notFound"))
     }
   }
 

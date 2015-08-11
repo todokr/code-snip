@@ -1,5 +1,6 @@
 package controllers
 
+import play.Logger
 import play.api.mvc._
 
 object Application extends Controller {
@@ -8,6 +9,7 @@ object Application extends Controller {
     Ok(views.html.index("Your new application is ready."))
   }
 
+  def options(path:String) = Action { Ok("")}
 
 
 }

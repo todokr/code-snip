@@ -3,14 +3,13 @@
 <dom-module id="post-list">
   <template>
     <template is="dom-repeat" items="{{posts}}">
-        <post-card>
-          <h2>{{item.username}}</h2>
-          <img src="{{item.imageUrl}}" width="50" height="50">
-          <code>{{item.code}}</code>
-          <p>{{item.description}}</p>
-        </post-card>
+      <post-card>
+        <h2>{{item.username}}</h2>
+        <img src="{{item.imageUrl}}" width="50" height="50">
+        <code>{{item.code}}</code>
+        <p>{{item.description}}</p>
+      </post-card>
     </template>
-
   </template>
 
   <script>
@@ -19,8 +18,11 @@
       ready: function() {
         this.posts = [
             {username: 'Bob Marley', imageUrl: 'http://placeimg.com/100/100/people', code: '<li><a href="#">HTML</a></li>\n<li><a href="#">CSS</a></li>\n<li><a href="#">JavaScript</a></li>', description: 'testのためのコード'},
-            {username: 'くまモン', imageUrl: 'http://placeimg.com/100/100/people', code: 'var hoge = "fuga"', description: 'コードだモン'},
-            {username: '草彅剛', imageUrl: 'http://placeimg.com/100/100/people', code: 'echo "しんごー！しんごー！"', description: '黒歴史っぽいの'}
+            {username: 'くまモンだもん熊本の雄だモン', imageUrl: 'http://placeimg.com/100/100/people', code: '_onResize: function() {\n  this.debounce(\'_onResize\', \n    function() {\n      this._scroll();\n      this._tabChanged(this.selectedItem);\n  }, 10);\n},', description: 'コードだモン'},
+            {username: '草彅剛', imageUrl: 'http://placeimg.com/100/100/people', code: 'echo "しんごー！しんごー！"', description: '黒歴史っぽいの'},
+            {username: 'Bob Marley', imageUrl: 'http://placeimg.com/100/100/people', code: '<li><a href="#">HTML</a></li>\n<li><a href="#">CSS</a></li>\n<li><a href="#">JavaScript</a></li>', description: 'testのためのコード'},
+            {username: 'くまモンだもん熊本の雄だモン', imageUrl: 'http://placeimg.com/100/100/people', code: '_onResize: function() {\n  this.debounce(\'_onResize\', \n    function() {\n      this._scroll();\n      this._tabChanged(this.selectedItem);\n  }, 10);\n},', description: 'コードだモン'},
+            {username: '草彅剛', imageUrl: 'http://placeimg.com/100/100/people', code: 'echo "しんごー！しんごー！"', description: '黒歴史っぽいの'},
         ];
       }
     });

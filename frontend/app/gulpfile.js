@@ -87,6 +87,6 @@ gulp.task('reload', function (cb) {
 // お掃除
 // ------------------------------------------
 gulp.task('clean', function (cb) {
-  clean('./assets/*', cb);
+  clean('./assets/styles', cb);
 });
 

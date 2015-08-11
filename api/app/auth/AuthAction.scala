@@ -1,13 +1,14 @@
 package auth
 
-/**
- * Created by shunsuke.tadokoro on 15/08/10.
- */
-
 import play.api.Logger
 import play.api.libs.json.Json
-import play.api.mvc.{Results, Result, ActionBuilder, Request}
+import play.api.mvc.{ActionBuilder, Request, Result, Results}
+
 import scala.concurrent.Future
+
+/**
+ * @author shunsuke tadokoro
+ */
 
 object AuthAction extends ActionBuilder[Request]{
 

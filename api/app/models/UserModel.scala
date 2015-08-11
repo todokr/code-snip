@@ -2,17 +2,23 @@ package models
 
 import jp.co.bizreach.elasticsearch4s._
 import play.Logger
-import play.api.libs.json.JsValue
+import play.api.libs.Crypto._
 import play.api.mvc.Request
+
+/**
+ * @author shunsuke tadokoro
+ */
 
 case class User(accountName: String, email: String, interests: Seq[String], password: String)
 
 object User {
-  val config = ESConfig("code_snip", "user")
+
+  val config = "code_snip" / "user"
   val url = "http://localhost:9200"
 
   def create(accountName: String, email: String, interests: Seq[String], password: String): User = {
-    User(accountName, email, interests, password)
+    val cryptedPassword = sign(password)
+    User(accountName, email, interests, cryptedPassword)
   }
 
   /** idを受け取ってUserを検索した結果をidとのタプルで返す

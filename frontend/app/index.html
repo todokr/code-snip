@@ -22,112 +22,15 @@
 </head>
 
 <body unresolved class="fullbleed layout vertical">
-  <span id="browser-sync-binding"></span>
   <template is="dom-bind" id="app">
 
-    <paper-drawer-panel id="paperDrawerPanel">
-      <paper-scroll-header-panel drawer fixed>
-        <paper-toolbar id="drawerToolbar">
-          <h1 class="paper-font-title">Code::snip</h1>
-        </paper-toolbar>
-
-        <!-- aside Content -->
-        <paper-menu class="list" attr-for-selected="data-route" selected="{{route}}" on-iron-select="onMenuSelect">
-          <snip-account></snip-account>
-        </paper-menu>
-      </paper-scroll-header-panel>
-
-      <!-- Main Area -->
-      <paper-scroll-header-panel main condenses keep-condensed-header>
-        
-        <paper-tabs selected="0">
-          <paper-tab><iron-icon icon="icons:home"></iron-icon>Home</paper-tab>
-          <paper-tab><iron-icon icon="icons:code"></iron-icon>Wrote</paper-tab>
-          <paper-tab><iron-icon icon="icons:grade"></iron-icon>Favorite</paper-tab>
-          <paper-tab><iron-icon icon="communication:call-split"></iron-icon>Forked</paper-tab>
-        </paper-tabs>
-        
-
-        <!-- Main Content -->
-        <div class="content">
-          <iron-pages attr-for-selected="data-route" selected="{{route}}">
-          
-            <section data-route="home">
-              <post-list></post-list>
-              <!-- <paper-material>
-                <div class="post-info">
-                  <account-info-name></account-info-name>
-                  <post-tag></post-tag>
-                </div>
-                <div class="post-content">
-                  <marked-element>
-                    <script type="text/markdown">
-                      ```html
-                        <link rel="import" href="../styles/app-theme.html">
-                        <link rel="import" href="snip-account/snip-account.html">
-                        <link rel="import" href="my-list/my-list.html">
-                        <link rel="import" href="../account/account-info-name.html">
-                      ```
-                    </script>
-                  </marked-element>
-                </div>
-              </paper-material> -->
-              
-
-            </section>
-
-            <section data-route="users">
-            ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>ああ<br>
-              <paper-material elevation="1">
-                <h2 class="paper-font-display2">Users</h2>
-                <p>This is the users section</p>
-                <a href="/users/Rob">Rob</a>
-              </paper-material>
-            </section>
-
-            <section data-route="user-info">
-              <paper-material elevation="1">
-                <h2 class="paper-font-display2">
-                User:<span>{{params.name}}</span>
-                </h2>
-                <div>This is <span>{{params.name}}</span>'s section</div>
-              </paper-material>
-            </section>
-
-            <section data-route="contact">
-              <paper-material elevation="1">
-                <h2 class="paper-font-display2">Contact</h2>
-                <p>This is the contact section</p>
-              </paper-material>
-            </section>
-
-          </iron-pages>
-        </div>
-      </paper-scroll-header-panel>
-    </paper-drawer-panel>
-
-    <!-- Uncomment next block to enable Service Worker support (1/2) -->
-    <!--
-    <paper-toast id="caching-complete"
-                 duration="6000"
-                 text="Caching complete! This app will work offline.">
-    </paper-toast>
-
-    <platinum-sw-register auto-register
-                          clients-claim
-                          skip-waiting
-                          on-service-worker-installed="displayInstalledToast">
-      <platinum-sw-cache default-cache-strategy="networkFirst"
-                         precache-file="precache.json">
-      </platinum-sw-cache>
-    </platinum-sw-register>
-    -->
+    <login-form></login-form>
 
   </template>
-
-  <!-- build:js scripts/app.js -->
+  
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
   <script src="scripts/app.js"></script>
-  <!-- endbuild-->
+
 </body>
 
 </html>

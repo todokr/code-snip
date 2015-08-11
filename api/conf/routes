@@ -2,25 +2,34 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+# CORS
+OPTIONS        /*path               controllers.Application.options(path)
+
 # Home page
-GET           /                    controllers.Application.index
+GET            /                    controllers.Application.index
 
 # Map static resources from the /public folder to the /assets URL path
-GET           /assets/*file        controllers.Assets.at(path="/public", file)
-
-
-# User
-#GET        /users               controllers.UsersController.list
-POST          /users               controllers.UsersController.create
-GET           /users/:id           controllers.UsersController.show(id)
-PUT           /users/:id           controllers.UsersController.update(id)
-DELETE        /users/:id           controllers.UsersController.delete(id)
+GET            /assets/*file        controllers.Assets.at(path="/public", file)
 
 # Auth
-POST          /auth                controllers.AuthController.login
-GET           /logout              controllers.TestController.logout
+POST           /auth                controllers.AuthController.login
+GET            /logout              controllers.TestController.logout
+
+# User
+POST           /users               controllers.UsersController.create
+GET            /users/:id           controllers.UsersController.show(id)
+PUT            /users/:id           controllers.UsersController.update(id)
+DELETE         /users/:id           controllers.UsersController.delete(id)
+
+# Post
+POST           /posts               controllers.PostsController.create
+GET            /posts/:id           controllers.PostsController.show(id)
+DELETE         /posts/:id           controllers.PostsController.delete(id)
 
 # Dummy
-GET           /authneeded          controllers.TestController.authNeed
+GET            /authneeded          controllers.TestController.authNeed
+
+
+
 
 

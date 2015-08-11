@@ -69,21 +69,19 @@ Custom property | Description | Default
       -webkit-transform: translateZ(0);
       transform: translateZ(0);
       transition: opacity 0.1s cubic-bezier(0.4, 0.0, 1, 1);
-
       @apply(--paper-tab-content);
+      font-weight: bold;
+      color: #666;
     }
 
-    :host(:not(.iron-selected)) > .tab-content {
-      opacity: 0.8;
-    }
-
+    :host.iron-selected > .tab-content, 
     :host(:focus) .tab-content {
       opacity: 1;
-      font-weight: 700;
+      color: #555;
     }
 
     #ink {
-      color: var(--paper-tab-ink, --paper-gray-50);
+      color: var(--paper-tab-ink, --paper-teal-a200);
       opacity: 0.1;
       pointer-events: none;
     }

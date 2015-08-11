@@ -1,0 +1,71 @@
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../../bower_components/gold-email-input/gold-email-input.html">
+<link rel="import" href="../../bower_components/paper-input/all-imports.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="login-form">
+  <style>
+    :host {
+      background: #fff;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      width: 340px;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    * + :host {
+      margin-top: 20px;
+    }
+
+    :host h2 {
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    :host paper-button {
+      background: var(--paper-teal-300);
+      color: #fff;
+      line-height: 1;
+      text-transform: none;
+      margin-left: 20px;
+    }
+
+    :host .button-area {
+      text-align: right;
+    }
+
+    :host .button-area > a {
+      color: var(--paper-blue-300);
+      font-weight: normal;
+      font-size: 12px;
+      padding-top: 5px;
+    }
+
+  </style>
+  <template>
+    <iron-ajax auto
+        url="http://localhost:9000/auth"
+        method="POST"
+        body='{"email": "ex@example.com","password": "test"}'
+        content-type="application/json"
+        handle-as="json"
+        last-response="{{ajaxResponse}}"></iron-ajax>
+    <h2>Login</h2>
+    <form is="iron-form" id="loginPost" method="post" action="http://localhost:9000/auth" content-type="application/json">
+      <gold-email-input label="Email address" required name="email" auto-validate value="ex@example.com"></gold-email-input>
+      <paper-input name="password" label="Password" type="password" required value="test"></paper-input>
+      
+      <div class="button-area">
+        <a href="#" class="jsc-submit-json">forgot Password?</a>
+        <paper-button raised>Submit</paper-button>
+        [[ajaxResponse.items]]
+      </div>
+    </form>
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: 'login-form',
+  });
+  
+</script>

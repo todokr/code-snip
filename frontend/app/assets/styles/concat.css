@@ -14,18 +14,30 @@ body {
 }
 
 
+@font-face {
+  font-family: 'sourceCodePro';
+  src: url("/assets/fonts/sourcecodepro-webfont.eot");
+  src: url("/assets/fonts/sourcecodepro-webfont.eot?#iefix") format("embedded-opentype"), url("/assets/fonts/sourcecodepro-webfont.woff2") format("woff2"), url("/assets/fonts/sourcecodepro-webfont.woff") format("woff"), url("/assets/fonts/sourcecodepro-webfont.ttf") format("truetype"), url("/assets/fonts/sourcecodepro-webfont.svg#source_code_promedium") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
 dl, dt, dd {
   margin: 0;
   padding: 0; }
 
+pre {
+  margin: 0; }
+
 pre code {
   font-size: 15px;
-  padding: 10px 20px;
-  background: #335;
-  color: #fff;
+  padding: 15px 20px;
+  background: #f9fbe7;
+  color: #444;
   display: block;
   line-height: 1.4;
-  border-radius: 4px; }
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2) inset;
+  font-family: 'sourceCodePro', monospace; }
 
 ul, li {
   list-style-type: none;
@@ -41,10 +53,15 @@ a {
     opacity: 0.6;
     transition-duration: 0.2s; }
 
+#menu-toolbar {
+  height: 64px;
+  background: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.22); }
+
 paper-tabs {
   width: 100%;
   background: #fff;
-  height: 64px; }
+  height: 62px; }
 
 iron-icon {
   margin: 0 6px; }

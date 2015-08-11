@@ -2,12 +2,49 @@
 <dom-module id="post-card">
   <style>
     :host {
-      display: table;
-      margin-top: 20px;
-      padding: 30px;
+      display: block;
       background: #fff;
-      table-layout: fixed;
       width: 100%;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    }
+
+    :host + :host {
+      margin-top: 30px;
+    }
+
+    :host .card-head {
+      position: relative;
+      box-sizing: border-box;
+      padding-right: 150px;
+      background: var(--paper-teal-400);
+    }
+
+    :host .buttons {
+      position: absolute;
+      display: inline-block;
+      width: 120px;
+      text-align: right;
+      top: 5px;
+      right: 20px;
+    }
+
+    :host .buttons li {
+      display: inline-block;
+      color: #fff;
+    }
+
+    :host ::content p {
+      position: relative;
+      padding: 15px 25px;
+      color: #fff;
+      margin: 0;
+    }
+
+    :host .card-body {
+      width: 100%;
+      padding: 20px;
+      display: table;
+      table-layout: fixed;
       box-sizing: border-box;
     }
 
@@ -66,34 +103,31 @@
       vertical-align: top;
     }
 
-    :host .buttons {
-      display: table-cell;
-      width: 30px;
-      text-align: right;
-      vertical-align: top;
-    }
-
   </style>
   <template>
-    <div class="meta">
-      <account-info-name>
-        <a href="/#">
-          <content select="img"></content>
-          <content select="h2"></content>
-        </a>
-      </account-info-name>
-      <div class="tag">
-        <a href="#">hoge</a>
+    <div class="card-head">
+      <content select="p"></content>
+      <ul class="buttons">
+        <li><paper-icon-button icon="icons:star"></paper-icon-button></li>
+        <li><paper-icon-button icon="communication:call-split"></paper-icon-button></li>
+      </ul>
+    </div>
+    <div class="card-body">
+      <div class="meta">
+        <account-info-name>
+          <a href="/#">
+            <content select="img"></content>
+            <content select="h2"></content>
+          </a>
+        </account-info-name>
+        <div class="tag">
+          <a href="#">hoge</a>
+        </div>
+      </div>
+      <div class="content">
+        <pre><content select="code"></content></pre>
       </div>
     </div>
-    <div class="content">
-      <pre><content select="code"></content></pre>
-      <content select="p"></content>
-    </div>
-    <ul class="buttons">
-      <li><paper-icon-button icon="icons:star" style="color:#ccc"></paper-icon-button></li>
-      <li><paper-icon-button icon="communication:call-split" style="color:#ccc"></paper-icon-button></li>
-    </ul>
   </template>
 
 </dom-module>
