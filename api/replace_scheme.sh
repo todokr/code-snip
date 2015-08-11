@@ -120,177 +120,194 @@ echo ""
 echo "<==== Insert ====>"
 echo ""
 
-es POST user '
+# washigaotokojukujukucho
+es POST user/o10kojukuedajima4649 '
 {
   "accountName": "江田島平八",
   "email": "edajima@otoko-juku.ed.jp",
-  "interests": "java, scala, node.js",
-  "cryptedPassword": "washigaotokojukujukucho"
+  "interests": ["java", "scala", "node.js"],
+  "cryptedPassword": "606f00f307df613f32b739853eb298bcd527afc1"
 }'
-
-es POST user '
+             
+# konoaraiwotsukuttanohadareda        
+es POST user/bishokuKurabuNoAruji '
 {
   "accountName": "海原雄山",
   "email": "kaibara@bishoku.club",
-  "interests": "html, css, javascript",
-  "cryptedPassword": "konoaraiwotsukuttanohadareda"
+  "interests": ["html", "css", "javascript"],
+  "cryptedPassword": "508818d95eb8407861f58a1fdac3e5a818c66d5e"
 }'
 
-es POST user '
+# watashihashicho
+es POST user/metroCityNoSichodayo '
 {
   "accountName": "マイク・ハガー",
   "email": "mike@metro-city.go.jp",
-  "interests": "lisp",
-  "cryptedPassword": "watashihashicho"
+  "interests": ["lisp"],
+  "cryptedPassword": "2b51b8464b8f468a7db1b95a87636061ec4ecc44"
 }'
 
-es POST user '
+# musekinin
+es POST user/tottemoMusekinindayo '
 {
   "accountName": "無責任艦長タイラー",
   "email": "tyler@musekinin.com",
-  "interests": "",
-  "cryptedPassword": "musekinin"
+  "interests": [],
+  "cryptedPassword": "6dba15f14087205c47d189dba98480c2cfcd37ba"
 }'
 
-es POST user '
+# ghosthack
+es POST user/koukakuKidoutaiMitai '
 {
   "accountName": "草薙素子",
   "email": "kusanagi@kouan-9.go.jp",
   "interests": ["haskell", "clojure", "haxe"],
-  "cryptedPassword": "ghosthack"
+  "cryptedPassword": "2fa6522d969d621bd7f5d91191eaece4f188c19a"
 }'
 
 # Insert Follow Data
 es POST follow '
 {
-  "followFromId": "1",
-  "followToId": "2"
+  "followFromId": "koukakuKidoutaiMitai",
+  "followToId": "tottemoMusekinindayo"
 }'
 
 es POST follow '
 {
-  "followFromId": "1",
-  "followToId": "3"
+  "followFromId": "metroCityNoSichodayo",
+  "followToId": "tottemoMusekinindayo"
 }'
 
 es POST follow '
 {
-  "followFromId": "2",
-  "followToId": "3"
+  "followFromId": "o10kojukuedajima4649",
+  "followToId": "koukakuKidoutaiMitai"
 }'
 
 es POST follow '
 {
-  "followFromId": "4",
-  "followToId": "1"
+  "followFromId": "o10kojukuedajima4649",
+  "followToId": "bishokuKurabuNoAruji"
+}'
+
+es POST follow '
+{
+  "followFromId": "koukakuKidoutaiMitai",
+  "followToId": "o10kojukuedajima4649"
+}'
+
+es POST follow '
+{
+  "followFromId": "metroCityNoSichodayo",
+  "followToId": "o10kojukuedajima4649"
 }'
 
 # Insert Withdrawal Data
 es POST withdrawal '
 {
   "userId": "4",
-  "reason": "無責任だから"
+  "reason": "tottemoMusekinindayo"
 }'
 
 # Insert post Data
-es POST post/1 '
+es POST post/001 '
 {
-  "userId": "1",
+  "userId": "o10kojukuedajima4649",
   "code": "val jukucho = \"Washi\"",
   "description": "ワシが男塾塾長",
-  "tag": "Scala"
+  "tag": ["Scala"]
 }'
 
-es POST post/2 '
+es POST post/002 '
 {
-  "userId": "1",
+  "userId": "o10kojukuedajima4649",
   "code": "print \"江田島平八である！！！\"",
-  "description": "江田島平八である！！！",
-  "tag": "Java"
+  "description": "江田島平八であると出力",
+  "tag": ["Java"]
 }'
 
-es POST post/3 '
+es POST post/003 '
 {
-  "userId": "2",
+  "userId": "bishokuKurabuNoAruji",
   "code": "User.findBy(id).with(Array(this))",
   "description": "この洗いを作ったのは誰かを探す",
-  "tag": "Ruby"
+  "tag": ["Ruby"]
 }'
 
-es POST post/4 '
+es POST post/004 '
 {
-  "userId": "2",
+  "userId": "metroCityNoSichodayo",
   "code": "kill 9999",
   "description": "9999番のプロセスを殺す",
-  "tag": "ShellScript"
+  "tag": ["ShellScript", "kill"]
 }'
 
-es POST post/5 '
+es POST post/005 '
 {
-  "userId": "4",
-  "code": "var x = \"123\"\n;var y = +x;"
+  "userId": "metroCityNoSichodayo",
+  "code": "var x = \"123\";var y = +x;",
   "description": "文字列を数値化",
-  "tag": "JavaScript"
+  "tag": ["JavaScript", "イディオム"]
 
 }'
 
-es POST post/6 '
+es POST post/006 '
 {
-  "userId": "5",
-  "code": "brew install ghosthack"
+  "userId": "koukakuKidoutaiMitai",
+  "code": "brew install ghosthack",
   "description": "ゴーストハックが使えるようになる",
-  "tag": "brew"
+  "tag": ["brew", "一般人不可"]
 }'
 
-es POST post/7 '
+es POST post/007 '
 {
-  "userId": "1",
-  "forkFromId": "6",
-  "code": "sudo brew install -g ghosthack"
+  "userId": "metroCityNoSichodayo",
+  "forkFromId": "006",
+  "code": "sudo brew install -g ghosthack",
   "description": "グローバルに使えたほうがいい",
-  "tag": "brew"
+  "tag": ["brew", "一般人不可"]
 }'
 
 es POST favorite '
 {
-  "userId": "1",
-  "postId": "3"
+  "userId": "koukakuKidoutaiMitai",
+  "postId": "003"
 }'
 
 es POST favorite '
 {
-  "userId": "2",
-  "postId": "1"
+  "userId": "koukakuKidoutaiMitai",
+  "postId": "001"
 }'
 
 es POST favorite '
 {
-  "userId": "3",
-  "postId": "1"
+  "userId": "metroCityNoSichodayo",
+  "postId": "001"
 }'
 
 es POST favorite '
 {
-  "userId": "4",
-  "postId": "6"
+  "userId": "metroCityNoSichodayo",
+  "postId": "002"
 }'
 
 es POST favorite '
 {
-  "userId": "2",
-  "postId": "6"
+  "userId": "o10kojukuedajima4649",
+  "postId": "001"
 }'
 
 es POST favorite '
 {
-  "userId": "3",
-  "postId": "6"
+  "userId": "o10kojukuedajima4649",
+  "postId": "002"
 }'
 
 es POST favorite '
 {
-  "userId": "5",
-  "postId": "7"
+  "userId": "o10kojukuedajima4649",
+  "postId": "003"
 }'
 
 # Message
