@@ -5,13 +5,13 @@ import play.Logger
 import play.api.libs.json.JsValue
 import play.api.mvc.Request
 
-case class User(accountName: String, email: String, interests: String, password: String)
+case class User(accountName: String, email: String, interests: Seq[String], password: String)
 
 object User {
   val config = ESConfig("code_snip", "user")
   val url = "http://localhost:9200"
 
-  def create(accountName: String, email: String, interests: String, password: String): User = {
+  def create(accountName: String, email: String, interests: Seq[String], password: String): User = {
     User(accountName, email, interests, password)
   }
 
