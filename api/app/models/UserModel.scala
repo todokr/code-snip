@@ -15,7 +15,12 @@ object User {
     User(accountName, email, interests, password)
   }
 
+  /** idを受け取ってUserを検索した結果をOptionに詰めて返す
+    * @param id Userのid (NotNull)
+    * @return 検索結果
+  */
   def findById(id: String): Option[User] = {
+    if (id == null) { throw new IllegalArgumentException }
     ESClient.init()
     val user = ESClient.using(url) { client =>
       client.find[User](config){ searcher =>
@@ -26,7 +31,12 @@ object User {
     user
   }
 
+  /** emailを受け取ってUserを検索した結果をOptionに詰めて返す
+    * @param email Userのemail (NotNull)
+    * @return 検索結果
+    */
   def findByEmail(email: String): Option[User] = {
+    if (email == null) { throw new IllegalArgumentException }
     ESClient.init()
     Logger.debug(email)
     val user = ESClient.using(url) { client =>
@@ -38,7 +48,12 @@ object User {
     user
   }
 
+  /** Sesssionからユーザーを一意に識別するカラム:Emailを取得する
+    * @param request リクエスト
+    * @return メールアドレス
+    */
   def getIdentifier(request: Request[Any]): String = {
+    if (request == null) { throw new IllegalArgumentException }
     Logger.debug(request.toString)
     request.session.get("auth").getOrElse("Guest")
   }

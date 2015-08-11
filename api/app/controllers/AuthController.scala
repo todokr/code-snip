@@ -15,14 +15,12 @@ case class AuthArg(email: String, password: String)
 object AuthController extends Controller{
 
   def login = Action(parse.json) { implicit rs =>
-    val email = Json.stringify(rs.body \ "email").replaceAll("\"", "") // TODO \"が入ってしまうのを直す
-    val pass = Json.stringify(rs.body \ "password").replaceAll("\"", "") // TODO \"が入ってしまうのを直す
-    val user = findByEmail(email)
-    user match {
-      case Some(_) =>
-        if (user.get.password == sign(pass)) {
-
-          Ok(Json.obj("result" -> "success")).withSession("auth" -> user.get.email)
+    val email = Json.stringify(rs.body \ "email").replaceAll("\"", "") // TODO 無理矢理感あるからあとで直す
+    val pass = Json.stringify(rs.body \ "password").replaceAll("\"", "") // TODO 無理矢理感あるからあとで直す
+    findByEmail(email) match {
+      case Some(user) =>
+        if (user.password == sign(pass)) {
+          Ok(Json.obj("result" -> "success")).withSession("auth" -> user.email)
         } else {
           BadRequest(Json.obj("result" -> "invalid"))
         }
