@@ -23,18 +23,19 @@ object UsersController extends Controller {
   //                                                               actions
   //                                                               =======
   def create = Action(parse.json) { implicit rs =>
-    ESClient.init()
-
-    val result = rs.body.validate[(String, String, Seq[String], String)].map {
-      case (name, mail, interest, pass) =>
-        ESClient.using(url) { client =>
-          client.insert(config, User.create(accountName = name, email = mail, interests = interest, password = sign(pass)))
-        }
-      case _ => None
+    val email = Json.stringify(rs.body \ "email").replaceAll("\"", "")
+    if(selectUserByEmail(email).isDefined) {
+      BadRequest(Json.obj("result" -> "exist"))
+    } else {
+      rs.body.validate[(String, String, Seq[String], String)].map {
+        case (name, mail, interest, pass) =>
+          ESClient.using(url) { client =>
+            client.insert(config, User.create(accountName = name, email = mail, interests = interest, password = sign(pass)))
+          }
+        case _ => None
+      }
+      Ok(Json.obj("result" -> "success")) // TODO 作成できなかったらNGに
     }
-    ESClient.shutdown()
-    Logger.debug(result.toString)
-    Ok(Json.obj("result" -> "success")) // TODO 作成できなかったらNGに
   }
 
   def show(id: String) = Action { implicit rs =>
@@ -69,7 +70,7 @@ object UsersController extends Controller {
       }
     }
     result match {
-      case None => NotFound(Json.obj("result" -> "notFound")) // エラーの場合
+      case None => NotFound(Json.obj("result" -> "notFound"))
       case _ => Ok(Json.obj("result" -> "success"))
     }
   }
@@ -82,7 +83,7 @@ object UsersController extends Controller {
     ESClient.shutdown()
     result match {
       case Right(map) => Ok(Json.obj("result" -> "success"))
-      case Left => NotFound(Json.obj("result" -> "notFound")) // エラーの場合
+      case Left => NotFound(Json.obj("result" -> "notFound"))
     }
   }
 
