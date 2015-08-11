@@ -22,6 +22,5 @@ GET           /logout              controllers.TestController.logout
 
 # Dummy
 GET           /authneeded          controllers.TestController.authNeed
-GET           /authFail            controllers.TestController.fail
 
 

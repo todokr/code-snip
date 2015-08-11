@@ -17,14 +17,22 @@ object AuthController extends Controller{
   def login = Action(parse.json) { implicit rs =>
     val email = Json.stringify(rs.body \ "email").replaceAll("\"", "") // TODO 無理矢理感あるからあとで直す
     val pass = Json.stringify(rs.body \ "password").replaceAll("\"", "") // TODO 無理矢理感あるからあとで直す
-    findByEmail(email) match {
-      case Some(user) =>
-        if (user.password == sign(pass)) {
-          Ok(Json.obj("result" -> "success")).withSession("auth" -> user.email)
+    selectUserByEmail(email) match {
+      case Some(userData) =>
+        if(userData._2.password == sign(pass)) {
+          val id = userData._1
+          val user = userData._2
+          Ok(Json.obj(
+            "result" -> "loggedin",
+            "id"     -> id,
+            "accountName" -> user.accountName,
+            "email" -> user.email,
+            "interests" -> user.interests
+          ))
         } else {
           BadRequest(Json.obj("result" -> "invalid"))
         }
-      case None => NotFound(Json.obj("result" -> "notFound"))
+      case None => BadRequest(Json.obj("result" -> "notExist"))
     }
   }
 

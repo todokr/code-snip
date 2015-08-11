@@ -1,5 +1,6 @@
 package controllers
 
+import play.Logger
 import play.api.mvc._
 import models.User
 import models.User._
@@ -23,6 +24,7 @@ object UsersController extends Controller {
   //                                                               =======
   def create = Action(parse.json) { implicit rs =>
     ESClient.init()
+
     val result = rs.body.validate[(String, String, Seq[String], String)].map {
       case (name, mail, interest, pass) =>
         ESClient.using(url) { client =>
@@ -31,28 +33,31 @@ object UsersController extends Controller {
       case _ => None
     }
     ESClient.shutdown()
+    Logger.debug(result.toString)
     Ok(Json.obj("result" -> "success")) // TODO 作成できなかったらNGに
   }
 
   def show(id: String) = Action { implicit rs =>
-    val userData = ESClient.using(url) { client =>
-      findById(id) match {
-        case None => Json.obj("result" -> "notFound")
-        case Some(u) => Json.obj(
-            "result" -> "success",
-            "accountName" -> u.accountName,
-            "email" -> u.email,
-            "interests" -> u.interests
-        )
+    ESClient.using(url) { client =>
+      selectUserById(id) match {
+        case Some((id, user)) => Ok(Json.toJson(Json.obj(
+          "result"      -> "found",
+          "id"          -> id,
+          "accountName" -> user.accountName,
+          "email"       -> user.email,
+          "interest"    -> user.interests
+        )))
+        case None => BadRequest(Json.toJson(Json.obj("result" -> "notFound")))
       }
     }
-    Ok(Json.toJson(userData))
+
   }
 
   def update(id: String) = Action(parse.json) { implicit rs =>
-    val result = findById(id) match {
+    val result = selectUserById(id) match {
       case None => None
       case Some(u) => {
+        ESClient.init()
         rs.body.validate[(String, String, Seq[String], String)].map {
           case (name, mail, interest, pass) =>
             ESClient.using(url) { client =>
@@ -60,6 +65,7 @@ object UsersController extends Controller {
             }
           case _ => None
         }
+        ESClient.shutdown()
       }
     }
     result match {

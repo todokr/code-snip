@@ -15,46 +15,56 @@ object User {
     User(accountName, email, interests, password)
   }
 
-  /** idを受け取ってUserを検索した結果をOptionに詰めて返す
+  /** idを受け取ってUserを検索した結果をidとのタプルで返す
     * @param id Userのid (NotNull)
-    * @return 検索結果
+    * @return Optionに詰めた検索結果
   */
-  def findById(id: String): Option[User] = {
+  def selectUserById(id: String): Option[(String, User)] = {
     if (id == null) { throw new IllegalArgumentException }
     ESClient.init()
-    val user = ESClient.using(url) { client =>
+    val userData = ESClient.using(url) { client =>
       client.find[User](config){ searcher =>
         searcher.setQuery(termQuery("_id", id))
-      }.map(_._2)
+      }
     }
     ESClient.shutdown()
-    user
+    userData
   }
 
-  /** emailを受け取ってUserを検索した結果をOptionに詰めて返す
-    * @param email Userのemail (NotNull)
-    * @return 検索結果
+  /** EmailからUserを検索した結果をidとのタプルで返す
+    * @param email Userのid (NotNull)
+    * @return Optionに詰めた検索結果
     */
-  def findByEmail(email: String): Option[User] = {
-    if (email == null) { throw new IllegalArgumentException }
+  def selectUserByEmail[A](email: String): Option[(String, User)] = {
+    if (email== null || email.isEmpty) { throw new IllegalArgumentException }
     ESClient.init()
-    Logger.debug(email)
-    val user = ESClient.using(url) { client =>
+    val userData = ESClient.using(url) { client =>
       client.find[User](config){ searcher =>
         searcher.setQuery(termQuery("email", email))
-      }.map(_._2)
+      }
     }
     ESClient.shutdown()
-    user
+    userData
   }
-
-  /** Sesssionからユーザーを一意に識別するカラム:Emailを取得する
+  
+  /** Sessionからログイン中ユーザーのメールアドレスを取得する
     * @param request リクエスト
     * @return メールアドレス
     */
-  def getIdentifier(request: Request[Any]): String = {
+  def selectEmailBySession(request: Request[Any]): String = {
     if (request == null) { throw new IllegalArgumentException }
     Logger.debug(request.toString)
     request.session.get("auth").getOrElse("Guest")
   }
+  
+  /** Sessionからログイン中ユーザーを取得する
+    * @param request リクエスト
+    * @return (id, User)
+    */
+  def selectUserBySession(request: Request[Any]): Option[(String, User)] = {
+    if (request == null) { throw new IllegalArgumentException }
+    val email =  selectEmailBySession(request)
+    selectUserByEmail(email)
+  }
+  
 }
