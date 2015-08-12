@@ -17,20 +17,94 @@
   <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
   <link rel="stylesheet" href="assets/styles/concat.css">
   <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-  <link rel="import" href="elements/elements.html">
-  <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
+  <link rel="import" href="/elements/elements.html">
 </head>
 
 <body unresolved class="fullbleed layout vertical">
   <template is="dom-bind" id="app">
+    <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
-    <login-form></login-form>
+      <section data-route="home">
+        <h3>home</h3>
+      </section>
 
+      <section data-route="login">
+        <login-form></login-form>
+      </section> 
+
+      <section data-route="app">
+        <paper-drawer-panel id="paperDrawerPanel">
+          <paper-scroll-header-panel drawer fixed>
+            <paper-toolbar id="drawerToolbar">
+              <h1 class="paper-font-title">Code::snip</h1>
+            </paper-toolbar>
+
+            <!-- aside Content -->
+            <paper-menu class="list">
+              <snip-account></snip-account>
+            </paper-menu>
+          </paper-scroll-header-panel>
+
+          <!-- Main Area -->
+          <paper-scroll-header-panel fixed main>
+            <paper-toolbar id="menu-toolbar">
+              <paper-tabs selected="{{selected}}" id="timeline-menu">
+                <paper-tab><iron-icon icon="icons:home"></iron-icon>Home</paper-tab>
+                <paper-tab><iron-icon icon="icons:code"></iron-icon>Wrote</paper-tab>
+                <paper-tab><iron-icon icon="icons:grade"></iron-icon>Favorite</paper-tab>
+                <paper-tab><iron-icon icon="communication:call-split"></iron-icon>Forked</paper-tab>
+              </paper-tabs>
+            </paper-toolbar>
+            <script>
+              window.addEventListener('WebComponentsReady', function() {
+                var menu = document.querySelector('#timeline-menu');
+                menu.selected = 0;
+              });
+            </script>
+            
+
+            <!-- Main Content -->
+            <div class="content">
+              <iron-pages selected="{{selected}}">
+                <section>
+                  <post-list></post-list>
+                </section>
+
+                <section>
+                  <paper-material elevation="1">
+                    <h2 class="paper-font-display2">Wrote</h2>
+                    <p>Not Implemented</p>
+                  </paper-material>
+                </section>
+
+                <section>
+                  <paper-material elevation="1">
+                    <h2 class="paper-font-display2">Favorite</h2>
+                    <p>Not Implemented</p>
+                  </paper-material>
+                </section>
+
+                <section>
+                  <paper-material elevation="1">
+                    <h2 class="paper-font-display2">Forked</h2>
+                    <p>Not Implemented</p>
+                  </paper-material>
+                </section>
+
+              </iron-pages>
+            </div>
+          </paper-scroll-header-panel>
+        </paper-drawer-panel>
+      </section> 
+
+      <section data-route="notFound">
+        <h2>NotFound</h2>
+      </section>
+    </iron-pages>
+    <paper-toast text="Your draft has been discarded." id="toast"></paper-toast>
   </template>
-  
   <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
   <script src="scripts/app.js"></script>
-
 </body>
 
 </html>
