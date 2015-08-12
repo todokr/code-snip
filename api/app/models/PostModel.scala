@@ -14,11 +14,10 @@ object Post {
   val url = "http://localhost:9200"
 
   def selectPostById(id: String): Option[(String, Post)] = {
-    if (id == null) { throw new IllegalArgumentException } // TODO JSONでエラーであるという情報をを返す
     ESClient.init()
     val postData= ESClient.using(url) { client =>
       client.find[Post](config){ searcher =>
-        searcher.setQuery(termQuery("_id", id))
+        searcher.setQuery(matchQuery("_id", id))
       }
     }
     ESClient.shutdown()
@@ -30,7 +29,7 @@ object Post {
     ESClient.init()
     val postList = ESClient.using(url) { client =>
       client.list[Post](config){ searcher =>
-        searcher.setQuery(termQuery("userId", id))
+        searcher.setQuery(matchQuery("userId", id))
       }
     }
     ESClient.shutdown()

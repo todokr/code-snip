@@ -15,14 +15,11 @@ object User {
 
   val config = "code_snip" / "user"
   val url = "http://localhost:9200"
-
-
-  @deprecated // TODO あとで直す
-  def create(accountName: String, email: String, interests: Seq[String], password: String): User = {
+  
+  def setCrypted(accountName: String, email: String, interests: Seq[String], password: String): User = {
     val cryptedPassword = sign(password)
     User(accountName, email, interests, cryptedPassword)
-  } // TODO applyでやる User(accountName = name ~ みたいに呼べるように
-  // パスワードを持ちまわるのは危険
+  }
 
   /** idを受け取ってUserを検索した結果をidとのタプルで返す
     * @param id Userのid (NotNull)
@@ -33,7 +30,7 @@ object User {
     ESClient.init()
     val userData = ESClient.using(url) { client =>
       client.find[User](config){ searcher =>
-        searcher.setQuery(termQuery("_id", id))
+        searcher.setQuery(matchQuery("_id", id))
       }
     }
     ESClient.shutdown()
@@ -49,7 +46,7 @@ object User {
     ESClient.init()
     val userData = ESClient.using(url) { client =>
       client.find[User](config){ searcher =>
-        searcher.setQuery(termQuery("email", email))
+        searcher.setQuery(matchQuery("email", email))
       }
     }
     ESClient.shutdown()
@@ -71,9 +68,8 @@ object User {
     * @return (id, User)
     */
   def selectUserBySession(request: Request[Any]): Option[(String, User)] = {
-    if (request == null) { throw new IllegalArgumentException }
     val email =  selectEmailBySession(request)
     selectUserByEmail(email)
   }
-  
 }
+

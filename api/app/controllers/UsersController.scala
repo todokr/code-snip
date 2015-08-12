@@ -37,7 +37,7 @@ object UsersController extends Controller {
       rs.body.validate[User].map {
         case x:User =>
           ESClient.using(url) { client =>
-            client.insert(config, User.create(accountName = x.accountName, email = x.email, interests = x.interests, password = x.password))
+            client.insert(config, User.setCrypted(accountName = x.accountName, email = x.email, interests = x.interests, password = x.password))
           }
         case _ => None
       }
@@ -66,7 +66,7 @@ object UsersController extends Controller {
       rs.body.validate[User].map {
         case x: User =>
           ESClient.using(url) { client =>
-            client.update(config, id, User.create(accountName = x.accountName, email = x.email, interests = x.interests, password = x.password))
+            client.update(config, id, User.setCrypted(accountName = x.accountName, email = x.email, interests = x.interests, password = x.password))
           }
         case _ => None
       }

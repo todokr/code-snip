@@ -27,9 +27,9 @@ object PostsController extends Controller{
       case None => ""
     }
     val postList = selectPostListByUserId(uid);
-    Logger.debug(postList.toString)
+    Logger.debug(uid)
 
-    Ok(Json.obj("test" -> "test"))
+    Ok(Json.obj("test" -> postList.toString))
   }
 
   def create = AuthAction(parse.json) { implicit rs =>
