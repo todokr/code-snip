@@ -17,7 +17,7 @@ object UsersController extends Controller {
   val url = "http://localhost:9200"
   implicit val rds = (
     (__ \ 'accountName).read[String] and
-      (__ \ 'email).read[String] and
+      (__ \ 'email).read[String](Reads.email) and
       (__ \ 'interests).read[Seq[String]] and
     (__ \ 'password).read[String]
     ) tupled
