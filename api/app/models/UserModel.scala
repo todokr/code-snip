@@ -49,7 +49,7 @@ object User {
         searcher.setQuery(termQuery("email", email))
       }
     }
-    ESClient.shutdown()
+    //ESClient.shutdown()
     userData
   }
   
