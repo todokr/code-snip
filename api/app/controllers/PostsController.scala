@@ -21,6 +21,17 @@ object PostsController extends Controller{
     (__ \ 'tag).read[Seq[String]]
   ) tupled
 
+  def list = AuthAction { implicit rs =>
+    val uid = selectUserBySession(rs) match {
+      case Some((id,_)) => id
+      case None => ""
+    }
+    val postList = selectPostListByUserId(uid);
+    Logger.debug(postList.toString)
+
+    Ok(Json.obj("test" -> "test"))
+  }
+
   def create = AuthAction(parse.json) { implicit rs =>
     val uid = selectUserBySession(rs) match {
       case Some((id,_)) => id

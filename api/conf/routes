@@ -29,6 +29,9 @@ DELETE         /posts/:id           controllers.PostsController.delete(id)
 # Dummy
 GET            /authneeded          controllers.TestController.authNeed
 
+GET            /list                controllers.PostsController.list
+
+
 
 
 

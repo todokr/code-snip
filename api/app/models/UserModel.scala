@@ -16,10 +16,13 @@ object User {
   val config = "code_snip" / "user"
   val url = "http://localhost:9200"
 
+
+  @deprecated // TODO あとで直す
   def create(accountName: String, email: String, interests: Seq[String], password: String): User = {
     val cryptedPassword = sign(password)
     User(accountName, email, interests, cryptedPassword)
-  }
+  } // TODO applyでやる User(accountName = name ~ みたいに呼べるように
+  // パスワードを持ちまわるのは危険
 
   /** idを受け取ってUserを検索した結果をidとのタプルで返す
     * @param id Userのid (NotNull)
@@ -49,7 +52,7 @@ object User {
         searcher.setQuery(termQuery("email", email))
       }
     }
-    //ESClient.shutdown()
+    ESClient.shutdown()
     userData
   }
   

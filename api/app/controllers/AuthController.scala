@@ -17,11 +17,13 @@ object AuthController extends Controller{
   def login = Action(parse.json) { implicit rs =>
     val email = Json.stringify(rs.body \ "email").replaceAll("\"", "") // TODO 無理矢理感あるからあとで直す
     val pass = Json.stringify(rs.body \ "password").replaceAll("\"", "") // TODO 無理矢理感あるからあとで直す
+
     selectUserByEmail(email) match {
       case Some(userData) =>
         Logger.debug(userData._2.password)
         Logger.debug(sign(pass))
         if(userData._2.password == sign(pass)) {
+
           val id = userData._1
           val user = userData._2
           Ok(Json.obj(
@@ -30,7 +32,7 @@ object AuthController extends Controller{
             "accountName" -> user.accountName,
             "email" -> user.email,
             "interests" -> user.interests
-          )).withSession("auth" -> user.email)
+          )).withSession("auth" -> user.email) // TODO emailではなくIDを
         } else {
           BadRequest(Json.obj("result" -> "invalid"))
         }
