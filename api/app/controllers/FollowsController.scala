@@ -2,12 +2,12 @@ package controllers
 
 import models.User
 import play.Logger
-import play.api.libs.json.Json
-import play.api.mvc.Controller
-
+import play.api.mvc._
+import play.api.libs.json._
 import auth.AuthAction
 import models.User._
 import models.Follow._
+
 
 /**
  * @author Shunsuke Tadokoro
@@ -15,6 +15,26 @@ import models.Follow._
 object FollowsController extends Controller {
 
   implicit val userFormats = Json.format[User]
+
+
+  def follow = AuthAction(parse.json) { implicit rs =>
+    val userId = selectUserBySession(rs).get._1
+    val targetId = Json.stringify(rs.body \ "followToId").replaceAll("\"", "")
+    if (userId == targetId) { BadRequest(Json.obj("result" -> "(・´з`・)"))}
+    addFollow(userId, targetId) match {
+      case Left => BadRequest(Json.obj("result" -> "failed"))
+      case _ => Ok(Json.obj("result" -> "success"))
+    }
+  }
+
+  def unFollow = AuthAction(parse.json) { implicit rs =>
+    val userId = selectUserBySession(rs).get._1
+    val targetId = Json.stringify(rs.body \ "followToId").replaceAll("\"", "")
+    removeFollow(userId, targetId) match {
+      case Left => BadRequest(Json.obj("result" -> "failed"))
+      case _ => Ok(Json.obj("result" -> "success"))
+    }
+  }
 
   def listFollow = AuthAction { implicit rs =>
     val userId = selectUserBySession(rs).get._1

@@ -31,7 +31,13 @@ object PostsController extends Controller{
     val uid = selectUserBySession(rs).map(u => u._1).getOrElse("")
     val posts = selectPostListByUserId(uid);
     Logger.debug(uid) // TODO
+    Ok(Json.toJson(posts))
+  }
 
+  // 自分フォローしているユーザーの投稿一覧
+  def followList = AuthAction { implicit rs =>
+    val uid = selectUserBySession(rs).map(u => u._1).getOrElse("")
+    val posts = selectFollowPost(uid)
     Ok(Json.toJson(posts))
   }
 

@@ -7,7 +7,6 @@ import jp.co.bizreach.elasticsearch4s._
  */
 
 case class Post(userId: String, code: String, description: String, tag: Seq[String])
-
 case class PostWithUser(post: Post, user:User)
 
 object Post {
@@ -26,10 +25,19 @@ object Post {
     postData
   }
 
-  def  selectPostListByUserId(id: String): List[PostWithUser] = {
+  def selectPostListByUserId(id: String): List[PostWithUser] = {
     val postList = ESClient.using(url) { client =>
       client.list[Post](config){ searcher =>
         searcher.setQuery(matchQuery("userId", id))
+      }
+    }.list.map(x => x.doc).map(u => PostWithUser(u, User.selectUserById(u.userId).get._2))
+    postList
+  }
+
+  def selectFollowPost(id: String): List[PostWithUser] = {
+    val postList = ESClient.using(url) { client =>
+      client.list[Post](config){ searcher =>
+        searcher.setQuery(matchQuery("userId", Follow.selectFollowListByUserId(id)))
       }
     }.list.map(x => x.doc).map(u => PostWithUser(u, User.selectUserById(u.userId).get._2))
     postList

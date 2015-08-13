@@ -25,11 +25,14 @@ DELETE         /users/:id           controllers.UsersController.delete(id)
 POST           /posts               controllers.PostsController.create
 GET            /posts/:id           controllers.PostsController.show(id)
 DELETE         /posts/:id           controllers.PostsController.delete(id)
+GET            /timeline            controllers.PostsController.followList
 
 # Follow
 GET            /follow              controllers.FollowsController.listFollow
 GET            /follower            controllers.FollowsController.listFollower
 GET            /followNum           controllers.FollowsController.selectFollowNumbers
+POST           /follow              controllers.FollowsController.follow
+POST           /unfollow              controllers.FollowsController.unFollow
 
 # Dummy
 GET            /authneeded          controllers.TestController.authNeed
