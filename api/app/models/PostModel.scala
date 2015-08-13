@@ -8,6 +8,8 @@ import jp.co.bizreach.elasticsearch4s._
 
 case class Post(userId: String, code: String, description: String, tag: Seq[String])
 
+case class PostWithUser(post: Post, user:User)
+
 object Post {
 
   val config = "code_snip" / "post"
@@ -24,15 +26,13 @@ object Post {
     postData
   }
 
-  def  selectPostListByUserId(id: String): List[ESSearchResultItem[Post]] = {
-    if (id == null) { throw new IllegalArgumentException }
-    ESClient.init()
+  def  selectPostListByUserId(id: String): List[PostWithUser] = {
     val postList = ESClient.using(url) { client =>
       client.list[Post](config){ searcher =>
         searcher.setQuery(matchQuery("userId", id))
       }
-    }
-    ESClient.shutdown()
-    postList.list
+    }.list.map(x => x.doc).map(u => PostWithUser(u, User.selectUserById(u.userId).get._2))
+    postList
   }
+
 }

@@ -20,10 +20,7 @@ object AuthController extends Controller{
 
     selectUserByEmail(email) match {
       case Some(userData) =>
-        Logger.debug(userData._2.password)
-        Logger.debug(sign(pass))
         if(userData._2.password == sign(pass)) {
-
           val id = userData._1
           val user = userData._2
           Ok(Json.obj(

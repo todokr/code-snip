@@ -26,6 +26,11 @@ POST           /posts               controllers.PostsController.create
 GET            /posts/:id           controllers.PostsController.show(id)
 DELETE         /posts/:id           controllers.PostsController.delete(id)
 
+# Follow
+GET            /follow              controllers.FollowsController.listFollow
+GET            /follower            controllers.FollowsController.listFollower
+GET            /followNum           controllers.FollowsController.selectFollowNumbers
+
 # Dummy
 GET            /authneeded          controllers.TestController.authNeed
 

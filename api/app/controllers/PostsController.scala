@@ -2,8 +2,8 @@ package controllers
 
 import auth.AuthAction
 import jp.co.bizreach.elasticsearch4s.ESClient
+import models.{PostWithUser, User, Post}
 import models.User._
-import models.Post
 import models.Post._
 import models.Post.{config, url}
 import play.Logger
@@ -21,15 +21,18 @@ object PostsController extends Controller{
     (__ \ 'tag).read[Seq[String]]
   ) tupled
 
-  def list = AuthAction { implicit rs =>
-    val uid = selectUserBySession(rs) match {
-      case Some((id,_)) => id
-      case None => ""
-    }
-    val postList = selectPostListByUserId(uid);
-    Logger.debug(uid)
+  implicit val postWrites = Json.writes[Post]
+  implicit val userWrites = Json.writes[User]
+  implicit val puWrites = Json.writes[PostWithUser]
 
-    Ok(Json.obj("test" -> postList.toString))
+
+  // 自分の投稿一覧
+  def list = AuthAction { implicit rs =>
+    val uid = selectUserBySession(rs).map(u => u._1).getOrElse("")
+    val posts = selectPostListByUserId(uid);
+    Logger.debug(uid) // TODO
+
+    Ok(Json.toJson(posts))
   }
 
   def create = AuthAction(parse.json) { implicit rs =>

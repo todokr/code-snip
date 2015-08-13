@@ -34,7 +34,7 @@ object UsersController extends Controller {
       BadRequest(Json.obj("result" -> "exist"))
     } else {
       // 思い出 rs.body.validate[(String, String, Seq[String], String)].map {
-      rs.body.validate[User].map {
+      val hoge = rs.body.validate[User].map {
         case x:User =>
           ESClient.using(url) { client =>
             client.insert(config, User.setCrypted(accountName = x.accountName, email = x.email, interests = x.interests, password = x.password))
@@ -48,9 +48,9 @@ object UsersController extends Controller {
   def show(id: String) = Action { implicit rs =>
     ESClient.using(url) { client =>
       selectUserById(id) match {
-        case Some((id, user)) => Ok(Json.toJson(Json.obj(
+        case Some((uid, user)) => Ok(Json.toJson(Json.obj(
           "result"      -> "found",
-          "id"          -> id,
+          "id"          -> uid,
           "accountName" -> user.accountName,
           "email"       -> user.email,
           "interest"    -> user.interests

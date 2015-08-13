@@ -21,12 +21,11 @@ object User {
     User(accountName, email, interests, cryptedPassword)
   }
 
-  /** idを受け取ってUserを検索した結果をidとのタプルで返す
+  /** idを受け取ってUserを検索した結果を返す
     * @param id Userのid (NotNull)
     * @return Optionに詰めた検索結果
   */
   def selectUserById(id: String): Option[(String, User)] = {
-    if (id == null) { throw new IllegalArgumentException }
     ESClient.init()
     val userData = ESClient.using(url) { client =>
       client.find[User](config){ searcher =>
@@ -42,7 +41,6 @@ object User {
     * @return Optionに詰めた検索結果
     */
   def selectUserByEmail[A](email: String): Option[(String, User)] = {
-    if (email== null || email.isEmpty) { throw new IllegalArgumentException }
     ESClient.init()
     val userData = ESClient.using(url) { client =>
       client.find[User](config){ searcher =>
@@ -52,13 +50,27 @@ object User {
     ESClient.shutdown()
     userData
   }
+
+  /** UserIDのリストからUserオブジェクトを検索しリストにして返す
+    * @param userIdList UserIDのリスト
+    * @return Userの検索結果
+    */
+  def selectUserListFromIdList(userIdList: List[String]): ESSearchResult[User] = {
+    ESClient.init()
+    val userList = ESClient.using(url) { client =>
+      client.list[User](config){ searcher =>
+        searcher.setQuery(matchQuery("_id", userIdList))
+      }
+    }
+    ESClient.shutdown()
+    userList
+  }
   
   /** Sessionからログイン中ユーザーのメールアドレスを取得する
     * @param request リクエスト
     * @return メールアドレス
     */
   def selectEmailBySession(request: Request[Any]): String = {
-    if (request == null) { throw new IllegalArgumentException }
     Logger.debug(request.toString)
     request.session.get("auth").getOrElse("Guest")
   }
