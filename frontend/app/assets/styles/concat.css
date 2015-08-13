@@ -26,9 +26,8 @@ dl, dt, dd {
   padding: 0; }
 
 pre {
-  margin: 0; }
-
-pre code {
+  margin: 0;
+  overflow-y: scroll;
   font-size: 15px;
   padding: 15px 20px;
   background: #f9fbe7;
@@ -38,6 +37,9 @@ pre code {
   border-radius: 4px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2) inset;
   font-family: 'sourceCodePro', monospace; }
+
+pre code {
+  min-width: 500px; }
 
 ul, li {
   list-style-type: none;

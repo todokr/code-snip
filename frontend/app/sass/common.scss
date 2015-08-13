@@ -19,9 +19,7 @@ dl,dt,dd {
 
 pre {
   margin: 0;
-}
-
-pre code {
+  overflow-y: scroll;
   font-size: 15px;
   padding: 15px 20px;
   background: #f9fbe7;
@@ -31,6 +29,11 @@ pre code {
   border-radius: 4px;
   box-shadow: 0 1px 1px rgba(0,0,0,0.2) inset;
   font-family: 'sourceCodePro', monospace;
+}
+
+pre code {
+  
+  min-width: 500px;
 }
 
 ul,li {

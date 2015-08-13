@@ -70,17 +70,12 @@
   Polymer({
     is: 'login-form',
     sendAjax: function() {
-      console.log("clicked");
       var data = this.$.loginForm.serialize();
-      console.log(data);
-      
       this.$.loginAjax.body = data;
-      //this.$.ajax.serialize()
       this.$.loginAjax.generateRequest();
     },
     handleResponse: function(request) {
       var res = this.$.loginAjax.lastResponse;
-      console.dir(request.detail);
       if (res.result === 'loggedin') {
         location.href = '/#!/app';
         location.reload();

@@ -1,4 +1,5 @@
 <link rel="import" href="../account/account-info-name.html">
+<link rel="import" href="../account/account-option.html">
 <dom-module id="snip-account">
   <style>
     :host {
@@ -92,9 +93,31 @@
       border-radius: 50%;
       background: #fff;
     }
+
+    :host .account-option {
+      overflow: hidden;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      padding: 15px;
+      font-size: 14px;
+    }
+
+    :host .account-option paper-button {
+      line-height: 1.2;
+      text-transform: none;
+      background: #eee;
+    }
     
   </style>
   <template>
+    <iron-ajax 
+      with-credentials
+      id="logoutAjax"
+      url="http://localhost:9000/logout"
+      method="GET"
+      on-response="handleResponse"
+      on-error="handleError"></iron-ajax>
     <account-info-name>
       <a href="/#">
         <img src="http://placeimg.com/100/100/people" width="50" height="50">
@@ -124,6 +147,10 @@
         <li><a href="#">Git</a></li>
       </ul>
     </div>
+
+    <div class="account-option">
+      <paper-button on-click="logout">Log out</paper-button>
+    </div>
   </template>
 
   <script>
@@ -140,7 +167,17 @@
             type: Number,
             value: 24
           }
+        },
+        logout: function() {
+          this.$.logoutAjax.generateRequest();
+        },
+        handleResponse: function(request) {
+          location.href = '/#!login';
+        },
+        handleError: function (e) {
+          console.log(e);
         }
+        
       });
     })();
   </script>
