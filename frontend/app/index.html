@@ -23,7 +23,7 @@
 
       <section data-route="login">
         <login-form></login-form>
-      </section> 
+      </section>
 
       <section data-route="app">
         <paper-drawer-panel id="paperDrawerPanel">
@@ -54,29 +54,20 @@
                 menu.selected = 0;
               });
             </script>
-            
+
 
             <!-- Main Content -->
             <div class="content">
               <iron-pages selected="{{selected}}">
                 <section>
-                  <post-list></post-list>
+                  <post-list target="timeline"></post-list>
                 </section>
-
                 <section>
-                  <paper-material elevation="1">
-                    <h2 class="paper-font-display2">Wrote</h2>
-                    <p>Not Implemented</p>
-                  </paper-material>
+                  <!-- <post-list target="wrote"></post-list> -->
                 </section>
-
                 <section>
-                  <paper-material elevation="1">
-                    <h2 class="paper-font-display2">Favorite</h2>
-                    <p>Not Implemented</p>
-                  </paper-material>
+                  <!-- <post-list target="favorite"></post-list> -->
                 </section>
-
                 <section>
                   <paper-material elevation="1">
                     <h2 class="paper-font-display2">Forked</h2>
@@ -88,7 +79,7 @@
             </div>
           </paper-scroll-header-panel>
         </paper-drawer-panel>
-      </section> 
+      </section>
 
       <section data-route="notFound">
         <h2>NotFound</h2>
