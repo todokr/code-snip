@@ -11,7 +11,7 @@
       box-shadow: 0 1px 2px rgba(0,0,0,0.3);
       width: 340px;
       padding: 20px;
-      margin-top: 40px;
+      margin: 100px auto 0;
     }
 
     * + :host {
@@ -44,7 +44,7 @@
 
   </style>
   <template>
-    <iron-ajax 
+    <iron-ajax
       with-credentials
       id="loginAjax"
       url="http://localhost:9000/auth"
@@ -56,9 +56,9 @@
       last-response="{{ajaxResponse}}"></iron-ajax>
     <h2>Login</h2>
     <form is="iron-form" id="loginForm" method="post" action="http://localhost:9000/auth" content-type="application/json">
-      <gold-email-input label="Email address" required name="email" auto-validate value="test@example.com"></gold-email-input>
-      <paper-input name="password" label="Password" type="password" required value="test"></paper-input>
-      
+      <gold-email-input id="email" label="Email address" required name="email" auto-validate value=""></gold-email-input>
+      <paper-input id="pass" name="password" label="Password" type="password" required value=""></paper-input>
+
       <div class="button-area">
         <a href="#" class="jsc-submit-json">forgot Password?</a>
         <paper-button on-click="sendAjax" raised>Submit</paper-button>
@@ -74,17 +74,36 @@
       this.$.loginAjax.body = data;
       this.$.loginAjax.generateRequest();
     },
+    ready: function() {
+      var email = localStorage.getItem('cs_mail');
+      if(email.length) {
+        this.$.email.value = email;
+        this.$.email.validate();
+      }
+    },
     handleResponse: function(request) {
       var res = this.$.loginAjax.lastResponse;
+
       if (res.result === 'loggedin') {
+        var email = this.$.email.value
+        var pass = this.$.pass.value
+        console.log(email);
+        console.log(pass);
+        var code_snip_storage = {
+          "mail": email,
+          "password": pass
+        }
+        localStorage.setItem('cs_mail', email);
         location.href = '/#!/app';
         location.reload();
       }
     },
     handleError: function(mes) {
-      console.error("incorrect.");
+      var toast = document.querySelector('#toast');
+      toast.text = "Something wrong! Try again!";
+      toast.show();
     }
   });
 
-  
+
 </script>

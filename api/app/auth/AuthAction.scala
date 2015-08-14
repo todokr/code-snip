@@ -16,7 +16,7 @@ object AuthAction extends ActionBuilder[Request]{
     Logger.debug("beforeAction is invoked.")
     request.session.get("auth") match {
       case Some(_) => block.apply(request)
-      case None => Future.successful(Results.Status(401).apply(Json.obj("result" -> "notAuthorized")))
+      case None => Future.successful(Results.Status(401).apply(Json.obj("result" -> "Not Authorized")))
     }
   }
 }
