@@ -19,7 +19,7 @@ dl,dt,dd {
 
 pre {
   margin: 0;
-  overflow-y: scroll;
+  overflow-x: scroll;
   font-size: 15px;
   padding: 15px 20px;
   background: #f9fbe7;
@@ -32,7 +32,6 @@ pre {
 }
 
 pre code {
-  
   min-width: 500px;
 }
 

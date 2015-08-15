@@ -28,6 +28,7 @@
       },
       ready: function() {
         this.sendAjax();
+        this.readyFlg = true;
       },
       sendAjax: function() {
         this.$.postsAjax.url = "http://localhost:9000/" + this.target;
@@ -36,7 +37,6 @@
       handleResponse: function(request) {
         var res = this.$.postsAjax.lastResponse;
         this.posts = res;
-        console.log(res);
       },
       handleError: function() {
         console.error("something wrong");

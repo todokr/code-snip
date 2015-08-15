@@ -101,7 +101,6 @@
       on-response="logoutResponse"
       on-error="logoutError"></iron-ajax>
     <iron-ajax
-      auto
       with-credentials
       id="statusAjax"
       url="http://localhost:9000/status"
@@ -117,6 +116,13 @@
         properties: {
           status: Object
         },
+        ready: function() {
+          var _this = this;
+          setTimeout(function(){
+            _this.$.statusAjax.generateRequest();
+          },500);
+
+        },
         logout: function() {
           this.$.logoutAjax.generateRequest();
         },
@@ -128,7 +134,6 @@
         },
         statusResponse: function(request) {
           this.status = this.$.statusAjax.lastResponse;
-          console.log(this.status.interests);
         }
 
       });

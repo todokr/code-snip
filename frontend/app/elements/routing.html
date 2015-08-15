@@ -39,11 +39,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       })
       .done(function() {})
       .fail(function() {
-        page.redirect('/#!/login');
+        location.href = '/#!/login';
         location.reload();
       })
       .always(function() {});
-      
+
     });
 
     page('/users/:name', function (data) {

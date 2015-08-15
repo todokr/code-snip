@@ -45,9 +45,9 @@
           <paper-scroll-header-panel fixed main>
             <paper-toolbar id="menu-toolbar">
               <paper-tabs selected="{{selected}}" id="timeline-menu">
-                <paper-tab><iron-icon icon="icons:home"></iron-icon>Home</paper-tab>
-                <paper-tab><iron-icon icon="icons:code"></iron-icon>Wrote</paper-tab>
-                <paper-tab><iron-icon icon="icons:grade"></iron-icon>Favorite</paper-tab>
+                <paper-tab name="timeline"><iron-icon icon="icons:home"></iron-icon>Home</paper-tab>
+                <paper-tab name="wrote"><iron-icon icon="icons:code"></iron-icon>Wrote</paper-tab>
+                <paper-tab name="favorite"><iron-icon icon="icons:grade"></iron-icon>Favorite</paper-tab>
                 <paper-tab><iron-icon icon="communication:call-split"></iron-icon>Forked</paper-tab>
               </paper-tabs>
             </paper-toolbar>
@@ -66,7 +66,7 @@
                   <post-list target="timeline"></post-list>
                 </section>
                 <section>
-                  <!-- <post-list target="wrote"></post-list> -->
+                  <post-list target="wrote"></post-list>
                 </section>
                 <section>
                   <!-- <post-list target="favorite"></post-list> -->
@@ -77,8 +77,66 @@
                     <p>Not Implemented</p>
                   </paper-material>
                 </section>
-
               </iron-pages>
+              <style>
+                  .writing-area {
+                    height: 180px;
+                    box-sizing: border-box;
+                    border-top: 1px solid rgba(0, 0, 0, 0.22);
+                    background: #fff;
+                    position: fixed;
+                    bottom: 0;
+                    left: 255px;
+                    right: 0;
+                  }
+
+                  .writing-inner {
+                    padding: 0 20px 10px;
+                  }
+                  #title, #lang {
+                    display: block;
+                    float: left;
+                  }
+                  #title {
+                    width: 70%;
+                  }
+                  #lang {
+                    width: 28%;
+                    margin-left: 2%;
+                  }
+                  #title input,
+                  #lang input{
+                    font-size: 14px;
+                  }
+                  #codeTextarea {
+                    outline: none;
+                    display: block;
+                    width: 100%;
+                    margin: 0;
+                    box-sizing: border-box;
+                    font-size: 13px;
+                    height: 7em;
+                    padding: 5px 6px;
+                    background: #fafafa;
+                    color: #666;
+                    display: block;
+                    border: none;
+                    line-height: 1.4;
+                    border-radius: 4px;
+                    box-shadow: 0 0 1px rgba(0,0,0,0.3) inset;
+                    font-family: 'sourceCodePro', monospace;
+                  }
+                </style>
+                <div class="writing-area">
+                  <div class="writing-inner">
+                    <link rel="import" href="../../bower_components/iron-form/iron-form.html">
+                    <link rel="import" href="../../bower_components/gold-email-input/gold-email-input.html">
+                    <link rel="import" href="../../bower_components/paper-input/all-imports.html">
+                    <paper-input id="title" name="codeTitle" label="Title" type="text" required value=""></paper-input>
+                    <paper-input id="lang" name="lang" label="Language" type="text" required value=""></paper-input>
+                    <textarea placeholder="Ctrl + Enter to Submit." name="code" id="codeTextarea"></textarea>
+                  </div>
+                </div>
             </div>
           </paper-scroll-header-panel>
         </paper-drawer-panel>
