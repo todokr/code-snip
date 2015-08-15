@@ -1,0 +1,75 @@
+<dom-module id="code-tags">
+  <style>
+    :host {
+      display: block;
+    }
+
+    :host li{
+      height: 20px;
+      line-height: 20px;
+      position: relative;
+      font-size: 12px;
+      font-weight: normal;
+      display: inline-block;
+      margin-left: 8px;
+      padding: 0 10px 0 12px;
+      background-color: var(--paper-teal-400);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 1px 3px 3px 1px;
+    }
+
+    :host li:before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: -8px;
+      width: 0;
+      height: 0;
+      border-color: transparent var(--paper-teal-400) transparent transparent;
+      border-style: solid;
+      border-width: 10px 8px 10px 0;
+    }
+
+    :host li:after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 0;
+      display: block;
+      width: 4px;
+      height: 4px;
+      border-radius: 2px;
+      background: #fff;
+    }
+
+  </style>
+  <template>
+    <ul>
+      <template is="dom-repeat" id="tags" items="{{tags}}">
+        <li>{{item}}</li>
+      </template>
+    </ul>
+    <!-- </content> -->
+  </template>
+
+  <script>
+    (function() {
+      Polymer({
+        is: 'code-tags',
+        properties: {
+          user: String,
+          tags: {
+            type: Array
+          }
+        },
+        ready: function() {
+          console.log(this.user)
+          console.log(this.tags)
+        }
+       });
+    })();
+  </script>
+
+</dom-module>

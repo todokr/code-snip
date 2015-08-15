@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../elements/post/code-tags.html">
 <dom-module id="post-card">
   <style>
     :host {
@@ -54,48 +55,8 @@
       vertical-align: top;
     }
 
-    :host .meta .tag {
+    :host .meta code-tags {
       margin-top: 10px;
-    }
-
-    :host .meta .tag a{
-      height: 20px;
-      line-height: 20px;
-      position: relative;
-      font-size: 12px;
-      font-weight: normal;
-      display: inline-block;
-      margin-left: 15px;
-      padding: 0 10px 0 12px;
-      background-color: var(--paper-teal-400);
-      color: #fff;
-      text-decoration: none;
-      border-radius: 1px 3px 3px 1px;
-    }
-
-    :host .meta .tag a:before {
-      content: '';
-      display: block;
-      position: absolute;
-      top: 0;
-      left: -8px;
-      width: 0;
-      height: 0;
-      border-color: transparent var(--paper-teal-400) transparent transparent;
-      border-style: solid;
-      border-width: 10px 8px 10px 0;
-    }
-
-    :host .meta .tag a:after {
-      content: '';
-      position: absolute;
-      top: 8px;
-      left: 0;
-      display: block;
-      width: 4px;
-      height: 4px;
-      border-radius: 2px;
-      background: #fff;
     }
 
     :host .content {
@@ -120,9 +81,7 @@
             <content select="h2"></content>
           </a>
         </account-info-name>
-        <div class="tag">
-          <a href="#">hoge</a>
-        </div>
+        <!-- <code-tags tags="tags"></code-tags> -->
       </div>
       <div class="content">
         <pre><content select="code"></content></pre>
@@ -133,6 +92,6 @@
 </dom-module>
 <script>
   Polymer({
-    is: 'post-card',
+    is: 'post-card'
    });
 </script>

@@ -13,16 +13,18 @@ POST           /auth                controllers.AuthController.login
 GET            /logout              controllers.TestController.logout
 
 # User
+GET            /status              controllers.UsersController.accountStatus
 POST           /users               controllers.UsersController.create
 GET            /users/:id           controllers.UsersController.show(id)
 PUT            /users/:id           controllers.UsersController.update(id)
 DELETE         /users/:id           controllers.UsersController.delete(id)
 
 # Post
+GET            /timeline            controllers.PostsController.followList
+GET            /wrote               controllers.PostsController.list
 POST           /posts               controllers.PostsController.create
 GET            /posts/:id           controllers.PostsController.show(id)
 DELETE         /posts/:id           controllers.PostsController.delete(id)
-GET            /timeline            controllers.PostsController.followList
 
 # Follow
 GET            /follow              controllers.FollowsController.listFollow
@@ -34,7 +36,7 @@ POST           /unfollow              controllers.FollowsController.unFollow
 # Dummy
 GET            /authneeded          controllers.TestController.authNeed
 
-GET            /list                controllers.PostsController.list
+
 
 
 

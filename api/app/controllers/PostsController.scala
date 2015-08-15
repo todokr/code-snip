@@ -30,7 +30,6 @@ object PostsController extends Controller{
   def list = AuthAction { implicit rs =>
     val uid = selectUserBySession(rs).map(u => u._1).getOrElse("")
     val posts = selectPostListByUserId(uid);
-    Logger.debug(uid) // TODO
     Ok(Json.toJson(posts))
   }
 

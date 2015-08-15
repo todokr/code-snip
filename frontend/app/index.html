@@ -4,11 +4,12 @@
   <meta charset="utf-8">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CodeSnip</title>
+  <title>Code::snip</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
-  <link rel="stylesheet" href="assets/styles/concat.css">
-  <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="icon" sizes="128x128" href="/assets/images/icon-128x128">
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="/assets/styles/concat.css">
+  <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
   <link rel="import" href="/elements/elements.html">
 </head>
 
@@ -33,9 +34,11 @@
             </paper-toolbar>
 
             <!-- aside Content -->
-            <paper-menu class="list">
+            <div class="aside-content">
               <snip-account></snip-account>
-            </paper-menu>
+            </div>
+
+
           </paper-scroll-header-panel>
 
           <!-- Main Area -->

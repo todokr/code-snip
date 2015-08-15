@@ -1,8 +1,10 @@
 package controllers
 
+import auth.AuthAction
 import jp.co.bizreach.elasticsearch4s._
 import models.User
 import models.User._
+import play.Logger
 import play.api.libs.json._
 import play.api.mvc._
 
@@ -86,6 +88,26 @@ object UsersController extends Controller {
       case Right(map) => Ok(Json.obj("result" -> "success"))
       case Left(_) => NotFound(Json.obj("result" -> "notFound"))
     }
+  }
+
+  def accountStatus = AuthAction { implicit rs =>
+    selectUserBySession(rs) match {
+      case Some(userData) => {
+        val (id, user) = userData
+        val (follow, follower) = FollowsController.selectFollowUsers(selectUserBySession(rs).get._1)
+        Ok(Json.obj(
+          "id"          -> id,
+          "email"       -> user.email,
+          "accountName" -> user.accountName,
+          "interests"   -> user.interests,
+          "follow"      -> follow.size,
+          "follower"    -> follower.size
+        ))
+      }
+      case None => BadRequest(Json.obj("result" -> "notAuthorized"))
+    }
+
+
   }
 
 }

@@ -1,5 +1,6 @@
 <link rel="import" href="../account/account-info-name.html">
 <link rel="import" href="../account/account-option.html">
+<link rel="import" href="../post/code-tags.html">
 <dom-module id="snip-account">
   <style>
     :host {
@@ -45,56 +46,13 @@
       font-weight: bold;
       margin: 0;
     }
-    
-    :host .account-tag ul {
+
+    :host code-tags {
       margin-top: 8px;
     }
 
-    :host .account-tag li {
-      display: inline-block;
-      height: 20px;
-      line-height: 20px;
-    }
-
-    :host .account-tag a {
-      position: relative;
-      font-size: 12px;
-      font-weight: normal;
-      display: inline-block;
-      margin-left: 10px;
-      padding: 0 10px 0 12px;
-      background-color: var(--paper-teal-400);
-      color: #fff;
-      text-decoration: none;
-      border-radius: 1px 3px 3px 1px;
-    }
-
-    :host .account-tag a:before{
-      content: '';
-      display: block;
-      position: absolute;
-      top: 0;
-      left: -8px;
-      width: 0;
-      height: 0;
-      border-color: transparent var(--paper-teal-400) transparent transparent;
-      border-style: solid;
-      border-width: 10px 8px 10px 0;
-    }
-
-    :host .account-tag a:after {
-      content: '';
-      position: absolute;
-      top: 8px;
-      left: 0;
-      display: block;
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: #fff;
-    }
-
     :host .account-option {
+      width: 100%;
       overflow: hidden;
       position: absolute;
       bottom: 0;
@@ -108,76 +66,71 @@
       text-transform: none;
       background: #eee;
     }
-    
+
   </style>
   <template>
-    <iron-ajax 
-      with-credentials
-      id="logoutAjax"
-      url="http://localhost:9000/logout"
-      method="GET"
-      on-response="handleResponse"
-      on-error="handleError"></iron-ajax>
     <account-info-name>
       <a href="/#">
         <img src="http://placeimg.com/100/100/people" width="50" height="50">
-        <h2>UserName</h2>
+        <h2>{{status.accountName}}</h2>
       </a>
     </account-info-name>
     <div class="account-follow">
       <dl>
         <dt>Follow</dt>
-        <dd><a href="#">{{follow}}</a></dd>
+        <dd><a href="#">{{status.follow}}</a></dd>
       </dl>
       <dl>
         <dt>Follower</dt>
-        <dd><a href="#">{{follower}}</a></dd>
+        <dd><a href="#">{{status.follower}}</a></dd>
       </dl>
     </div>
     <div class="account-tag">
       <h3>Interested in</h3>
-      <ul>
-        <li><a href="#">HTML</a></li>
-        <li><a href="#">CSS</a></li>
-        <li><a href="#">Scala</a></li>
-        <li><a href="#">JavaScript</a></li>
-        <li><a href="#">COBOL</a></li>
-        <li><a href="#">AWS</a></li>
-        <li><a href="#">TypeScript</a></li>
-        <li><a href="#">Git</a></li>
-      </ul>
+      <code-tags user="hogehoge" tags="{{status.interests}}"></code-tags>
     </div>
-
     <div class="account-option">
       <paper-button on-click="logout">Log out</paper-button>
     </div>
+
+    <iron-ajax
+      with-credentials
+      id="logoutAjax"
+      url="http://localhost:9000/logout"
+      method="GET"
+      on-response="logoutResponse"
+      on-error="logoutError"></iron-ajax>
+    <iron-ajax
+      auto
+      with-credentials
+      id="statusAjax"
+      url="http://localhost:9000/status"
+      method="GET"
+      on-response="statusResponse"
+      on-error="statusError"></iron-ajax>
   </template>
 
   <script>
     (function() {
       Polymer({
         is: 'snip-account',
-
         properties: {
-          follow: {
-            type: Number,
-            value: 234
-          },
-          follower: {
-            type: Number,
-            value: 24
-          }
+          status: Object
         },
         logout: function() {
           this.$.logoutAjax.generateRequest();
         },
-        handleResponse: function(request) {
+        logoutResponse: function(request) {
           location.href = '/#!login';
         },
-        handleError: function (e) {
+        logoutError: function (e) {
           console.log(e);
+        },
+        statusResponse: function(request) {
+          this.status = this.$.statusAjax.lastResponse;
+          console.log(this.status.interests);
         }
-        
+
       });
     })();
   </script>
