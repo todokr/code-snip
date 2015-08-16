@@ -76,7 +76,7 @@
     },
     ready: function() {
       var email = localStorage.getItem('cs_mail');
-      if(email.length) {
+      if(email) {
         this.$.email.value = email;
         this.$.email.validate();
       }
