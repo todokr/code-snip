@@ -34,13 +34,14 @@
 
     :host .button-area {
       text-align: right;
+      margin-top: 10px;
     }
 
     :host a {
       color: var(--paper-blue-300);
       font-weight: normal;
       font-size: 12px;
-      padding-top: 5px;
+      display: block;
     }
 
   </style>
@@ -58,7 +59,7 @@
     <h2>Login</h2>
     <form is="iron-form" id="loginForm">
       <gold-email-input id="email" label="Email" required name="email" auto-validate value=""></gold-email-input>
-      <paper-input id="pass" name="password" label="Password" type="password" required value=""></paper-input>
+      <paper-input id="pass" name="password" label="Password" type="password" required auto-validate value=""></paper-input>
 
       <div class="button-area">
         <paper-button on-click="sendAjax" raised>Submit</paper-button>
@@ -72,9 +73,15 @@
   Polymer({
     is: 'login-form',
     sendAjax: function() {
-      var data = this.$.loginForm.serialize();
-      this.$.loginAjax.body = data;
-      this.$.loginAjax.generateRequest();
+      if(this.$.loginForm.validate()) {
+        var data = this.$.loginForm.serialize();
+        this.$.loginAjax.body = data;
+        this.$.loginAjax.generateRequest();
+      } else {
+        var toast = document.querySelector('#errorToast');
+        toast.text = "Something is invalid!";
+        toast.show();
+      }
     },
     ready: function() {
       var email = localStorage.getItem('cs_mail');
@@ -89,8 +96,6 @@
       if (res.result === 'loggedin') {
         var email = this.$.email.value;
         var pass = this.$.pass.value;
-        console.log(email);
-        console.log(pass);
         var code_snip_storage = {
           "mail": email,
           "password": pass
@@ -106,6 +111,4 @@
       toast.show();
     }
   });
-
-
 </script>

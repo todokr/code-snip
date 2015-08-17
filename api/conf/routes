@@ -6,35 +6,36 @@
 #OPTIONS        /*path               controllers.Application.options(path)
 
 # Map static resources from the /public folder to the /assets URL path
-GET            /assets/*file        controllers.Assets.at(path="/public", file)
+GET           /assets/*file                controllers.Assets.at(path="/public", file)
 
 # Auth
-POST           /auth                controllers.AuthController.login
-GET            /logout              controllers.TestController.logout
+POST          /auth                        controllers.AuthController.login
+GET           /logout                      controllers.TestController.logout
 
 # User
-GET            /status              controllers.UsersController.accountStatus
-POST           /users               controllers.UsersController.create
-GET            /users/:id           controllers.UsersController.show(id)
-PUT            /users/:id           controllers.UsersController.update(id)
-DELETE         /users/:id           controllers.UsersController.delete(id)
+GET           /status                      controllers.UsersController.accountStatus
+POST          /users                       controllers.UsersController.create
+GET           /users/:id                   controllers.UsersController.show(id)
+PUT           /users/:id                   controllers.UsersController.update(id)
+DELETE        /users/:id                   controllers.UsersController.delete(id)
+GET           /near-interests              controllers.UsersController.listNearInterestUser
 
 # Post
-GET            /timeline            controllers.PostsController.followList
-GET            /wrote               controllers.PostsController.list
-POST           /posts               controllers.PostsController.create
-GET            /posts/:id           controllers.PostsController.show(id)
-DELETE         /posts/:id           controllers.PostsController.delete(id)
+GET           /timeline                    controllers.PostsController.followList
+GET           /wrote                       controllers.PostsController.list
+POST          /posts                       controllers.PostsController.create
+GET           /posts/:id                   controllers.PostsController.show(id)
+DELETE        /posts/:id                   controllers.PostsController.delete(id)
 
 # Follow
-GET            /follow              controllers.FollowsController.listFollow
-GET            /follower            controllers.FollowsController.listFollower
-GET            /followNum           controllers.FollowsController.selectFollowNumbers
-POST           /follow              controllers.FollowsController.follow
-POST           /unfollow              controllers.FollowsController.unFollow
+GET           /follow                      controllers.FollowsController.listFollow
+GET           /follower                    controllers.FollowsController.listFollower
+GET           /followNum                   controllers.FollowsController.selectFollowNumbers
+POST          /follow                      controllers.FollowsController.follow
+POST          /unfollow                    controllers.FollowsController.unFollow
 
 # Dummy
-GET            /authneeded          controllers.TestController.authNeed
+GET           /authneeded                  controllers.TestController.authNeed
 
 
 

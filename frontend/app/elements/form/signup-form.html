@@ -118,9 +118,9 @@
       last-response="{{ajaxResponse}}"></iron-ajax>
     <h2>Sign Up</h2>
     <form is="iron-form" id="signupForm">
-      <paper-input name="accountName" label="Name" required value=""></paper-input>
+      <paper-input name="accountName" label="Name" required auto-validate value=""></paper-input>
       <gold-email-input label="Email" required name="email" auto-validate value=""></gold-email-input>
-      <paper-input name="password" label="Password" type="password" required value=""></paper-input>
+      <paper-input name="password" label="Password" type="password" required auto-validate value=""></paper-input>
       <label>Your Interest</label>
       <iron-selector id="interests" multi attr-for-selected="name" selected-values='["Emacs"]'>
         <div name="Java">Java</div>
@@ -146,11 +146,17 @@
   Polymer({
     is: 'signup-form',
     sendAjax: function() {
-      var data = this.$.signupForm.serialize();
-      data.interests = this.$.interests.selectedValues;
-      console.log(data);
-      this.$.signupAjax.body = data;
-      this.$.signupAjax.generateRequest();
+      if (this.$.signupForm.validate()) {
+        var data = this.$.signupForm.serialize();
+        data.interests = this.$.interests.selectedValues;
+        console.log(data);
+        this.$.signupAjax.body = data;
+        this.$.signupAjax.generateRequest();
+      } else {
+        var toast = document.querySelector('#errorToast');
+        toast.text = "Something is invalid!";
+        toast.show();
+      }
     },
     handleResponse: function() {
       var loginData = this.$.signupForm.serialize();

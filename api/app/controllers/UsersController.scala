@@ -2,7 +2,7 @@ package controllers
 
 import auth.AuthAction
 import jp.co.bizreach.elasticsearch4s._
-import models.User
+import models.{IdWithUser, User}
 import models.User._
 import play.Logger
 import play.api.libs.json._
@@ -16,7 +16,8 @@ object UsersController extends Controller {
 
   val config = ESConfig("code_snip", "user")
   val url = "http://localhost:9200"
-  implicit val userReads = Json.reads[User]
+  implicit val userFormat = Json.format[User]
+  implicit val iuFormat = Json.format[IdWithUser]
 
   // =====================================================================
   //                                                               actions
@@ -94,6 +95,17 @@ object UsersController extends Controller {
       }
       case None => BadRequest(Json.obj("result" -> "notAuthorized"))
     }
+  }
+
+  def listNearInterestUser = AuthAction { implicit rs =>
+    val (id, interests:Seq[String]) =  selectUserBySession(rs) match {
+      case Some(userData) => (userData._1, userData._2.interests)
+      case None => None
+    }
+    val nearUserList = selectUserListFromInterests(interests).filterNot(user => user.id == id)
+    nearUserList.foreach(s => println(s.toString))
+    Ok(Json.toJson(nearUserList))
+
   }
 }
 

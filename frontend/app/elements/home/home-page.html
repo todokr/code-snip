@@ -2,34 +2,58 @@
   <style>
     :host {
       display: block;
+      background: var(--paper-teal-500);
+      overflow: hidden;
+      padding: 180px 0;
+      position: relative;
     }
 
-    :host ::content a {
-      display: table;
-      color: #444;
+    :host .wrapper {
+      width: 1040px;
+      margin: 0 auto;
     }
 
-    :host ::content img {
-      border-radius: 6px;
-      display: table-cell;
-      width: 50px;
-      vertical-align: middle;
+    :host .copyArea {
+      width: 640px;
+      float: left;
+      color: var(--paper-teal-50);
+      font-size: 46px;
+      font-family: 'sourceCodePro', monospace;
+      line-height: 1.4;
     }
 
-    :host ::content h2 {
-      display: table-cell;
-      vertical-align: middle;
-      padding-left: 10px;
-      font-size: 16px;
+    :host .copy h1 {
+      color: #fff;
+      margin: 30px 0 0;
+      font-size: 95px;
       line-height: 1.2;
+    }
+
+    :host .copyArea p {
+      font-size: 24px;
+      margin-top: 45px;
+    }
+
+    :host .login {
+      width: 380px;
+      float: right;
+    }
+
+    :host signup-form {
+      margin: 0;
     }
   </style>
   <template>
-    <div class="account-info">
-      <content select="a">
-        <content select="img"></content>
-        <content select="h2"></content>
-      </content>
+    <div class="wrapper">
+      <header>
+        <div class="copyArea">
+          <div class="copy">Learn Idiom,<br>Record Your One-Liner<h1>Code::snip</h1></div>
+          <p>is a place to read tiny but nice code<br>and record awesome yours!</p>
+        </div>
+        <div class="login">
+          <signup-form></signup-form>
+        </div>
+      </header>
     </div>
   </template>
 </dom-module>

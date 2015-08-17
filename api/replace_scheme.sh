@@ -134,7 +134,7 @@ es POST user/bishokuKurabuNoAruji '
 {
   "accountName": "海原雄山",
   "email": "kaibara@bishoku.club",
-  "interests": ["html", "css", "javascript"],
+  "interests": ["html", "css", "javascript", "scalaz"],
   "password": "276b3098174de28ef5877dacb412b825cf803192"
 }'
 
@@ -143,7 +143,7 @@ es POST user/metroCityNoSichodayo '
 {
   "accountName": "マイク・ハガー",
   "email": "mike@metro-city.go.jp",
-  "interests": ["lisp"],
+  "interests": ["lisp", "scala"],
   "password": "276b3098174de28ef5877dacb412b825cf803192"
 }'
 
@@ -152,17 +152,40 @@ es POST user/tottemoMusekinindayo '
 {
   "accountName": "無責任艦長タイラー",
   "email": "tyler@musekinin.com",
-  "interests": [],
+  "interests": ["scala", "java"],
   "password": "276b3098174de28ef5877dacb412b825cf803192"
 }'
 
-# ghosthack
 es POST user/koukakuKidoutaiMitai '
 {
   "accountName": "草薙素子",
   "email": "kusanagi@kouan-9.go.jp",
-  "interests": ["haskell", "clojure", "haxe"],
-  "password": "2fa6522d969d621bd7f5d91191eaece4f188c19a"
+  "interests": ["haskell", "clojure", "haxe", "scala"],
+  "password": "276b3098174de28ef5877dacb412b825cf803192"
+}'
+
+es POST user/kusamayayoi '
+{
+  "accountName": "草間彌生",
+  "email": "kusama@yayoi.com",
+  "interests": ["art", "pampkin", "scala"],
+  "password": "276b3098174de28ef5877dacb412b825cf803192"
+}'
+
+es POST user/luckeyIkeda '
+{
+  "accountName": "ラッキー池田",
+  "email": "luckey@ikeda.com",
+  "interests": ["dance", "java", "node.js"],
+  "password": "276b3098174de28ef5877dacb412b825cf803192"
+}'
+
+es POST user/okawaEisaku '
+{
+  "accountName": "大川栄策",
+  "email": "okawa@eisaku.com",
+  "interests": ["enka", "kitaguni", "node.js"],
+  "password": "276b3098174de28ef5877dacb412b825cf803192"
 }'
 
 # Insert Follow Data

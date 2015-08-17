@@ -1,6 +1,7 @@
 package models
 
 import jp.co.bizreach.elasticsearch4s._
+import org.elasticsearch.search.sort.SortOrder
 import play.Logger
 import play.api.libs.Crypto._
 import play.api.mvc.Request
@@ -10,6 +11,7 @@ import play.api.mvc.Request
  */
 
 case class User(accountName: String, email: String, interests: Seq[String], password: String)
+case class IdWithUser(id:String, user:User)
 
 object User {
 
@@ -47,17 +49,17 @@ object User {
     userData
   }
 
-  /** UserIDのリストからUserオブジェクトを検索しリストにして返す
-    * @param userIdList UserIDのリスト
+  /** 興味あるキーワードのリストを一つでも含むUserオブジェクトを検索しリストにして返す
+    * @param interestList キーワードのリスト
     * @return Userの検索結果
     */
-  def selectUserListFromIdList(userIdList: List[String]): ESSearchResult[User] = {
+  def selectUserListFromInterests(interestList: Seq[String]): List[IdWithUser] = {
     val userList = ESClient.using(url) { client =>
       client.list[User](config){ searcher =>
-        searcher.setQuery(matchQuery("_id", userIdList))
+        searcher.setQuery(matchQuery("interests", interestList)).addSort("_score", SortOrder.DESC)
       }
     }
-    userList
+    userList.list.map(result => IdWithUser(result.id, result.doc))
   }
   
   /** Sessionからログイン中ユーザーのメールアドレスを取得する

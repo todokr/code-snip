@@ -21,6 +21,9 @@ body {
   font-weight: normal;
   font-style: normal; }
 
+body {
+  background: #009688; }
+
 dl, dt, dd {
   margin: 0;
   padding: 0; }
@@ -77,3 +80,9 @@ iron-icon {
 
 paper-icon-button {
   padding: 2px; }
+
+iron-pages#contaner {
+  padding: 0; }
+
+#mainContainer {
+  background: #fafafa; }
