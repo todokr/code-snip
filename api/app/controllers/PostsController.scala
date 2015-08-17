@@ -87,11 +87,9 @@ object PostsController extends Controller{
   }
 
   def delete(id: String) = AuthAction { implicit rs =>
-    ESClient.init()
     val result = ESClient.using(url) { client =>
       client.delete(config, id)
     }
-    ESClient.shutdown()
     result match {
       case Right(map) => Ok(Json.obj("result" -> "success"))
       case Left(_) => NotFound(Json.obj("result" -> "notFound"))

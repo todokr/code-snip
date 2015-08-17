@@ -16,14 +16,6 @@ object UsersController extends Controller {
 
   val config = ESConfig("code_snip", "user")
   val url = "http://localhost:9200"
-
-// 思い出
-//  implicit val userReads = (
-//    (__ \ 'accountName).read[String] and
-//    (__ \ 'email).read[String](Reads.email) and
-//    (__ \ 'interests).read[Seq[String]] and
-//    (__ \ 'password).read[String]
-//  ) tupled
   implicit val userReads = Json.reads[User]
 
   // =====================================================================
@@ -63,7 +55,6 @@ object UsersController extends Controller {
 
   def update(id: String) = Action(parse.json) { implicit rs =>
     selectUserById(id).map( u => {
-      ESClient.init()
       rs.body.validate[User].map {
         case x: User =>
           ESClient.using(url) { client =>
@@ -71,7 +62,6 @@ object UsersController extends Controller {
           }
         case _ => None
       }
-      ESClient.shutdown()
     }) match {
       case None => NotFound(Json.obj("result" -> "notFound"))
       case _ => Ok(Json.obj("result" -> "success"))
@@ -79,11 +69,9 @@ object UsersController extends Controller {
   }
 
   def delete(id: String) = Action { implicit rs =>
-    ESClient.init()
     val result = ESClient.using(url) { client =>
       client.delete(config, id)
     }
-    ESClient.shutdown()
     result match {
       case Right(map) => Ok(Json.obj("result" -> "success"))
       case Left(_) => NotFound(Json.obj("result" -> "notFound"))
@@ -106,9 +94,6 @@ object UsersController extends Controller {
       }
       case None => BadRequest(Json.obj("result" -> "notAuthorized"))
     }
-
-
   }
-
 }
 

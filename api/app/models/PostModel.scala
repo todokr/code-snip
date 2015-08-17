@@ -1,6 +1,7 @@
 package models
 
 import jp.co.bizreach.elasticsearch4s._
+import org.elasticsearch.search.sort.SortOrder
 
 /**
  * @author shunsuke tadokoro
@@ -26,7 +27,7 @@ object Post {
   def selectPostListByUserId(id: String): List[PostWithUser] = {
     val postList = ESClient.using(url) { client =>
       client.list[Post](config){ searcher =>
-        searcher.setQuery(matchQuery("userId", id))
+        searcher.setQuery(matchQuery("userId", id)).addSort("_timestamp", SortOrder.DESC)
       }
     }.list.map(x => x.doc).map(u => PostWithUser(u, User.selectUserById(u.userId).get._2))
     postList

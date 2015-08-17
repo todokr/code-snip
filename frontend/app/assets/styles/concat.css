@@ -74,3 +74,6 @@ iron-icon {
 
 #main #mainContainer {
   bottom: 200px; }
+
+paper-icon-button {
+  padding: 2px; }
