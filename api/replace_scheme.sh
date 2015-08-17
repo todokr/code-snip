@@ -59,7 +59,7 @@ es PUT _mapping/user '
         "type": "string"
       },
       "interests" : {"type" : "string"},
-      "cryptedPassword": {"type": "string"}
+      "password": {"type": "string"}
     }
   }
 }'
@@ -126,7 +126,7 @@ es POST user/o10kojukuedajima4649 '
   "accountName": "江田島平八",
   "email": "edajima@otoko-juku.ed.jp",
   "interests": ["java", "scala", "node.js"],
-  "cryptedPassword": "606f00f307df613f32b739853eb298bcd527afc1"
+  "password": "276b3098174de28ef5877dacb412b825cf803192"
 }'
              
 # konoaraiwotsukuttanohadareda        
@@ -135,7 +135,7 @@ es POST user/bishokuKurabuNoAruji '
   "accountName": "海原雄山",
   "email": "kaibara@bishoku.club",
   "interests": ["html", "css", "javascript"],
-  "cryptedPassword": "508818d95eb8407861f58a1fdac3e5a818c66d5e"
+  "password": "276b3098174de28ef5877dacb412b825cf803192"
 }'
 
 # watashihashicho
@@ -144,7 +144,7 @@ es POST user/metroCityNoSichodayo '
   "accountName": "マイク・ハガー",
   "email": "mike@metro-city.go.jp",
   "interests": ["lisp"],
-  "cryptedPassword": "2b51b8464b8f468a7db1b95a87636061ec4ecc44"
+  "password": "276b3098174de28ef5877dacb412b825cf803192"
 }'
 
 # musekinin
@@ -153,7 +153,7 @@ es POST user/tottemoMusekinindayo '
   "accountName": "無責任艦長タイラー",
   "email": "tyler@musekinin.com",
   "interests": [],
-  "cryptedPassword": "6dba15f14087205c47d189dba98480c2cfcd37ba"
+  "password": "276b3098174de28ef5877dacb412b825cf803192"
 }'
 
 # ghosthack
@@ -162,7 +162,7 @@ es POST user/koukakuKidoutaiMitai '
   "accountName": "草薙素子",
   "email": "kusanagi@kouan-9.go.jp",
   "interests": ["haskell", "clojure", "haxe"],
-  "cryptedPassword": "2fa6522d969d621bd7f5d91191eaece4f188c19a"
+  "password": "2fa6522d969d621bd7f5d91191eaece4f188c19a"
 }'
 
 # Insert Follow Data
@@ -215,7 +215,7 @@ es POST post/001 '
   "userId": "o10kojukuedajima4649",
   "code": "val jukucho = \"Washi\"",
   "description": "ワシが男塾塾長",
-  "tag": ["Scala"]
+  "tag": "Scala"
 }'
 
 es POST post/002 '
@@ -223,7 +223,7 @@ es POST post/002 '
   "userId": "o10kojukuedajima4649",
   "code": "print \"江田島平八である！！！\"",
   "description": "江田島平八であると出力",
-  "tag": ["Java"]
+  "tag": "Java"
 }'
 
 es POST post/003 '
@@ -231,7 +231,7 @@ es POST post/003 '
   "userId": "bishokuKurabuNoAruji",
   "code": "User.findBy(id).with(Array(this))",
   "description": "この洗いを作ったのは誰かを探す",
-  "tag": ["Ruby"]
+  "tag": "Ruby"
 }'
 
 es POST post/004 '
@@ -239,7 +239,7 @@ es POST post/004 '
   "userId": "metroCityNoSichodayo",
   "code": "kill 9999",
   "description": "9999番のプロセスを殺す",
-  "tag": ["ShellScript", "kill"]
+  "tag": "ShellScript"
 }'
 
 es POST post/005 '
@@ -247,7 +247,7 @@ es POST post/005 '
   "userId": "metroCityNoSichodayo",
   "code": "var x = \"123\";var y = +x;",
   "description": "文字列を数値化",
-  "tag": ["JavaScript", "イディオム"]
+  "tag": "JavaScript"
 
 }'
 
@@ -256,7 +256,7 @@ es POST post/006 '
   "userId": "koukakuKidoutaiMitai",
   "code": "brew install ghosthack",
   "description": "ゴーストハックが使えるようになる",
-  "tag": ["brew", "一般人不可"]
+  "tag": "brew"
 }'
 
 es POST post/007 '
@@ -265,7 +265,7 @@ es POST post/007 '
   "forkFromId": "006",
   "code": "sudo brew install -g ghosthack",
   "description": "グローバルに使えたほうがいい",
-  "tag": ["brew", "一般人不可"]
+  "tag": "brew"
 }'
 
 es POST favorite '
