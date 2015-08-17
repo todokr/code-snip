@@ -1,0 +1,165 @@
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../../bower_components/gold-email-input/gold-email-input.html">
+<link rel="import" href="../../bower_components/paper-input/all-imports.html">
+<link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<dom-module id="post-inputs">
+  <style>
+    :host {
+      display: block;
+      height: 200px;
+      box-sizing: border-box;
+      border-top: 1px solid rgba(0, 0, 0, 0.22);
+      background: #fff;
+      position: fixed;
+      bottom: 0;
+      left: 255px;
+      right: 0;
+    }
+
+    :host .writing-inner {
+      padding: 0 20px 10px;
+    }
+
+    :host #title, :host #lang {
+      display: block;
+      float: left;
+      outline: none;      
+    }
+
+    :host #title {
+      width: 70%;
+    }
+
+    :host #lang {
+      width: 28%;
+      margin-left: 2%;
+    }
+
+    :host #title input,
+    :host #lang input{
+      font-size: 14px;
+    }
+
+    :host #codeTextarea {
+      outline: none;
+      display: block;
+      width: 100%;
+      margin: 0;
+      box-sizing: border-box;
+      font-size: 13px;
+      height: 7em;
+      padding: 5px 6px;
+      background: #fafafa;
+      color: #666;
+      display: block;
+      border: none;
+      line-height: 1.4;
+      border-radius: 4px;
+      box-shadow: 0 0 1px rgba(0,0,0,0.3) inset;
+      font-family: 'sourceCodePro', monospace;
+      clear: both;
+    }
+
+    :host #contentLengthIndicator {
+      text-align: right;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    :host #contentLengthIndicator.error {
+      color: #d00;
+    }
+  
+  </style>
+  <template>
+    <div class="writing-inner">
+      <form is="iron-form" id="postForm">
+        <paper-input id="title" name="description" label="Title" type="text" tabindex="1" required value=""></paper-input>
+        <paper-input id="lang" name="tag" label="Language" type="text" tabindex="2" required value=""></paper-input>
+        <textarea placeholder="Shift + Enter to Submit." name="code" id="codeTextarea" tabindex="3"></textarea>
+      </form>
+      <p id="contentLengthIndicator">140</p>
+    </div>
+    <iron-ajax
+      with-credentials
+      id="postAjax"
+      url="http://localhost:9000/posts"
+      method="POST"
+      content-type="application/json"
+      handle-as="json"
+      on-response="postResponse"
+      on-error="postError"></iron-ajax>
+    <iron-a11y-keys target="{{}}" keys="shift+enter" on-keys-pressed="pressHandler" onkey></iron-a11y-keys>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'post-inputs',
+      sendAjax: function() {
+        var data = this.$.postForm.serialize();
+        this.$.postAjax.body = data;
+        this.$.postAjax.generateRequest();
+      },
+      pressHandler: function() {
+        var eToast = document.querySelector('#errorToast');
+        if (
+          this.$.title.value.length > 0 &&
+          this.$.lang.value.length > 0 &&
+          this.$.codeTextarea.value.length > 0
+        ){
+          if (this.$.codeTextarea.value.length <= 140) {
+            this.sendAjax();
+          } else {
+            eToast.text = "Post must be shorter than 140!";
+            eToast.show();
+          }
+        } else {
+          eToast.text = "Fill out ALL field!";
+          eToast.show();
+        }
+      },
+      postResponse: function() {
+        var toast = document.querySelector('#toast');
+        toast.text = "Posted!";
+        toast.show();
+      },
+      postError: function(e) {
+        var toast = document.querySelector('#errorToast');
+        toast.text = "Something wrong!";
+        toast.show();
+      },
+      ready: function() {
+        window.addEventListener('WebComponentsReady', function() {
+          var textArea = document.querySelector('#codeTextarea');
+          
+          textArea.addEventListener('keydown', function(e) {
+            countLength();
+          });
+          
+          textArea.addEventListener('paste', function(e) {
+            var _this = this;
+            setTimeout(function(){
+              countLength();
+            },100);
+          });
+
+          function countLength() {
+            var indicator = document.querySelector('#contentLengthIndicator');
+            var contentLength = textArea.value.length;
+            var result = 140 - contentLength;
+            if (result < 0) {
+              indicator.classList.add("error");
+            } else {
+              indicator.classList.remove("error");
+            }
+            indicator.innerHTML = result;
+          }
+
+        });
+
+      }
+    });
+    
+  </script>
+</dom-module>

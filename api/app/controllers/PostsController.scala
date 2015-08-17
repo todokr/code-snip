@@ -18,7 +18,7 @@ object PostsController extends Controller{
   implicit val rds = (
     (__ \ 'code).read[String] and
     (__ \ 'description).read[String] and
-    (__ \ 'tag).read[Seq[String]]
+    (__ \ 'tag).read[String]
   ) tupled
 
   implicit val postWrites = Json.writes[Post]
@@ -45,11 +45,10 @@ object PostsController extends Controller{
       case Some((id,_)) => id
       case None => ""
     }
-    rs.body.validate[(String, String, Seq[String])].map {
-      case (wroteCode, wroteDesc, tags) =>
-        ESClient.init()
+    rs.body.validate[(String, String, String)].map {
+      case (wroteCode, wroteDesc, tagName) =>
         ESClient.using(url) { client =>
-          client.insert(config, Post(userId = uid, code = wroteCode, description = wroteDesc, tag = tags))
+          client.insert(config, Post(userId = uid, code = wroteCode, description = wroteDesc, tag = tagName))
         }
       case _ => JsError()
     } match {

@@ -70,7 +70,7 @@
   </style>
   <template>
     <account-info-name>
-      <a href="/#">
+      <a href="/#" tabindex="-1">
         <img src="http://placeimg.com/100/100/people" width="50" height="50">
         <h2>{{status.accountName}}</h2>
       </a>
@@ -78,11 +78,11 @@
     <div class="account-follow">
       <dl>
         <dt>Follow</dt>
-        <dd><a href="#">{{status.follow}}</a></dd>
+        <dd><a href="#" tabindex="-1">{{status.follow}}</a></dd>
       </dl>
       <dl>
         <dt>Follower</dt>
-        <dd><a href="#">{{status.follower}}</a></dd>
+        <dd><a href="#" tabindex="-1">{{status.follower}}</a></dd>
       </dl>
     </div>
     <div class="account-tag">
@@ -90,7 +90,7 @@
       <code-tags user="hogehoge" tags="{{status.interests}}"></code-tags>
     </div>
     <div class="account-option">
-      <paper-button on-click="logout">Log out</paper-button>
+      <paper-button on-click="logout" tabindex="-1">Log out</paper-button>
     </div>
 
     <iron-ajax

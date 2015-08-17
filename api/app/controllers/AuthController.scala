@@ -1,5 +1,6 @@
 package controllers
 
+import jp.co.bizreach.elasticsearch4s.ESClient
 import models.User._
 import play.Logger
 import play.api.libs.Crypto._
@@ -18,7 +19,7 @@ object AuthController extends Controller{
     val email = Json.stringify(rs.body \ "email").replaceAll("\"", "") // TODO 無理矢理感あるからあとで直す
     val pass = Json.stringify(rs.body \ "password").replaceAll("\"", "") // TODO 無理矢理感あるからあとで直す
 
-    selectUserByEmail(email) match {
+    val result = selectUserByEmail(email) match {
       case Some(userData) =>
         if(userData._2.password == sign(pass)) {
           val id = userData._1
@@ -35,6 +36,7 @@ object AuthController extends Controller{
         }
       case None => BadRequest(Json.obj("result" -> "notExist"))
     }
+    result
   }
 
   def logout = Action { implicit rs =>

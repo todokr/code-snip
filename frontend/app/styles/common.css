@@ -43,3 +43,7 @@ a {
   height: 64px;
   background: #fff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.22); }
+
+#errorToast {
+  background: #FFEFEF;
+  color: #DB4437; }

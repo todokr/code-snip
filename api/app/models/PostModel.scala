@@ -6,7 +6,7 @@ import jp.co.bizreach.elasticsearch4s._
  * @author shunsuke tadokoro
  */
 
-case class Post(userId: String, code: String, description: String, tag: Seq[String])
+case class Post(userId: String, code: String, description: String, tag: String)
 case class PostWithUser(post: Post, user:User)
 
 object Post {
@@ -15,13 +15,11 @@ object Post {
   val url = "http://localhost:9200"
 
   def selectPostById(id: String): Option[(String, Post)] = {
-    ESClient.init()
     val postData= ESClient.using(url) { client =>
       client.find[Post](config){ searcher =>
         searcher.setQuery(matchQuery("_id", id))
       }
     }
-    ESClient.shutdown()
     postData
   }
 

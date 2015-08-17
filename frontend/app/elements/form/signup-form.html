@@ -1,0 +1,170 @@
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../../bower_components/gold-email-input/gold-email-input.html">
+<link rel="import" href="../../bower_components/paper-input/all-imports.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="signup-form">
+  <style>
+    :host {
+      display: block;
+      background: #fff;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      width: 340px;
+      padding: 20px;
+      margin: 100px auto 0;
+    }
+
+    * + :host {
+      margin-top: 20px;
+    }
+
+    :host h2 {
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    :host paper-button {
+      background: var(--paper-teal-300);
+      color: #fff;
+      line-height: 1;
+      text-transform: none;
+      margin-left: 20px;
+    }
+
+    :host .button-area {
+      text-align: right;
+      margin-top: 10px;
+    }
+
+    :host a {
+      color: var(--paper-blue-300);
+      font-weight: normal;
+      font-size: 12px;
+      padding-top: 5px;
+    }
+
+    :host iron-selector div{
+      cursor: pointer;
+      height: 20px;
+      line-height: 20px;
+      position: relative;
+      font-size: 12px;
+      font-weight: normal;
+      display: inline-block;
+      margin-left: 8px;
+      padding: 0 10px 0 12px;
+      color: #fff;
+      background: #ddd;
+      text-decoration: none;
+      border-radius: 1px 3px 3px 1px;
+    }
+
+    :host iron-selector div:before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: -8px;
+      width: 0;
+      height: 0;
+      border-color: transparent #ddd transparent transparent;
+      border-style: solid;
+      border-width: 10px 8px 10px 0;
+    }
+
+    :host iron-selector div:after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 0;
+      display: block;
+      width: 4px;
+      height: 4px;
+      border-radius: 2px;
+      background: #fff;
+    }
+
+    :host .iron-selected {
+      background-color: var(--paper-teal-400);
+    }
+
+    :host iron-selector .iron-selected:before {
+      border-color: transparent var(--paper-teal-400) transparent transparent;
+    }
+
+    :host label {
+      display: block;
+      margin-top: 18px;
+      color: #727272;
+      font-family: 'Roboto', 'Noto', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+    }
+
+  </style>
+  <template>
+    <iron-ajax
+      with-credentials
+      id="signupAjax"
+      url="http://localhost:9000/users"
+      method="POST"
+      content-type="application/json"
+      handle-as="json"
+      on-response="handleResponse"
+      on-error="handleError"
+      last-response="{{ajaxResponse}}"></iron-ajax>
+    <h2>Sign Up</h2>
+    <form is="iron-form" id="signupForm">
+      <paper-input name="accountName" label="Name" required value=""></paper-input>
+      <gold-email-input label="Email" required name="email" auto-validate value=""></gold-email-input>
+      <paper-input name="password" label="Password" type="password" required value=""></paper-input>
+      <label>Your Interest</label>
+      <iron-selector id="interests" multi attr-for-selected="name" selected-values='["Emacs"]'>
+        <div name="Java">Java</div>
+        <div name="Scala">Scala</div>
+        <div name="HTML">HTML</div>
+        <div name="CSS">CSS</div>
+        <div name="JavaScript">JavaScript</div>
+        <div name="Linux">Linux</div>
+        <div name="ShellScript">ShellScript</div>
+        <div name="Ruby">Ruby</div>
+        <div name="Vim">Vim</div>
+        <div name="Emacs">Emacs</div>
+        <div name="Haskell">Haskell</div>
+      </iron-selector>
+      <div class="button-area">
+        <paper-button on-click="sendAjax" raised>Submit</paper-button>
+      </div>
+      <a href="/login">Already have a account?</a>
+    </form>
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: 'signup-form',
+    sendAjax: function() {
+      var data = this.$.signupForm.serialize();
+      data.interests = this.$.interests.selectedValues;
+      console.log(data);
+      this.$.signupAjax.body = data;
+      this.$.signupAjax.generateRequest();
+    },
+    handleResponse: function() {
+      var loginData = this.$.signupForm.serialize();
+      var toast = document.querySelector('#toast');
+      toast.text = "Your Account is created! Please Log in!";
+      toast.show();
+      window.app.route = "login";
+    },
+    handleError: function(mes) {
+      var toast = document.querySelector('#errorToast');
+      toast.text = "Something Wrong!";
+      toast.show();
+    }
+  });
+
+
+</script>

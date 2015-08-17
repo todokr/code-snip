@@ -35,7 +35,7 @@
       text-align: right;
     }
 
-    :host .button-area > a {
+    :host a {
       color: var(--paper-blue-300);
       font-weight: normal;
       font-size: 12px;
@@ -55,14 +55,15 @@
       on-error="handleError"
       last-response="{{ajaxResponse}}"></iron-ajax>
     <h2>Login</h2>
-    <form is="iron-form" id="loginForm" method="post" action="http://localhost:9000/auth" content-type="application/json">
+    <form is="iron-form" id="loginForm">
       <gold-email-input id="email" label="Email" required name="email" auto-validate value=""></gold-email-input>
       <paper-input id="pass" name="password" label="Password" type="password" required value=""></paper-input>
 
       <div class="button-area">
-        <a href="#" class="jsc-submit-json">forgot Password?</a>
         <paper-button on-click="sendAjax" raised>Submit</paper-button>
       </div>
+      <a href="#">Forgot Password?</a>
+      <a href="/signup">Don't have a account?</a>
     </form>
   </template>
 </dom-module>
@@ -85,21 +86,21 @@
       var res = this.$.loginAjax.lastResponse;
 
       if (res.result === 'loggedin') {
-        var email = this.$.email.value
-        var pass = this.$.pass.value
+        var email = this.$.email.value;
+        var pass = this.$.pass.value;
         console.log(email);
         console.log(pass);
         var code_snip_storage = {
           "mail": email,
           "password": pass
-        }
+        };
         localStorage.setItem('cs_mail', email);
         location.href = '/#!/app';
         location.reload();
       }
     },
     handleError: function(mes) {
-      var toast = document.querySelector('#toast');
+      var toast = document.querySelector('#errorToast');
       toast.text = "Something wrong! Try again!";
       toast.show();
     }

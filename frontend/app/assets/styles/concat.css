@@ -60,6 +60,10 @@ a {
   background: #fff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.22); }
 
+#errorToast {
+  background: #FFEFEF;
+  color: #DB4437; }
+
 paper-tabs {
   width: 100%;
   background: #fff;
@@ -69,4 +73,4 @@ iron-icon {
   margin: 0 6px; }
 
 #main #mainContainer {
-  bottom: 180px; }
+  bottom: 200px; }

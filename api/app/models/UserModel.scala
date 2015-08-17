@@ -26,13 +26,11 @@ object User {
     * @return Optionに詰めた検索結果
   */
   def selectUserById(id: String): Option[(String, User)] = {
-    ESClient.init()
     val userData = ESClient.using(url) { client =>
       client.find[User](config){ searcher =>
         searcher.setQuery(matchQuery("_id", id))
       }
     }
-    ESClient.shutdown()
     userData
   }
 
@@ -41,13 +39,11 @@ object User {
     * @return Optionに詰めた検索結果
     */
   def selectUserByEmail[A](email: String): Option[(String, User)] = {
-    ESClient.init()
     val userData = ESClient.using(url) { client =>
       client.find[User](config){ searcher =>
         searcher.setQuery(matchQuery("email", email))
       }
     }
-    ESClient.shutdown()
     userData
   }
 
@@ -56,13 +52,11 @@ object User {
     * @return Userの検索結果
     */
   def selectUserListFromIdList(userIdList: List[String]): ESSearchResult[User] = {
-    ESClient.init()
     val userList = ESClient.using(url) { client =>
       client.list[User](config){ searcher =>
         searcher.setQuery(matchQuery("_id", userIdList))
       }
     }
-    ESClient.shutdown()
     userList
   }
   
@@ -71,7 +65,6 @@ object User {
     * @return メールアドレス
     */
   def selectEmailBySession(request: Request[Any]): String = {
-    Logger.debug(request.toString)
     request.session.get("auth").getOrElse("Guest")
   }
   
