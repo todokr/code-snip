@@ -88,6 +88,7 @@ Example:
     ],
 
     _selectedPageChanged: function(selected, old) {
+      this.fire('mysticRhythm');
       this.async(this.notifyResize);
     }
   });

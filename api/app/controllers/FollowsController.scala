@@ -1,7 +1,6 @@
 package controllers
 
 import models.User
-import play.Logger
 import play.api.mvc._
 import play.api.libs.json._
 import auth.AuthAction

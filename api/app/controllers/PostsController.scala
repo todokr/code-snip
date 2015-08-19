@@ -6,7 +6,6 @@ import models.{ShownPost, User, Post}
 import models.User._
 import models.Post._
 import models.Post.{config, url}
-import play.Logger
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Json, _}
 import play.api.mvc._

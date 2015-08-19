@@ -2,7 +2,6 @@ package controllers
 
 import auth.AuthAction
 import models.User._
-import play.Logger
 import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
 
@@ -17,8 +16,6 @@ object TestController extends Controller{
       case Some(userData) => {
         val id = userData._1
         val user = userData._2
-        Logger.debug("id: " + id)
-        Logger.debug("name: " + user.accountName)
         Ok(Json.obj(
           "result"      -> "authenticated",
           "id"          -> id,

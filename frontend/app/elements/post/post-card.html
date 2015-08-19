@@ -35,7 +35,7 @@
       color: #fff;
     }
 
-    :host paper-icon-button[active] {
+    :host.favorite paper-icon-button {
       color: var(--paper-yellow-300);
     }
 
@@ -113,8 +113,7 @@
       <content select="i"></content>
       <content select="p"></content>
       <ul class="buttons">
-        <li><paper-icon-button toggles icon="icons:star"></paper-icon-button></li>
-        <!-- <li><paper-icon-button icon="communication:call-split"></paper-icon-button></li> -->
+        <li><paper-icon-button id="star" icon="icons:star" on-click="handleFavorite"></paper-icon-button></li>
       </ul>
     </div>
     <div class="card-body">
@@ -131,11 +130,44 @@
     <div class="card-footer">
       <content select="time"></content>
     </div>
+    <iron-ajax
+      id="favoriteAjax"
+      with-credentials
+      method="POST"
+      handle-as="json"
+      content-type="application/json"
+      on-response="handleResponse"
+      on-error="errorResponse"></iron-ajax>
   </template>
-
 </dom-module>
 <script>
   Polymer({
-    is: 'post-card'
+    is: 'post-card',
+    properties: {
+      postId: String
+    },
+    ready: function() {
+      this.favoriteFlg = false;
+      this.bodyObj =  {"favoritePostId": null};
+    },
+    handleFavorite: function(e){
+      var ajax = this.$.favoriteAjax;
+      this.bodyObj.favoritePostId = this.postId;
+      if (this.favoriteFlg) {
+        ajax.url = "http://localhost:9000/unfavorite";
+      } else {
+        ajax.url = "http://localhost:9000/favorite";
+      }
+      ajax.body = JSON.stringify(this.bodyObj);
+      ajax.generateRequest();
+    },
+    handleResponse: function(){
+      this.favoriteFlg = !this.favoriteFlg;
+      this.toggleClass('favorite', this.favoriteFlg);
+    },
+    errorResponse: function(e){
+      console.error('Ajax failed: favoriteAjax');
+      console.dir(e);
+    },
    });
 </script>

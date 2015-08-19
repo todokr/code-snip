@@ -2,7 +2,6 @@ package models
 
 import jp.co.bizreach.elasticsearch4s._
 import org.elasticsearch.search.sort.SortOrder
-import play.Logger
 import play.api.libs.Crypto._
 import play.api.mvc.Request
 

@@ -3,14 +3,13 @@ package models
 import jp.co.bizreach.elasticsearch4s._
 import org.elasticsearch.search.sort.SortOrder
 import org.joda.time.DateTime
-import play.Logger
 
 /**
  * @author shunsuke tadokoro
  */
 
 case class Post(userId: String, code: String, description: String, tag: String, time: String)
-case class ShownPost(postId: String, post: Post, user:User)
+case class ShownPost(id: String, post: Post, user:User)
 
 object Post {
 
@@ -27,14 +26,13 @@ object Post {
   }
 
   def selectPostListByUserId(id: String): List[ShownPost] = {
-    val postList = ESClient.using(url) { client =>
+   ESClient.using(url) { client =>
       client.list[Post](config){ searcher =>
         searcher.setQuery(matchQuery("userId", id)).addSort("_timestamp", SortOrder.DESC)
       }
-    //}.list.map(x => x.doc).map(u => ShownPost(u, User.selectUserById(u.userId).get._2))
+     // TODO userIdを受け取り、お気に入りに追加されているPostIDのリストを取得。
+     // PostのIDはリストに含まれるかを判定する。結果をShownPostに突っ込む(isFavorite:Boolean)
     }.list.map(x => ShownPost(x.id ,x.doc, User.selectUserById(x.doc.userId).get._2))
-    Logger.debug(postList.toString)
-    postList
   }
 
   def selectFollowPost(id: String): List[ShownPost] = {
@@ -47,9 +45,7 @@ object Post {
   }
 
   def getCurrentDateTime:String = {
-    val date = DateTime.now.toString("yyyy/MM/dd HH:mm")
-    Logger.debug(date)
-    date
+    DateTime.now.toString("yyyy/MM/dd HH:mm")
   }
 
 }

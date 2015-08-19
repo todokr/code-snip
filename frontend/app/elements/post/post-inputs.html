@@ -113,6 +113,9 @@
         ){
           if (this.$.codeTextarea.value.length <= 140) {
             this.sendAjax();
+            this.$.title.value = "";
+            this.$.lang.value = "";
+            this.$.codeTextarea.value = "";
           } else {
             eToast.text = "Post must be shorter than 140!";
             eToast.show();

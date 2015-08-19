@@ -11,7 +11,7 @@
       on-response="handleResponse"
       on-error="handleError"></iron-ajax>
     <template is="dom-repeat" items="{{posts}}">
-      <post-card>
+      <post-card post-id={{item.id}}>
         <h2>{{item.user.accountName}}</h2>
         <img src="/assets/images/dammy.jpeg" width="50" height="50">
         <code>{{item.post.code}}</code>
@@ -27,13 +27,28 @@
       is: 'post-list',
       properties: {
         target: String,
+        notify: true,
+        observer: '_tabChanged'
       },
       ready: function() {
-        this.sendAjax();
-        this.readyFlg = true;
+        this.$.postsAjax.url = "http://localhost:9000/" + this.target;
+        var _this = this;
+        
+        setInterval(function(){
+          _this.sendAjax();
+        }, 15000);
+        
+        document.addEventListener('WebComponentsReady', function(){
+          var ironPages = document.querySelector('#mainPages');
+          ironPages.addEventListener('mysticRhythm', function(){
+            _this.sendAjax();
+          });
+        });
+      },
+      _tabChanged: function() {
+        alert("change");
       },
       sendAjax: function() {
-        this.$.postsAjax.url = "http://localhost:9000/" + this.target;
         this.$.postsAjax.generateRequest();
       },
       handleResponse: function(request) {

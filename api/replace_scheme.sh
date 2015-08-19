@@ -315,48 +315,6 @@ es POST post '
   "time": "2015/08/12 12:46"
 }'
 
-es POST favorite '
-{
-  "userId": "koukakuKidoutaiMitai",
-  "postId": "003"
-}'
-
-es POST favorite '
-{
-  "userId": "koukakuKidoutaiMitai",
-  "postId": "001"
-}'
-
-es POST favorite '
-{
-  "userId": "metroCityNoSichodayo",
-  "postId": "001"
-}'
-
-es POST favorite '
-{
-  "userId": "metroCityNoSichodayo",
-  "postId": "002"
-}'
-
-es POST favorite '
-{
-  "userId": "o10kojukuedajima4649",
-  "postId": "001"
-}'
-
-es POST favorite '
-{
-  "userId": "o10kojukuedajima4649",
-  "postId": "002"
-}'
-
-es POST favorite '
-{
-  "userId": "o10kojukuedajima4649",
-  "postId": "003"
-}'
-
 # Message
 echo ""
 echo "//====================================//"

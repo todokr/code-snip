@@ -1,8 +1,6 @@
 package controllers
 
-import jp.co.bizreach.elasticsearch4s.ESClient
 import models.User._
-import play.Logger
 import play.api.libs.Crypto._
 import play.api.libs.json._
 import play.api.mvc.{Action, Controller}

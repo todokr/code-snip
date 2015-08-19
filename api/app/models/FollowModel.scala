@@ -1,8 +1,6 @@
 package models
 
 import jp.co.bizreach.elasticsearch4s._
-import play.Logger
-import play.api.libs.json.{JsResult, JsError}
 
 /**
  * @author Shunsuke Tadokoro
@@ -47,7 +45,7 @@ object Follow {
     followList.list.map(result => result.doc).map(e => e.followFromId)
   }
 
-  def detectFollowId(userId: String, targetId: String): Option[String] = {
+  private def detectFollowId(userId: String, targetId: String): Option[String] = {
     val result = ESClient.using(url) { client =>
       client.find[Follow](config) { searcher =>
         searcher.setQuery(matchQuery("followFromId", userId)).setQuery(matchQuery("followToId", targetId))
