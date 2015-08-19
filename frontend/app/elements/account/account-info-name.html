@@ -1,19 +1,19 @@
 <dom-module id="account-info-name">
   <style>
     :host {
-      display: block;
-    }
-
-    :host ::content a {
       display: table;
+      width: 100%;
       color: #444;
     }
 
-    :host ::content img {
-      border-radius: 6px;
+    :host .image {
       display: table-cell;
       width: 50px;
+    }
+
+    :host ::content img {
       vertical-align: middle;
+      border-radius: 6px;
     }
 
     :host ::content h2 {
@@ -25,12 +25,8 @@
     }
   </style>
   <template>
-    <div class="account-info">
-      <content select="a">
-        <content select="img"></content>
-        <content select="h2"></content>
-      </content>
-    </div>
+    <div class="image"><content select="img"></content></div>
+    <content select="h2"></content>
   </template>
 </dom-module>
 <script>

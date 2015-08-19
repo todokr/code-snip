@@ -1,0 +1,108 @@
+<dom-module id="recommend-user-follow">
+  <style>
+    :host {
+      display: block;
+      color: #444;
+    }
+
+    :host .wrapper{
+      display: table;
+      width: 100%;
+    }
+
+    :host .image {
+      display: table-cell;
+      width: 35px;
+    }
+
+    :host ::content img {
+      vertical-align: middle;
+      border-radius: 4px;
+    }
+
+    :host ::content h2 {
+      display: table-cell;
+      vertical-align: middle;
+      padding-left: 5px;
+      font-size: 12px;
+      line-height: 1.2;
+      width: 100%;
+    }
+
+    :host .btnArea {
+      display: table-cell;
+    }
+
+    :host .btnArea paper-button {
+      padding: 0;
+      line-height: 1.2;
+      font-size: 10px;
+      border: 1px solid var(--paper-grey-200);
+      color: var(--paper-grey-500);
+    }
+
+    :host .btnArea paper-button[active] {
+      color: var(--paper-teal-400)
+    }
+
+    :host ::content code-tags-mini {
+      margin-top: 5px;
+      line-height: 14px;
+    }
+  </style>
+  <template>
+    <div class="wrapper">
+      <div class="image"><content select="img"></content></div>
+      <content select="h2"></content>
+      <div class="btnArea">
+        <paper-button id="followBtn" on-click="handleFollow" toggles>Follow</paper-button>
+      </div>
+    </div>
+    <content select="code-tags-mini"></content>
+    <iron-ajax
+      id="followAjax"
+      with-credentials
+      method="POST"
+      handle-as="json"
+      content-type="application/json"
+      on-response="followResponse"
+      on-error="errorResponse"></iron-ajax>
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: 'recommend-user-follow',
+    properties: {
+      userId: {
+        type: String,
+      }
+
+    },
+    ready: function() {
+      this.followFlg = false;
+      this.bodyObj =  {"followToId": null};
+    },
+    handleFollow: function() {
+      var ajax = this.$.followAjax;
+      this.bodyObj.followToId = this.userId;
+      if (this.followFlg) {
+        ajax.url = "http://localhost:9000/unfollow";
+      } else {
+        ajax.url = "http://localhost:9000/follow";
+      }
+      ajax.body = JSON.stringify(this.bodyObj);
+      ajax.generateRequest();
+    },
+    followResponse: function() {
+      this.followFlg = !this.followFlg;
+    },
+    errorResponse: function() {
+      var toast = document.querySelector('#errorToast');
+      toast.text = "Something wrong!";
+      toast.show();
+    }
+
+  });
+</script>
+
+ 

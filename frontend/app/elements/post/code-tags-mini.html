@@ -1,22 +1,22 @@
-<dom-module id="code-tags">
+<dom-module id="code-tags-mini">
   <style>
     :host {
       display: block;
     }
 
     :host li{
-      height: 16px;
-      line-height: 16px;
+      height: 14px;
+      line-height: 14px;
       position: relative;
-      font-size: 12px;
+      font-size: 10px;
       font-weight: normal;
       display: inline-block;
-      margin-left: 5px;
+      margin-left: 4px;
       padding: 0 5px 0 3px;
       background-color: var(--paper-teal-400);
       color: #fff;
       text-decoration: none;
-      border-radius: 1px 3px 3px 1px;
+      border-radius: 1px 2px 2px 1px;
     }
 
     :host li:before {
@@ -24,19 +24,19 @@
       display: block;
       position: absolute;
       top: 0;
-      left: -5px;
+      left: -4px;
       width: 0;
       height: 0;
       border-color: transparent var(--paper-teal-400) transparent transparent;
       border-style: solid;
-      border-width: 8px 5px 8px 0;
+      border-width: 7px 4px 7px 0;
     }
 
   </style>
   <template>
     <ul>
-      <template is="dom-repeat" id="tags" items="{{tags}}" as="tag">
-        <li>{{tag}}</li>
+      <template is="dom-repeat" id="tags" items="{{tags}}">
+        <li>{{item}}</li>
       </template>
     </ul>
     <!-- </content> -->
@@ -45,11 +45,17 @@
   <script>
     (function() {
       Polymer({
-        is: 'code-tags',
+        is: 'code-tags-mini',
         properties: {
-          tags: Array
+          tags: {
+            type: Array
+          }
         },
+        ready: function() {
+
+        }
        });
     })();
   </script>
+
 </dom-module>

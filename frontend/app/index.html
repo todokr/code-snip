@@ -17,6 +17,7 @@
 <body unresolved class="fullbleed layout vertical">
   <template is="dom-bind" id="app">
     <iron-pages attr-for-selected="data-route" selected="{{route}}" id="contaner">
+
       <section data-route="home">
         <home-page></home-page>
       </section>
@@ -35,15 +36,11 @@
             <paper-toolbar id="drawerToolbar">
               <h1 class="paper-font-title">Code::snip</h1>
             </paper-toolbar>
-
             <!-- aside Content -->
             <div class="aside-content">
               <snip-account></snip-account>
             </div>
-
-
           </paper-scroll-header-panel>
-
           <!-- Main Area -->
           <paper-scroll-header-panel fixed main>
             <paper-toolbar id="menu-toolbar">
@@ -51,7 +48,7 @@
                 <paper-tab name="timeline"><iron-icon icon="icons:home"></iron-icon>Home</paper-tab>
                 <paper-tab name="wrote"><iron-icon icon="icons:code"></iron-icon>Wrote</paper-tab>
                 <paper-tab name="favorite"><iron-icon icon="icons:grade"></iron-icon>Favorite</paper-tab>
-                <paper-tab><iron-icon icon="communication:call-split"></iron-icon>Forked</paper-tab>
+                <!-- <paper-tab><iron-icon icon="communication:call-split"></iron-icon>Forked</paper-tab> -->
               </paper-tabs>
             </paper-toolbar>
             <script>

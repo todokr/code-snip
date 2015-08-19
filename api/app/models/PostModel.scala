@@ -2,13 +2,15 @@ package models
 
 import jp.co.bizreach.elasticsearch4s._
 import org.elasticsearch.search.sort.SortOrder
+import org.joda.time.DateTime
+import play.Logger
 
 /**
  * @author shunsuke tadokoro
  */
 
-case class Post(userId: String, code: String, description: String, tag: String)
-case class PostWithUser(post: Post, user:User)
+case class Post(userId: String, code: String, description: String, tag: String, time: String)
+case class ShownPost(postId: String, post: Post, user:User)
 
 object Post {
 
@@ -24,22 +26,30 @@ object Post {
     postData
   }
 
-  def selectPostListByUserId(id: String): List[PostWithUser] = {
+  def selectPostListByUserId(id: String): List[ShownPost] = {
     val postList = ESClient.using(url) { client =>
       client.list[Post](config){ searcher =>
         searcher.setQuery(matchQuery("userId", id)).addSort("_timestamp", SortOrder.DESC)
       }
-    }.list.map(x => x.doc).map(u => PostWithUser(u, User.selectUserById(u.userId).get._2))
+    //}.list.map(x => x.doc).map(u => ShownPost(u, User.selectUserById(u.userId).get._2))
+    }.list.map(x => ShownPost(x.id ,x.doc, User.selectUserById(x.doc.userId).get._2))
+    Logger.debug(postList.toString)
     postList
   }
 
-  def selectFollowPost(id: String): List[PostWithUser] = {
+  def selectFollowPost(id: String): List[ShownPost] = {
     val postList = ESClient.using(url) { client =>
       client.list[Post](config){ searcher =>
         searcher.setQuery(matchQuery("userId", Follow.selectFollowListByUserId(id)))
       }
-    }.list.map(x => x.doc).map(u => PostWithUser(u, User.selectUserById(u.userId).get._2))
+    }.list.map(x => ShownPost(x.id ,x.doc, User.selectUserById(x.doc.userId).get._2))
     postList
+  }
+
+  def getCurrentDateTime:String = {
+    val date = DateTime.now.toString("yyyy/MM/dd HH:mm")
+    Logger.debug(date)
+    date
   }
 
 }

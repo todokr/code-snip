@@ -28,12 +28,11 @@ object User {
     * @return Optionに詰めた検索結果
   */
   def selectUserById(id: String): Option[(String, User)] = {
-    val userData = ESClient.using(url) { client =>
+    ESClient.using(url) { client =>
       client.find[User](config){ searcher =>
         searcher.setQuery(matchQuery("_id", id))
       }
     }
-    userData
   }
 
   /** EmailからUserを検索した結果をidとのタプルで返す
@@ -41,25 +40,23 @@ object User {
     * @return Optionに詰めた検索結果
     */
   def selectUserByEmail[A](email: String): Option[(String, User)] = {
-    val userData = ESClient.using(url) { client =>
+    ESClient.using(url) { client =>
       client.find[User](config){ searcher =>
         searcher.setQuery(matchQuery("email", email))
       }
     }
-    userData
   }
 
   /** 興味あるキーワードのリストを一つでも含むUserオブジェクトを検索しリストにして返す
-    * @param interestList キーワードのリスト
+    * @param interestList キーワードのリスト。
     * @return Userの検索結果
     */
   def selectUserListFromInterests(interestList: Seq[String]): List[IdWithUser] = {
-    val userList = ESClient.using(url) { client =>
+    ESClient.using(url) { client =>
       client.list[User](config){ searcher =>
         searcher.setQuery(matchQuery("interests", interestList)).addSort("_score", SortOrder.DESC)
       }
-    }
-    userList.list.map(result => IdWithUser(result.id, result.doc))
+    }.list.map(result => IdWithUser(result.id, result.doc))
   }
   
   /** Sessionからログイン中ユーザーのメールアドレスを取得する

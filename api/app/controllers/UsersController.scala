@@ -2,7 +2,7 @@ package controllers
 
 import auth.AuthAction
 import jp.co.bizreach.elasticsearch4s._
-import models.{IdWithUser, User}
+import models.{Follow, IdWithUser, User}
 import models.User._
 import play.Logger
 import play.api.libs.json._
@@ -98,12 +98,12 @@ object UsersController extends Controller {
   }
 
   def listNearInterestUser = AuthAction { implicit rs =>
-    val (id, interests:Seq[String]) =  selectUserBySession(rs) match {
+    val (id:String, interests:Seq[String]) =  selectUserBySession(rs) match {
       case Some(userData) => (userData._1, userData._2.interests)
       case None => None
     }
-    val nearUserList = selectUserListFromInterests(interests).filterNot(user => user.id == id)
-    nearUserList.foreach(s => println(s.toString))
+    val followAndSelfList = Follow.selectFollowListByUserId(id) + id
+    val nearUserList = selectUserListFromInterests(interests).filterNot(recomendUser => followAndSelfList.contains(recomendUser.id)).take(3)
     Ok(Json.toJson(nearUserList))
 
   }

@@ -13,9 +13,11 @@
     <template is="dom-repeat" items="{{posts}}">
       <post-card>
         <h2>{{item.user.accountName}}</h2>
-        <img src="http://placeimg.com/100/100/people" width="50" height="50">
+        <img src="/assets/images/dammy.jpeg" width="50" height="50">
         <code>{{item.post.code}}</code>
         <p>{{item.post.description}}</p>
+        <i>{{item.post.tag}}</i>
+        <time>{{item.post.time}}</time>
       </post-card>
     </template>
   </template>

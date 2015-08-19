@@ -2,7 +2,7 @@ package controllers
 
 import auth.AuthAction
 import jp.co.bizreach.elasticsearch4s.ESClient
-import models.{PostWithUser, User, Post}
+import models.{ShownPost, User, Post}
 import models.User._
 import models.Post._
 import models.Post.{config, url}
@@ -23,7 +23,7 @@ object PostsController extends Controller{
 
   implicit val postWrites = Json.writes[Post]
   implicit val userWrites = Json.writes[User]
-  implicit val puWrites = Json.writes[PostWithUser]
+  implicit val puWrites = Json.writes[ShownPost]
 
 
   // 自分の投稿一覧
@@ -48,7 +48,7 @@ object PostsController extends Controller{
     rs.body.validate[(String, String, String)].map {
       case (wroteCode, wroteDesc, tagName) =>
         ESClient.using(url) { client =>
-          client.insert(config, Post(userId = uid, code = wroteCode, description = wroteDesc, tag = tagName))
+          client.insert(config, Post(userId = uid, code = wroteCode, description = wroteDesc, tag = tagName, time = getCurrentDateTime))
         }
       case _ => JsError()
     } match {
@@ -70,6 +70,7 @@ object PostsController extends Controller{
               "description" -> post.description,
               "tag"         -> post.tag
             ))).withHeaders("Access-Control-Allow-Origin" -> " *")
+
             case None => Ok(Json.toJson(Json.obj( // 投稿はあるがユーザーがいない場合
               "result"      -> "found",
               "id"          -> id,

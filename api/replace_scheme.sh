@@ -93,7 +93,8 @@ es PUT _mapping/post '
       "code": {"type": "string"},
       "description": {"type": "string"},
       "forkFromId": {"type": "string"},
-      "tag": {"type": "string"}
+      "tag": {"type": "string"},
+      "date": {"type": "string"}
     }
   }
 }'
@@ -238,7 +239,8 @@ es POST post/001 '
   "userId": "o10kojukuedajima4649",
   "code": "val jukucho = \"Washi\"",
   "description": "ワシが男塾塾長",
-  "tag": "Scala"
+  "tag": "Scala",
+  "time": "2015/08/12 12:46"
 }'
 
 es POST post/002 '
@@ -246,7 +248,8 @@ es POST post/002 '
   "userId": "o10kojukuedajima4649",
   "code": "print \"江田島平八である！！！\"",
   "description": "江田島平八であると出力",
-  "tag": "Java"
+  "tag": "Java",
+  "time": "2015/08/13 12:46"
 }'
 
 es POST post/003 '
@@ -254,7 +257,8 @@ es POST post/003 '
   "userId": "bishokuKurabuNoAruji",
   "code": "User.findBy(id).with(Array(this))",
   "description": "この洗いを作ったのは誰かを探す",
-  "tag": "Ruby"
+  "tag": "Ruby",
+  "time": "2015/08/12 1:46"
 }'
 
 es POST post/004 '
@@ -262,7 +266,8 @@ es POST post/004 '
   "userId": "metroCityNoSichodayo",
   "code": "kill 9999",
   "description": "9999番のプロセスを殺す",
-  "tag": "ShellScript"
+  "tag": "ShellScript",
+  "time": "2015/03/12 12:46"
 }'
 
 es POST post/005 '
@@ -270,8 +275,8 @@ es POST post/005 '
   "userId": "metroCityNoSichodayo",
   "code": "var x = \"123\";var y = +x;",
   "description": "文字列を数値化",
-  "tag": "JavaScript"
-
+  "tag": "JavaScript",
+  "time": "2015/08/12 2:46"
 }'
 
 es POST post/006 '
@@ -279,16 +284,35 @@ es POST post/006 '
   "userId": "koukakuKidoutaiMitai",
   "code": "brew install ghosthack",
   "description": "ゴーストハックが使えるようになる",
-  "tag": "brew"
+  "tag": "brew",
+  "time": "2015/08/10 12:46"
 }'
 
 es POST post/007 '
 {
   "userId": "metroCityNoSichodayo",
-  "forkFromId": "006",
   "code": "sudo brew install -g ghosthack",
   "description": "グローバルに使えたほうがいい",
-  "tag": "brew"
+  "tag": "brew",
+  "time": "2015/08/12 12:46"
+}'
+
+es POST post '
+{
+  "userId": "luckeyIkeda",
+  "code": "Math.sin()",
+  "description": "いい感じにモタったりハシったりすることでグルーヴが生まれるんだ！",
+  "tag": "Dance",
+  "time": "2015/08/18 12:46"
+}'
+
+es POST post '
+{
+  "userId": "luckeyIkeda",
+  "code": "Math.cos()",
+  "description": "こちらも同様",
+  "tag": "Dance",
+  "time": "2015/08/12 12:46"
 }'
 
 es POST favorite '

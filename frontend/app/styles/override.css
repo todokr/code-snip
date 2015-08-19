@@ -17,3 +17,11 @@ iron-pages#contaner {
 
 #mainContainer {
   background: #fafafa; }
+
+paper-button {
+  text-transform: none;
+  transition-duration: 0.4s; }
+
+paper-button:hover {
+  opacity: 0.8;
+  transition-duration: 0.4s; }

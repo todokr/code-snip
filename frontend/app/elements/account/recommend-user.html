@@ -1,0 +1,49 @@
+<link rel="import" href="recommend-user-follow.html">
+<dom-module id="recommend-user">
+  <style>
+    :host {
+      display: block;
+      margin-top: 18px;
+    }
+
+    :host recommend-user-follow {
+      margin-top: 20px;
+    }
+
+  </style>
+  <template>
+    <template is="dom-repeat" items="{{recommends}}" as="data">
+      <recommend-user-follow user-id="{{data.id}}">
+        <img src="/assets/images/dammy.jpeg" width="35" height="35">
+        <h2>{{data.user.accountName}}</h2>
+        <code-tags-mini tags="{{data.user.interests}}"></code-tags-mini>
+      </recommend-user-follow>  
+    </template>
+    <iron-ajax
+      id="recommendAjax"
+      auto
+      with-credentials
+      url="http://localhost:9000/near-interests"
+      method="GET"
+      content-type="application/json"
+      handle-as="json"
+      on-response="recommendResponse"
+      on-error="recommendError"></iron-ajax>
+  </template>
+</dom-module>
+<script>
+  window.addEventListener('WebComponentsReady', function(){
+    Polymer({
+      is: 'recommend-user',
+      recommendResponse: function(){
+        this.recommends = this.$.recommendAjax.lastResponse;
+      },
+      recommendError: function(e) {
+        console.error("ajax failed: recommendAjax");
+        console.dir(e);
+      },
+    });
+  });
+</script>
+
+ 

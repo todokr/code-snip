@@ -1,6 +1,8 @@
 <link rel="import" href="../account/account-info-name.html">
 <link rel="import" href="../account/account-option.html">
 <link rel="import" href="../post/code-tags.html">
+<link rel="import" href="../post/code-tags-mini.html">
+<link rel="import" href="../account/recommend-user.html">
 <dom-module id="snip-account">
   <style>
     :host {
@@ -10,9 +12,9 @@
 
     :host .account-follow {
       width: 100%;
+      margin-top: 20px;
       border-top: 3px #eaeaea double;
-      margin-top: 25px;
-      padding-top: 12px;
+      padding-top: 15px;
       display: table;
       table-layout: fixed;
     }
@@ -35,20 +37,27 @@
     }
 
     :host .account-tag {
-      border-top: 3px #eaeaea double;
-      margin-top: 12px;
-      padding-top: 15px;
+      margin-top: 15px;
     }
 
-    :host .account-tag h3 {
+    :host .account-tag h3,
+    :host .account-recommend h3 {
       font-size: 12px;
       color: #b4b4b4;
       font-weight: bold;
       margin: 0;
+      line-height: 1.2;
     }
 
     :host code-tags {
-      margin-top: 8px;
+      line-height: 20px;
+      margin-top: 4px;
+    }
+
+    :host .account-recommend {
+      margin-top: 15px;
+      border-top: 3px #eaeaea double;
+      padding-top: 15px;
     }
 
     :host .account-option {
@@ -70,10 +79,8 @@
   </style>
   <template>
     <account-info-name>
-      <a href="/#" tabindex="-1">
-        <img src="http://placeimg.com/100/100/people" width="50" height="50">
-        <h2>{{status.accountName}}</h2>
-      </a>
+      <img src="/assets/images/dammy.jpeg" width="50" height="50">
+      <h2>{{status.accountName}}</h2>
     </account-info-name>
     <div class="account-follow">
       <dl>
@@ -87,7 +94,11 @@
     </div>
     <div class="account-tag">
       <h3>Interested in</h3>
-      <code-tags user="hogehoge" tags="{{status.interests}}"></code-tags>
+      <code-tags tags="{{status.interests}}"></code-tags>
+    </div>
+    <div class="account-recommend">
+      <h3>Recommend Users</h3>
+      <recommend-user></recommend-user>
     </div>
     <div class="account-option">
       <paper-button on-click="logout" tabindex="-1">Log out</paper-button>
