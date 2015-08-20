@@ -85,11 +85,11 @@
     <div class="account-follow">
       <dl>
         <dt>Follow</dt>
-        <dd><a href="#" tabindex="-1">{{status.follow}}</a></dd>
+        <dd><a href="javascript:void(0)" tabindex="-1" on-click="_showFollow">{{status.follow}}</a></dd>
       </dl>
       <dl>
         <dt>Follower</dt>
-        <dd><a href="#" tabindex="-1">{{status.follower}}</a></dd>
+        <dd><a href="javascript:void(0)" tabindex="-1" on-click="_showFollower">{{status.follower}}</a></dd>
       </dl>
     </div>
     <div class="account-tag">
@@ -132,7 +132,9 @@
           document.addEventListener('pleaseCountFollow', function(){
             _this._sendAjax();
           });
-          this._sendAjax();
+          if(location.href.match(/.*app$/)) {
+            _this._sendAjax();
+          }
         },
         _sendAjax: function(){
           var _this = this;
@@ -153,6 +155,14 @@
           this.status = this.$.statusAjax.lastResponse;
         },
         statusError: function(e) {
+        },
+        _showFollow: function() {
+          var menu = document.querySelector('#timeline-menu');
+          menu.selected = 3;
+        },
+        _showFollower: function() {
+          var menu = document.querySelector('#timeline-menu');
+          menu.selected = 4;
         }
 
       });
