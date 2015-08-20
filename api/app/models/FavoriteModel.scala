@@ -2,6 +2,7 @@ package models
 
 import jp.co.bizreach.elasticsearch4s._
 import org.elasticsearch.search.sort.SortOrder
+import play.Logger
 
 /**
  * @author Shunsuke Tadokoro
@@ -32,20 +33,24 @@ object Favorite {
     }
   }
 
-  def selectFavoriteList(userId: String): List[ShownFavorite] = {
+  def selectFavoriteList(userId: String): List[ShownPost] = {
     val emptyUser = User("", "", Seq(), "")
     val emptyPost = Post("", "", "", "", "")
     ESClient.using(url) { client =>
       client.list[Favorite](config) { searcher =>
         searcher.setQuery(matchQuery("userId", userId)).addSort("_timestamp", SortOrder.DESC)
-      }.list.map(e =>
-        ShownFavorite(
-          e.id,
-          Post.selectPostById(e.doc.postId).map(p => p._2).getOrElse(emptyPost),
-          User.selectUserById(e.doc.userId).map(u => u._2).getOrElse(emptyUser)
-        )
-      )
+      }.list.map(e => {
+        val postId = e.doc.postId
+        val post = Post.selectPostById(postId).map(p => p._2).getOrElse(emptyPost)
+        val user = User.selectUserById(e.doc.userId).map(u => u._2).getOrElse(emptyUser)
+        ShownPost(postId, post, user, true)
+      })
     }
+  }
+
+  def isFavorite(userId: String, post: Post): Boolean = {
+    Logger.error(selectFavoriteList(userId).toString)
+    selectFavoriteList(userId).map(fav => fav.post).contains(post)
   }
 
   private def detectFavoriteId(userId: String, targetId: String): Option[String] = {
@@ -56,4 +61,5 @@ object Favorite {
     }
     result.map(x => x._1)
   }
+
 }

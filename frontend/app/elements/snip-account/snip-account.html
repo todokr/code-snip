@@ -129,10 +129,16 @@
         },
         ready: function() {
           var _this = this;
+          document.addEventListener('pleaseCountFollow', function(){
+            _this._sendAjax();
+          });
+          this._sendAjax();
+        },
+        _sendAjax: function(){
+          var _this = this;
           setTimeout(function(){
             _this.$.statusAjax.generateRequest();
           },500);
-
         },
         logout: function() {
           this.$.logoutAjax.generateRequest();

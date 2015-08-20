@@ -11,7 +11,7 @@
       on-response="handleResponse"
       on-error="handleError"></iron-ajax>
     <template is="dom-repeat" items="{{posts}}">
-      <post-card post-id={{item.id}}>
+      <post-card post-id={{item.id}} is-favorite="{{item.isFavorite}}">
         <h2>{{item.user.accountName}}</h2>
         <img src="/assets/images/dammy.jpeg" width="50" height="50">
         <code>{{item.post.code}}</code>
@@ -36,17 +36,15 @@
         
         setInterval(function(){
           _this.sendAjax();
-        }, 15000);
+        }, 10000);
         
         document.addEventListener('WebComponentsReady', function(){
-          var ironPages = document.querySelector('#mainPages');
-          ironPages.addEventListener('mysticRhythm', function(){
-            _this.sendAjax();
+          document.addEventListener('pleaseTlReload', function(){
+            setTimeout(function(){
+              _this.sendAjax();
+            },1000);
           });
         });
-      },
-      _tabChanged: function() {
-        alert("change");
       },
       sendAjax: function() {
         this.$.postsAjax.generateRequest();

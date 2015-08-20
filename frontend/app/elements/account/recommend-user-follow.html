@@ -41,7 +41,7 @@
       color: var(--paper-grey-500);
     }
 
-    :host .btnArea paper-button[active] {
+    :host.followed .btnArea paper-button {
       color: var(--paper-teal-400)
     }
 
@@ -55,7 +55,7 @@
       <div class="image"><content select="img"></content></div>
       <content select="h2"></content>
       <div class="btnArea">
-        <paper-button id="followBtn" on-click="handleFollow" toggles>Follow</paper-button>
+        <paper-button id="followBtn" on-click="handleFollow" follow-flg="{{flg}}">Follow</paper-button>
       </div>
     </div>
     <content select="code-tags-mini"></content>
@@ -75,11 +75,14 @@
     properties: {
       userId: {
         type: String,
+      },
+      flg: {
+        type: Boolean,
+        value: false
       }
-
     },
     ready: function() {
-      this.followFlg = false;
+      //this.followFlg = false;
       this.bodyObj =  {"followToId": null};
     },
     handleFollow: function() {
@@ -94,7 +97,11 @@
       ajax.generateRequest();
     },
     followResponse: function() {
-      this.followFlg = !this.followFlg;
+      this.flg = !this.flg;
+      console.log(this.flg);
+      this.toggleClass('followed', this.flg);
+      this.fire("pleaseCountFollow");
+      this.fire("pleaseTlReload");
     },
     errorResponse: function() {
       var toast = document.querySelector('#errorToast');

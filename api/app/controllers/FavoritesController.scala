@@ -14,6 +14,7 @@ object FavoritesController extends Controller{
   implicit val userFormat = Json.format[User]
   implicit val postFormat = Json.format[Post]
   implicit val shownFavFormat = Json.format[ShownFavorite]
+  implicit val shownPostFormat = Json.format[ShownPost]
 
   def list = AuthAction { implicit rs =>
     val userId = User.selectUserBySession(rs).map(u => u._1).getOrElse("")

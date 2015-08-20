@@ -114,6 +114,7 @@
       <content select="p"></content>
       <ul class="buttons">
         <li><paper-icon-button id="star" icon="icons:star" on-click="handleFavorite"></paper-icon-button></li>
+        <li></li>
       </ul>
     </div>
     <div class="card-body">
@@ -144,11 +145,14 @@
   Polymer({
     is: 'post-card',
     properties: {
-      postId: String
+      postId: String,
+      isFavorite: Boolean
     },
     ready: function() {
-      this.favoriteFlg = false;
       this.bodyObj =  {"favoritePostId": null};
+
+      this.favoriteFlg = this.isFavorite || false;
+      this.toggleClass('favorite', this.favoriteFlg);
     },
     handleFavorite: function(e){
       var ajax = this.$.favoriteAjax;
