@@ -15,15 +15,29 @@
 
     :host .copyArea {
       width: 640px;
+      position: relative;
       float: left;
       color: var(--paper-teal-50);
       font-size: 46px;
       font-family: 'sourceCodePro', monospace;
       line-height: 1.4;
-      padding-bottom: 60px;
+      padding-bottom: 70px;
       background: url('/assets/images/bg-anim001.gif') left bottom no-repeat;
       -webkit-background-size: 400px auto;
       background-size: 400px auto;
+    }
+
+    :host .copyArea:after {
+      content:'';
+      display: block;
+      width: 200px;
+      height: 50px;
+      background: url('/assets/images/bg-likethis.gif') left bottom no-repeat;
+      -webkit-background-size: contain;
+      background-size: contain;
+      position: absolute;
+      bottom: -30px;
+      left: 240px;
     }
 
     :host .copy h1 {
