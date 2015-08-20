@@ -126,7 +126,7 @@ es POST user/o10kojukuedajima4649 '
 {
   "accountName": "江田島平八",
   "email": "edajima@otoko-juku.ed.jp",
-  "interests": ["java", "scala", "node.js"],
+  "interests": ["Java", "Scala", "Node.js"],
   "password": "276b3098174de28ef5877dacb412b825cf803192"
 }'
              
@@ -135,7 +135,7 @@ es POST user/bishokuKurabuNoAruji '
 {
   "accountName": "海原雄山",
   "email": "kaibara@bishoku.club",
-  "interests": ["html", "css", "javascript", "scalaz"],
+  "interests": ["HTML", "CSS", "JavaScript", "Scalaz"],
   "password": "276b3098174de28ef5877dacb412b825cf803192"
 }'
 
@@ -144,16 +144,16 @@ es POST user/metroCityNoSichodayo '
 {
   "accountName": "マイク・ハガー",
   "email": "mike@metro-city.go.jp",
-  "interests": ["lisp", "scala"],
+  "interests": ["Lisp", "Scala"],
   "password": "276b3098174de28ef5877dacb412b825cf803192"
 }'
 
 # musekinin
-es POST user/tottemoMusekinindayo '
+es POST user/spacedeka '
 {
-  "accountName": "無責任艦長タイラー",
-  "email": "tyler@musekinin.com",
-  "interests": ["scala", "java"],
+  "accountName": "宇宙刑事ギャバン",
+  "email": "gaban@spacedeka.com",
+  "interests": ["Scala", "Java"],
   "password": "276b3098174de28ef5877dacb412b825cf803192"
 }'
 
@@ -161,7 +161,7 @@ es POST user/koukakuKidoutaiMitai '
 {
   "accountName": "草薙素子",
   "email": "kusanagi@kouan-9.go.jp",
-  "interests": ["haskell", "clojure", "haxe", "scala"],
+  "interests": ["Haskell", "Clojure", "Haxe", "Scala"],
   "password": "276b3098174de28ef5877dacb412b825cf803192"
 }'
 
@@ -169,7 +169,7 @@ es POST user/kusamayayoi '
 {
   "accountName": "草間彌生",
   "email": "kusama@yayoi.com",
-  "interests": ["art", "pampkin", "scala"],
+  "interests": ["Vim", "Linux", "Scala", "Go"],
   "password": "276b3098174de28ef5877dacb412b825cf803192"
 }'
 
@@ -177,7 +177,7 @@ es POST user/luckeyIkeda '
 {
   "accountName": "ラッキー池田",
   "email": "luckey@ikeda.com",
-  "interests": ["dance", "java", "node.js"],
+  "interests": ["Python", "Java", "Node.js"],
   "password": "276b3098174de28ef5877dacb412b825cf803192"
 }'
 
@@ -185,7 +185,39 @@ es POST user/okawaEisaku '
 {
   "accountName": "大川栄策",
   "email": "okawa@eisaku.com",
-  "interests": ["enka", "kitaguni", "node.js"],
+  "interests": ["Python", "Ruby", "Node.js"],
+  "password": "276b3098174de28ef5877dacb412b825cf803192"
+}'
+
+es POST user/pomupomupurin '
+{
+  "accountName": "ポムポムプリン",
+  "email": "pomupomu@purin.com",
+  "interests": ["Ruby", "ShellScript", "Node.js"],
+  "password": "276b3098174de28ef5877dacb412b825cf803192"
+}'
+
+es POST user/kanahei '
+{
+  "accountName": "カナヘイ",
+  "email": "kanahei@hey.com",
+  "interests": ["Ruby", "ShellScript", "Node.js"],
+  "password": "276b3098174de28ef5877dacb412b825cf803192"
+}'
+
+es POST user/dragonkid '
+{
+  "accountName": "ドラゴン・キッド",
+  "email": "kid@dragon-gate.com",
+  "interests": ["Emacs", "Scala", "Ruby"],
+  "password": "276b3098174de28ef5877dacb412b825cf803192"
+}'
+
+es POST user/chocoboy '
+{
+  "accountName": "チョコボーイ山口",
+  "email": "yamaguchi@choco-boy.com",
+  "interests": ["ShellScript", "Linux", "Go"],
   "password": "276b3098174de28ef5877dacb412b825cf803192"
 }'
 
@@ -193,13 +225,13 @@ es POST user/okawaEisaku '
 es POST follow '
 {
   "followFromId": "koukakuKidoutaiMitai",
-  "followToId": "tottemoMusekinindayo"
+  "followToId": "spacedeka"
 }'
 
 es POST follow '
 {
   "followFromId": "metroCityNoSichodayo",
-  "followToId": "tottemoMusekinindayo"
+  "followToId": "spacedeka"
 }'
 
 es POST follow '
@@ -226,42 +258,57 @@ es POST follow '
   "followToId": "o10kojukuedajima4649"
 }'
 
+es POST follow '
+{
+  "followFromId": "metroCityNoSichodayo",
+  "followToId": "kanahei"
+}'
+
 # Insert Withdrawal Data
 es POST withdrawal '
 {
   "userId": "4",
-  "reason": "tottemoMusekinindayo"
+  "reason": "spacedeka"
 }'
 
 # Insert post Data
-es POST post/001 '
+es POST post '
 {
   "userId": "o10kojukuedajima4649",
-  "code": "val jukucho = \"Washi\"",
-  "description": "ワシが男塾塾長",
+  "code": "val otokojuku_jukucho = \"Washi\"",
+  "description": "ワシが男塾塾長であることを定義",
   "tag": "Scala",
   "time": "2015/08/12 12:46"
 }'
 
-es POST post/002 '
+es POST post '
 {
   "userId": "o10kojukuedajima4649",
-  "code": "print \"江田島平八である！！！\"",
-  "description": "江田島平八であると出力",
+  "code": "System.out.println \"江田島平八である！！！\"",
+  "description": "江田島平八であることを出力",
   "tag": "Java",
   "time": "2015/08/13 12:46"
 }'
 
-es POST post/003 '
+es POST post '
 {
   "userId": "bishokuKurabuNoAruji",
-  "code": "User.findBy(id).with(Array(this))",
+  "code": "User.findByArray(this))",
   "description": "この洗いを作ったのは誰かを探す",
   "tag": "Ruby",
   "time": "2015/08/12 1:46"
 }'
 
-es POST post/004 '
+es POST post '
+{
+  "userId": "bishokuKurabuNoAruji",
+  "code": ".hoge {\n  width: 200px;\n  box-sizing: border-box;\n}",
+  "description": "paddingやmargin込みのサイズでwidthを指定",
+  "tag": "CSS",
+  "time": "2015/08/12 1:43"
+}'
+
+es POST post '
 {
   "userId": "metroCityNoSichodayo",
   "code": "kill 9999",
@@ -270,7 +317,7 @@ es POST post/004 '
   "time": "2015/03/12 12:46"
 }'
 
-es POST post/005 '
+es POST post '
 {
   "userId": "metroCityNoSichodayo",
   "code": "var x = \"123\";var y = +x;",
@@ -279,7 +326,7 @@ es POST post/005 '
   "time": "2015/08/12 2:46"
 }'
 
-es POST post/006 '
+es POST post '
 {
   "userId": "koukakuKidoutaiMitai",
   "code": "brew install ghosthack",
@@ -288,7 +335,7 @@ es POST post/006 '
   "time": "2015/08/10 12:46"
 }'
 
-es POST post/007 '
+es POST post '
 {
   "userId": "metroCityNoSichodayo",
   "code": "sudo brew install -g ghosthack",
