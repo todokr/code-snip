@@ -168,6 +168,7 @@
     handleResponse: function(){
       this.favoriteFlg = !this.favoriteFlg;
       this.toggleClass('favorite', this.favoriteFlg);
+      this.fire('pleaseTlReload');
     },
     errorResponse: function(e){
       console.error('Ajax failed: favoriteAjax');

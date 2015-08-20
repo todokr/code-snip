@@ -21,7 +21,6 @@
     </template>
     <iron-ajax
       id="recommendAjax"
-      auto
       with-credentials
       url="http://localhost:9000/near-interests"
       method="GET"
@@ -35,6 +34,12 @@
   window.addEventListener('WebComponentsReady', function(){
     Polymer({
       is: 'recommend-user',
+      ready: function() {
+        var _this = this;
+        if(location.href.match(/.*app$/)) {
+            _this._sendAjax();
+          }
+      },
       recommendResponse: function(){
         this.recommends = this.$.recommendAjax.lastResponse;
       },
@@ -42,6 +47,9 @@
         console.error("ajax failed: recommendAjax");
         console.dir(e);
       },
+      _sendAjax: function() {
+        this.$.recommendAjax.generateRequest();
+      }
     });
   });
 </script>

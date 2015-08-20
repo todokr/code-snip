@@ -98,7 +98,6 @@
     },
     followResponse: function() {
       this.flg = !this.flg;
-      console.log(this.flg);
       this.toggleClass('followed', this.flg);
       this.fire("pleaseCountFollow");
       this.fire("pleaseTlReload");
