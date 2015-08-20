@@ -34,12 +34,11 @@ object Post {
   }
 
   def selectFollowPost(id: String): List[ShownPost] = {
-    val postList = ESClient.using(url) { client =>
+    ESClient.using(url) { client =>
       client.list[Post](config){ searcher =>
         searcher.setQuery(matchQuery("userId", Follow.selectFollowListByUserId(id)))
       }
     }.list.map(x => ShownPost(x.id ,x.doc, User.selectUserById(x.doc.userId).get._2, Favorite.isFavorite(id, x.doc)))
-    postList
   }
 
   def getCurrentDateTime:String = {

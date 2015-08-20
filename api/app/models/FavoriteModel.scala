@@ -49,17 +49,15 @@ object Favorite {
   }
 
   def isFavorite(userId: String, post: Post): Boolean = {
-    Logger.error(selectFavoriteList(userId).toString)
     selectFavoriteList(userId).map(fav => fav.post).contains(post)
   }
 
   private def detectFavoriteId(userId: String, targetId: String): Option[String] = {
-    val result = ESClient.using(url) { client =>
+    ESClient.using(url) { client =>
       client.find[Follow](config) { searcher =>
         searcher.setQuery(matchQuery("userId", userId)).setQuery(matchQuery("postId", targetId))
       }
-    }
-    result.map(x => x._1)
+    }.map(x => x._1)
   }
 
 }
