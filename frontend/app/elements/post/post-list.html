@@ -1,6 +1,18 @@
 <link rel="import" href="post-card.html">
 
 <dom-module id="post-list">
+  <style>
+    :host {
+      display: block;
+    }
+
+    :host.no-posts {
+      background: url('../../assets/images/bg-nofollow.gif') left bottom no-repeat;
+      -webkit-background-size: 455px 206px;
+      background-size: 455px 206px;
+      height: 300px;
+    }
+  </style>
   <template>
     <iron-ajax
       with-credentials
@@ -10,6 +22,7 @@
       handle-as="json"
       on-response="handleResponse"
       on-error="handleError"></iron-ajax>
+
     <template is="dom-repeat" items="{{posts}}">
       <post-card post-id={{item.id}} is-favorite="{{item.isFavorite}}">
         <h2>{{item.user.accountName}}</h2>
@@ -33,16 +46,25 @@
       ready: function() {
         this.$.postsAjax.url = "http://localhost:9000/" + this.target;
         var _this = this;
-        
+
         setInterval(function(){
-          _this.sendAjax();
+          if(location.href.match(/.*app$/)) {
+            _this.sendAjax();
+          }
         }, 10000);
         
         document.addEventListener('WebComponentsReady', function(){
           document.addEventListener('pleaseTlReload', function(){
-            setTimeout(function(){
-              _this.sendAjax();
-            },1000);
+            if(this.target === "timeline") {
+               this.toggleClass('no-posts', false);
+            }
+
+            if(location.href.match(/.*app$/)) {
+              console.info('tlReloadInvoked');
+              setTimeout(function(){    
+                _this.sendAjax();
+              },500);
+            }
           });
         });
       },
@@ -52,6 +74,10 @@
       handleResponse: function(request) {
         var res = this.$.postsAjax.lastResponse;
         this.posts = res;
+
+        if(this.target === "timeline" && this.posts.length <= 0) {
+           this.toggleClass('no-posts', true);
+        }
       },
       handleError: function() {
         console.error("something wrong");
