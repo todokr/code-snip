@@ -36,7 +36,7 @@
       on-error="handleError"></iron-ajax>
 
     <template is="dom-repeat" items="{{posts}}">
-      <post-card post-id={{item.id}} is-favorite="{{item.isFavorite}}">
+      <post-card post-id={{item.id}} is-favorite="{{item.isFavorite}}" code="{{item.post.code}}">
         <h2>{{item.user.accountName}}</h2>
         <img src="/assets/images/dammy.jpeg" width="50" height="50">
         <code>{{item.post.code}}</code>

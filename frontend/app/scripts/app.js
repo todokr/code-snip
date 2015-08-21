@@ -34,4 +34,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     //console.log('%cAll code runs happy!', css);
   });
 
+  window.addEventListener('attached', function() {
+    $('pre code').each(function(i, block) {
+      hljs.highlightBlock(block);
+    });
+    console.log("attat");
+  });
+  
+    
+
 })(document);
