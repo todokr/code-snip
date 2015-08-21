@@ -1,8 +1,14 @@
-<dom-module id="recommend-user-follow">
+<dom-module id="user-card">
   <style>
     :host {
-      display: block;
+      display: inline-block;
       color: #444;
+      width: 215px;
+      margin-left: 15px;
+      margin-top: 15px;
+      padding: 10px;
+      background: #fff;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.3);
     }
 
     :host .wrapper{
@@ -20,7 +26,7 @@
       border-radius: 4px;
     }
 
-    :host ::content h2 {
+    :host ::content h3 {
       display: table-cell;
       vertical-align: middle;
       padding-left: 5px;
@@ -45,20 +51,41 @@
       color: var(--paper-teal-400)
     }
 
-    :host ::content code-tags-mini {
+    :host .tagWrapper {
       margin-top: 5px;
       line-height: 14px;
+      width: 215px;
+      height: 16px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    :host .tagWrapper:after {
+      content: '';
+      display: block;
+      width: 35px;
+      height: 16px;
+      background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+      background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,1)));
+      background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
+      background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+    :host ::content code-tags-mini {
+      width: 500px;
     }
   </style>
   <template>
     <div class="wrapper">
       <div class="image"><content select="img"></content></div>
-      <content select="h2"></content>
+      <content select="h3"></content>
       <div class="btnArea">
-        <paper-button id="followBtn" on-click="handleFollow" follow-flg="{{followFlg}}">{{btnText}}</paper-button>
+        <paper-button id="followBtn" on-click="handleFollow" follow-flg="{{isFollowing}}">{{btnText}}</paper-button>
       </div>
     </div>
-    <content select="code-tags-mini"></content>
+    <div class="tagWrapper"><content select="code-tags-mini"></content></div>
     <iron-ajax
       id="followAjax"
       with-credentials
@@ -71,27 +98,24 @@
 </dom-module>
 <script>
   Polymer({
-    is: 'recommend-user-follow',
+    is: 'user-card',
     properties: {
-      userId: String,
-      followFlg: {
-        type: Boolean,
-        value: false
-      },
-      btnText: {
+      userId: {
         type: String,
-        value: "Follow"
-      }
+      },
+      isFollowing: {
+        type: Boolean
+      },
+      btnText: String
     },
     ready: function() {
-      //this.followFlg = false;
       this.bodyObj =  {"followToId": null};
+      this.btnText = (this.isFollowing) ? "Remove" : "Follow";
     },
     handleFollow: function() {
-      this.$.followBtn.toggleAttribute('disabled', true);
       var ajax = this.$.followAjax;
       this.bodyObj.followToId = this.userId;
-      if (this.followFlg) {
+      if (this.isFollowing) {
         ajax.url = "http://localhost:9000/unfollow";
       } else {
         ajax.url = "http://localhost:9000/follow";
@@ -100,12 +124,9 @@
       ajax.generateRequest();
     },
     followResponse: function() {
-      this.followFlg = !this.followFlg;
-      this.toggleClass('followed', this.followFlg);
-      this.btnText = (this.followFlg) ? "Remove" : "Follow";
-      this.$.followBtn.toggleAttribute('disabled', false);
+      this.flg = !this.flg;
+      this.toggleClass('followed', this.flg);
       this.fire("pleaseCountFollow");
-      this.fire("pleaseTlReload");
     },
     errorResponse: function() {
       var toast = document.querySelector('#errorToast');

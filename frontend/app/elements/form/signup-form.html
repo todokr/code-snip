@@ -7,6 +7,10 @@
   <style>
     :host {
       display: block;
+      position: relative;
+    }
+    :host .inner{
+      display: block;
       background: #fff;
       box-shadow: 0 1px 2px rgba(0,0,0,0.3);
       width: 340px;
@@ -14,8 +18,8 @@
       margin: 100px auto 0;
     }
 
-    * + :host {
-      margin-top: 20px;
+    * + .inner {
+      margin-top: 10px;
     }
 
     :host h2 {
@@ -104,6 +108,12 @@
       line-height: 24px;
     }
 
+    :host paper-spinner {
+      position: relative;
+      top: 8px;
+      left: 10px;
+    }
+
   </style>
   <template>
     <iron-ajax
@@ -116,33 +126,36 @@
       on-response="handleResponse"
       on-error="handleError"
       last-response="{{ajaxResponse}}"></iron-ajax>
-    <h2>Sign Up</h2>
-    <form is="iron-form" id="signupForm">
-      <paper-input name="accountName" label="Name" required auto-validate value=""></paper-input>
-      <gold-email-input label="Email" required name="email" auto-validate value=""></gold-email-input>
-      <paper-input name="password" label="Password" type="password" required auto-validate value=""></paper-input>
-      <label>Your Interest</label>
-      <iron-selector id="interests" multi attr-for-selected="name" selected-values='["Emacs"]'>
-        <div name="Java">Java</div>
-        <div name="Scala">Scala</div>
-        <div name="HTML">HTML</div>
-        <div name="CSS">CSS</div>
-        <div name="JavaScript">JavaScript</div>
-        <div name="Linux">Linux</div>
-        <div name="ShellScript">ShellScript</div>
-        <div name="Go">Go</div>
-        <div name="Ruby">Ruby</div>
-        <div name="Perl">Perl</div>
-        <div name="Python">Python</div>
-        <div name="Vim">Vim</div>
-        <div name="Emacs">Emacs</div>
-        <div name="Haskell">Haskell</div>
-      </iron-selector>
-      <div class="button-area">
-        <paper-button on-click="sendAjax" raised>Submit</paper-button>
-      </div>
-      <a href="/login">Already have a account?</a>
-    </form>
+    <div class="inner">
+      <h2>Sign Up</h2>
+      <form is="iron-form" id="signupForm">
+        <paper-input name="accountName" label="Name" required auto-validate value=""></paper-input>
+        <gold-email-input label="Email" required name="email" auto-validate value=""></gold-email-input>
+        <paper-input name="password" label="Password" type="password" required auto-validate value=""></paper-input>
+        <label>Your Interest</label>
+        <iron-selector id="interests" multi attr-for-selected="name" selected-values='["Emacs"]'>
+          <div name="Java">Java</div>
+          <div name="Scala">Scala</div>
+          <div name="HTML">HTML</div>
+          <div name="CSS">CSS</div>
+          <div name="JavaScript">JavaScript</div>
+          <div name="Linux">Linux</div>
+          <div name="ShellScript">ShellScript</div>
+          <div name="Go">Go</div>
+          <div name="Ruby">Ruby</div>
+          <div name="Perl">Perl</div>
+          <div name="Python">Python</div>
+          <div name="Vim">Vim</div>
+          <div name="Emacs">Emacs</div>
+          <div name="Haskell">Haskell</div>
+        </iron-selector>
+        <div class="button-area">
+          <paper-spinner id="spinner"></paper-spinner>
+          <paper-button on-click="sendAjax" raised>Create Account</paper-button>
+        </div>
+        <a href="/login">Already have a account?</a>
+      </form>
+    </div>
   </template>
 </dom-module>
 <script>
@@ -155,13 +168,15 @@
         console.log(data);
         this.$.signupAjax.body = data;
         this.$.signupAjax.generateRequest();
+        this.$.spinner.toggleAttribute('active', true);
       } else {
         var toast = document.querySelector('#errorToast');
-        toast.text = "Something is invalid!";
+        toast.text = "Something invalid! Check your input, please!";
         toast.show();
       }
     },
     handleResponse: function() {
+      this.$.spinner.toggleAttribute('active', false);
       var loginData = this.$.signupForm.serialize();
       var toast = document.querySelector('#toast');
       toast.text = "Your Account is created! Please Log in!";
@@ -169,6 +184,7 @@
       window.app.route = "login";
     },
     handleError: function(mes) {
+      this.$.spinner.toggleAttribute('active', false);
       var toast = document.querySelector('#errorToast');
       toast.text = "Something Wrong!";
       toast.show();

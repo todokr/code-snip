@@ -28,7 +28,7 @@ GET           /posts/:id             controllers.PostsController.show(id)
 DELETE        /posts/:id             controllers.PostsController.delete(id)
 
 # Follow
-GET           /follow                controllers.FollowsController.listFollow
+GET           /follow                controllers.FollowsController.listFollowUsers
 GET           /follower              controllers.FollowsController.listFollower
 GET           /followNum             controllers.FollowsController.selectFollowNumbers
 POST          /follow                controllers.FollowsController.follow

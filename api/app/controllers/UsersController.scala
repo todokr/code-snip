@@ -2,7 +2,7 @@ package controllers
 
 import auth.AuthAction
 import jp.co.bizreach.elasticsearch4s._
-import models.{Follow, IdWithUser, User}
+import models.{Follow, DisplayUser, User}
 import models.User._
 import play.Logger
 import play.api.libs.json._
@@ -17,7 +17,7 @@ object UsersController extends Controller {
   val config = ESConfig("code_snip", "user")
   val url = "http://localhost:9200"
   implicit val userFormat = Json.format[User]
-  implicit val iuFormat = Json.format[IdWithUser]
+  implicit val iuFormat = Json.format[DisplayUser]
 
   // =====================================================================
   //                                                               actions
@@ -103,7 +103,7 @@ object UsersController extends Controller {
       case None => None
     }
     val followAndSelfList = Follow.selectFollowListByUserId(id) + id
-    val nearUserList = selectUserListFromInterests(interests).filterNot(recomendUser => followAndSelfList.contains(recomendUser.id)).take(3)
+    val nearUserList = selectUserListFromInterests(id).filterNot(recomendUser => followAndSelfList.contains(recomendUser.id)).take(3)
     Ok(Json.toJson(nearUserList))
 
   }

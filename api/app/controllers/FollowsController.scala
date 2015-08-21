@@ -1,6 +1,6 @@
 package controllers
 
-import models.User
+import models.{Follow, DisplayUser, User}
 import play.api.mvc._
 import play.api.libs.json._
 import auth.AuthAction
@@ -14,6 +14,7 @@ import models.Follow._
 object FollowsController extends Controller {
 
   implicit val userFormats = Json.format[User]
+  implicit val iwuFormats = Json.format[DisplayUser]
 
 
   def follow = AuthAction(parse.json) { implicit rs =>
@@ -35,18 +36,22 @@ object FollowsController extends Controller {
     }
   }
 
-  def listFollow = AuthAction { implicit rs =>
+  def listFollowUsers = AuthAction { implicit rs =>
     val userId = selectUserBySession(rs).get._1
-    val followUsers = selectFollowUsers(userId)
-    Ok(Json.obj(
-      "follow" -> followUsers._1,
-      "follower" -> followUsers._2
-    ))
+    val result = selectFollowListByUserId(userId).map(uid => selectUserById(uid)).flatten.map(u => DisplayUser(u._1, u._2, true))
+    Ok(Json.toJson(result))
   }
 
   def listFollower = AuthAction { implicit rs =>
-    val result = selectFollowerListByUserId(selectUserBySession(rs).get._1)
-    Ok(Json.obj("result" -> result.toString))
+    val selfId = selectUserBySession(rs).get._1
+    val followList = selectFollowListByUserId(selfId)
+    val result = selectFollowerListByUserId(selfId).map(followerId => {
+      val isFollowing = followList.contains(followerId)
+      selectUserById(followerId).map(follower => {
+        DisplayUser(follower._1, follower._2, isFollowing)
+      })
+    })
+    Ok(Json.toJson(result))
   }
 
   def selectFollowUsers(userId: String): (List[User], List[User]) = {

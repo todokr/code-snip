@@ -36,6 +36,12 @@
       font-weight: bold;
     }
 
+    :host .account-follow a {
+      display: block;
+      width: 90%;
+      outline: none;
+    }
+
     :host .account-tag {
       margin-top: 15px;
     }
@@ -130,7 +136,9 @@
         ready: function() {
           var _this = this;
           document.addEventListener('pleaseCountFollow', function(){
-            _this._sendAjax();
+            setTimeout(function(){
+              _this._sendAjax();
+            }, 1000);
           });
           if(location.href.match(/.*app$/)) {
             _this._sendAjax();
@@ -157,10 +165,12 @@
         statusError: function(e) {
         },
         _showFollow: function() {
+          this.fire('pleaseCountFollow');
           var menu = document.querySelector('#timeline-menu');
           menu.selected = 3;
         },
         _showFollower: function() {
+          this.fire('pleaseCountFollow');
           var menu = document.querySelector('#timeline-menu');
           menu.selected = 4;
         }

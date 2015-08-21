@@ -25,3 +25,10 @@ paper-button {
 paper-button:hover {
   opacity: 0.8;
   transition-duration: 0.4s; }
+
+#home-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -14px;
+  margin-top: -50px; }

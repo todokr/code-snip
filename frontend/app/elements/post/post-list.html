@@ -12,6 +12,18 @@
       background-size: 455px 206px;
       height: 300px;
     }
+
+    :host paper-spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-left: -14px;
+      margin-top: -30px;
+      --paper-spinner-layer-1-color: var(--paper-teal-300);
+      --paper-spinner-layer-2-color: var(--paper-teal-300);
+      --paper-spinner-layer-3-color: var(--paper-teal-300);
+      --paper-spinner-layer-4-color: var(--paper-teal-300);
+    }
   </style>
   <template>
     <iron-ajax
@@ -33,6 +45,7 @@
         <time>{{item.post.time}}</time>
       </post-card>
     </template>
+    <paper-spinner id="spinner" active></paper-spinner>
   </template>
 
   <script>
@@ -49,7 +62,7 @@
 
         setInterval(function(){
           if(location.href.match(/.*app$/)) {
-            _this.sendAjax();
+            //_this.sendAjax();
           }
         }, 10000);
         
@@ -58,12 +71,11 @@
             if(this.target === "timeline") {
                this.toggleClass('no-posts', false);
             }
-
             if(location.href.match(/.*app$/)) {
               console.info('tlReloadInvoked');
               setTimeout(function(){    
                 _this.sendAjax();
-              },500);
+              },1000);
             }
           });
         });
@@ -78,6 +90,8 @@
         if(this.target === "timeline" && this.posts.length <= 0) {
            this.toggleClass('no-posts', true);
         }
+
+        this.$.spinner.toggleAttribute('active', false);
       },
       handleError: function() {
         console.error("something wrong");

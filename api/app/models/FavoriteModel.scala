@@ -42,7 +42,7 @@ object Favorite {
       }.list.map(e => {
         val postId = e.doc.postId
         val post = Post.selectPostById(postId).map(p => p._2).getOrElse(emptyPost)
-        val user = User.selectUserById(e.doc.userId).map(u => u._2).getOrElse(emptyUser)
+        val user = User.selectUserById(post.userId).map(u => u._2).getOrElse(emptyUser)
         ShownPost(postId, post, user, true)
       })
     }

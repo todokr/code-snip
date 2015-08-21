@@ -1,0 +1,99 @@
+<link rel="import" href="user-card.html">
+
+<dom-module id="user-list">
+  <style>
+    :host {
+      display: block;
+    }
+
+    :host h2 {
+      margin: 0;
+    }
+
+    :host .wrapper {
+      margin-left: -20px;
+    }
+
+    :host.no-posts {
+      background: url('../../assets/images/bg-nofollow.gif') left bottom no-repeat;
+      -webkit-background-size: 455px 206px;
+      background-size: 455px 206px;
+      height: 300px;
+    }
+
+    :host paper-spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-left: -14px;
+      margin-top: -30px;
+      --paper-spinner-layer-1-color: var(--paper-teal-300);
+      --paper-spinner-layer-2-color: var(--paper-teal-300);
+      --paper-spinner-layer-3-color: var(--paper-teal-300);
+      --paper-spinner-layer-4-color: var(--paper-teal-300);
+    }
+  </style>
+  <template>
+    <h2>{{pageName}}</h2>
+    <div class="wrapper">
+      <template is="dom-repeat" items="{{followsOrFollower}}">
+        <user-card user-id={{item.id}} is-following="{{item.isFollowing}}">
+          <h3>{{item.user.accountName}}</h3>
+          <img src="/assets/images/dammy.jpeg" width="50" height="50">
+          <code-tags-mini tags="{{item.user.interests}}"></code-tags-mini>
+        </user-card>
+      </template>
+    </div>
+    <paper-spinner id="spinner" active></paper-spinner>
+    <iron-ajax
+      with-credentials
+      id="followAjax"
+      method="GET"
+      handle-as="json"
+      on-response="handleResponse"
+      on-error="handleError"></iron-ajax>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'user-list',
+      properties: {
+        target: String,
+        notify: true,
+        observer: '_tabChanged'
+      },
+      ready: function() {
+        this.$.followAjax.url = "http://localhost:9000/" + this.target;
+        var _this = this;
+
+        switch (this.target){
+          case 'follow': this.pageName = 'Users you follow'; break;
+          case 'follower': this.pageName = 'Your Follower'; break;
+        }
+        
+        document.addEventListener('pleaseCountFollow', function(){
+          console.info('followReloadInvoked');
+          setTimeout(function(){    
+            _this.sendAjax();
+          },500);
+        });
+      },
+      sendAjax: function() {
+        this.$.followAjax.generateRequest();
+      },
+      handleResponse: function(request) {
+        var res = this.$.followAjax.lastResponse;
+        this.followsOrFollower = res;
+
+        if(this.target === "timeline" && this.posts.length <= 0) {
+           this.toggleClass('no-follows', true);
+        }
+
+        this.$.spinner.toggleAttribute('active', false);
+      },
+      handleError: function() {
+        console.error("something wrong");
+      }
+    });
+  </script>
+</dom-module>

@@ -44,6 +44,12 @@
       display: block;
     }
 
+    :host paper-spinner {
+      position: relative;
+      top: 8px;
+      left: 10px;
+    }
+
   </style>
   <template>
     <iron-ajax
@@ -62,6 +68,7 @@
       <paper-input id="pass" name="password" label="Password" type="password" required auto-validate value=""></paper-input>
 
       <div class="button-area">
+        <paper-spinner id="spinner"></paper-spinner>
         <paper-button on-click="sendAjax" raised>Submit</paper-button>
       </div>
       <a href="#">Forgot Password?</a>
@@ -94,6 +101,7 @@
       var res = this.$.loginAjax.lastResponse;
 
       if (res.result === 'loggedin') {
+        this.$.spinner.toggleAttribute('active', false);
         var email = this.$.email.value;
         var pass = this.$.pass.value;
         var code_snip_storage = {
@@ -106,6 +114,7 @@
       }
     },
     handleError: function(mes) {
+      this.$.spinner.toggleAttribute('active', false);
       var toast = document.querySelector('#errorToast');
       toast.text = "Something wrong! Try again!";
       toast.show();

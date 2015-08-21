@@ -9,6 +9,7 @@
   <link rel="icon" sizes="128x128" href="/assets/images/icon-128x128">
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
   <link rel="stylesheet" href="/assets/styles/concat.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/styles/default.min.css">
   <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
   <link rel="import" href="/elements/elements.html">
   <link rel="import" href="elements/home/home-page.html">
@@ -16,6 +17,7 @@
 
 <body unresolved class="fullbleed layout vertical">
   <template is="dom-bind" id="app">
+    <paper-spinner id="home-spinner" active></paper-spinner>
     <iron-pages attr-for-selected="data-route" selected="{{route}}" id="contaner">
 
       <section data-route="home">
@@ -72,10 +74,10 @@
                   <post-list target="favorite"></post-list>
                 </section>
                 <section>
-                  <h2>フォロー中</h2>
+                  <user-list target="follow"></user-list>
                 </section>
                 <section>
-                  <h2>フォロワー</h2>
+                  <user-list target="follower"></user-list>
                 </section>
                 <section>
                   <paper-material elevation="1">
@@ -98,6 +100,7 @@
     <paper-toast text="Your draft has been discarded." id="errorToast"></paper-toast>
   </template>
   <script src="scripts/app.js"></script>
+  <script src="//cdn.jsdelivr.net/highlight.js/8.7/highlight.min.js"></script>
 </body>
 
 </html>

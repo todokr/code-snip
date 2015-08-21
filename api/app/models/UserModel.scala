@@ -10,7 +10,7 @@ import play.api.mvc.Request
  */
 
 case class User(accountName: String, email: String, interests: Seq[String], password: String)
-case class IdWithUser(id:String, user:User)
+case class DisplayUser(id:String, user:User, isFollowing: Boolean)
 
 object User {
 
@@ -47,15 +47,20 @@ object User {
   }
 
   /** 興味あるキーワードのリストを一つでも含むUserオブジェクトを検索しリストにして返す
-    * @param interestList キーワードのリスト。
+    * @param userId
     * @return Userの検索結果
     */
-  def selectUserListFromInterests(interestList: Seq[String]): List[IdWithUser] = {
+  def selectUserListFromInterests(userId: String): List[DisplayUser] = {
+    val interestList = selectUserById(userId).map(u => u._2.interests)
+    val followList = Follow.selectFollowListByUserId(userId)
     ESClient.using(url) { client =>
       client.list[User](config){ searcher =>
         searcher.setQuery(matchQuery("interests", interestList)).addSort("_score", SortOrder.DESC)
       }
-    }.list.map(result => IdWithUser(result.id, result.doc))
+    }.list.map(result => {
+      val isFollowing = followList.contains(result.id)
+      DisplayUser(result.id, result.doc, isFollowing)
+    })
   }
   
   /** Sessionからログイン中ユーザーのメールアドレスを取得する
