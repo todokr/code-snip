@@ -1,5 +1,6 @@
 package controllers
 
+import auth.AuthAction
 import models.User._
 import play.api.libs.Crypto._
 import play.api.libs.json._
@@ -40,4 +41,19 @@ object AuthController extends Controller{
   def logout = Action { implicit rs =>
     Ok(Json.obj("result" -> "logout")).withNewSession
   }
+
+  def authNeed = AuthAction { implicit rs =>
+    selectUserBySession(rs) match {
+      case Some(userData) => {
+        val user = userData._2
+        Ok(Json.obj(
+          "email"       -> user.email,
+          "accountName" -> user.accountName,
+          "interests"   -> user.interests
+        ))
+      }
+      case None => BadRequest(Json.obj("result" -> "notAuthorized"))
+    }
+  }
+
 }

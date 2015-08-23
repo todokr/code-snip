@@ -7,6 +7,7 @@ import models.User._
 import play.Logger
 import play.api.libs.json._
 import play.api.mvc._
+import play.api.libs.Crypto._
 
 /**
  * @author shunsuke tadokoro
@@ -28,7 +29,7 @@ object UsersController extends Controller {
       BadRequest(Json.obj("result" -> "exist"))
     } else {
       // 思い出 rs.body.validate[(String, String, Seq[String], String)].map {
-      val hoge = rs.body.validate[User].map { // TODO 失敗したらOkにしない
+      rs.body.validate[User].map { // TODO 失敗したらOkにしない
         case x:User =>
           ESClient.using(url) { client =>
             client.insert(config, User.setCrypted(accountName = x.accountName, email = x.email, interests = x.interests, password = x.password))
@@ -54,12 +55,16 @@ object UsersController extends Controller {
     }
   }
 
-  def update(id: String) = Action(parse.json) { implicit rs =>
+  def update = Action(parse.json) { implicit rs =>
+    val id = selectUserBySession(rs).map(u => u._1).getOrElse("-1")
+
     selectUserById(id).map( u => {
       rs.body.validate[User].map {
         case x: User =>
           ESClient.using(url) { client =>
-            client.update(config, id, User.setCrypted(accountName = x.accountName, email = x.email, interests = x.interests, password = x.password))
+            Logger.error(x.toString)
+            val pass = if(x.password.isEmpty) u._2.password else sign(x.password)
+            client.update(config, id, User.setCrypted(accountName = x.accountName, email = x.email, interests = x.interests, password = pass))
           }
         case _ => None
       }

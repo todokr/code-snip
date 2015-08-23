@@ -10,13 +10,14 @@ GET           /assets/*file          controllers.Assets.at(path="/public", file)
 
 # Auth
 POST          /auth                  controllers.AuthController.login
-GET           /logout                controllers.TestController.logout
+GET           /logout                controllers.AuthController.logout
+GET           /authneeded            controllers.AuthController.authNeed
 
 # User
 GET           /status                controllers.UsersController.accountStatus
 POST          /users                 controllers.UsersController.create
 GET           /users/:id             controllers.UsersController.show(id)
-PUT           /users/:id             controllers.UsersController.update(id)
+PUT           /users                 controllers.UsersController.update
 DELETE        /users/:id             controllers.UsersController.delete(id)
 GET           /near-interests        controllers.UsersController.listNearInterestUser
 
@@ -41,7 +42,7 @@ POST          /unfavorite            controllers.FavoritesController.removeFavor
 
 
 # Dummy
-GET           /authneeded            controllers.TestController.authNeed
+
 
 
 

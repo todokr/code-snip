@@ -3,6 +3,8 @@
 <link rel="import" href="../post/code-tags.html">
 <link rel="import" href="../post/code-tags-mini.html">
 <link rel="import" href="../account/recommend-user.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/scale-up-animation.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/scale-down-animation.html">
 <dom-module id="snip-account">
   <style>
     :host {
@@ -82,12 +84,134 @@
       background: #eee;
     }
 
+    :host #edit-account-btn {
+      position: relative;
+      display: block;
+    }
+
+    :host #edit-account-btn:after {
+      content: 'Edit Profile';
+      position: absolute;
+      display: block;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background: rgba(255,255,255,0.4);
+      opacity: 0;
+      transition-duration: 0.4s;
+      text-align: right;
+      font-size: 12px;
+    }
+
+    :host #edit-account-btn:hover:after {
+      opacity: 1;
+    }
+
+    :host paper-dialog {
+      width: 400px;
+      max-height: 700px;
+      background: #fff;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.3);
+    }
+
+    :host paper-dialog paper-button {
+      color: var(--paper-teal-400);
+      text-transform: none;
+    }
+
+    :host paper-dialog paper-button[dialog-dismiss] {
+      color: #666!important;
+    }
+
+    :host paper-dialog form {
+      margin-top: 0;
+    }
+
+    :host .button-area {
+      text-align: right;
+      margin-top: 30px;
+    }
+
+    :host iron-selector {
+      line-height: 1.8;
+    }
+
+    :host iron-selector div{
+      cursor: pointer;
+      height: 20px;
+      line-height: 20px;
+      position: relative;
+      font-size: 12px;
+      font-weight: normal;
+      display: inline-block;
+      margin-left: 8px;
+      padding: 0 10px 0 12px;
+      color: #fff;
+      background: #ddd;
+      text-decoration: none;
+      border-radius: 1px 3px 3px 1px;
+    }
+
+    :host iron-selector div:before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: -8px;
+      width: 0;
+      height: 0;
+      border-color: transparent #ddd transparent transparent;
+      border-style: solid;
+      border-width: 10px 8px 10px 0;
+    }
+
+    :host iron-selector div:after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 0;
+      display: block;
+      width: 4px;
+      height: 4px;
+      border-radius: 2px;
+      background: #fff;
+    }
+
+    :host .iron-selected {
+      background-color: var(--paper-teal-400);
+    }
+
+    :host iron-selector .iron-selected:before {
+      border-color: transparent var(--paper-teal-400) transparent transparent;
+    }
+
+    :host label {
+      display: block;
+      margin-top: 18px;
+      color: #727272;
+      font-family: 'Roboto', 'Noto', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+    }
+
+    :host paper-spinner {
+      position: relative;
+      top: 8px;
+      left: 10px;
+    }
+
   </style>
   <template>
-    <account-info-name>
-      <img src="/assets/images/dammy.jpeg" width="50" height="50">
-      <h2>{{status.accountName}}</h2>
-    </account-info-name>
+    <a href="javascript:void(0);" id="edit-account-btn" on-click="_showEditProfModal">
+      <account-info-name>
+        <img src="/assets/images/dammy.jpeg" width="50" height="50">
+        <h2>{{status.accountName}}</h2>
+      </account-info-name>
+    </a>
     <div class="account-follow">
       <dl>
         <dt>Follow</dt>
@@ -109,6 +233,36 @@
     <div class="account-option">
       <paper-button on-click="logout" tabindex="-1">Log out</paper-button>
     </div>
+    <paper-dialog id="edit-profile-modal" modal entry-animation="scale-up-animation" exit-animation="scale-down-animation">
+      <h2>Edit Profile</h2>
+      <form is="iron-form" id="editForm">
+        <paper-input name="accountName" label="Name" required auto-validate value="{{profile.accountName}}"></paper-input>
+        <gold-email-input label="Email" required name="email" auto-validate value="{{profile.email}}"></gold-email-input>
+        <paper-input name="password" label="Password" type="password" value="" placeholder="Fill out if you want to change password."></paper-input>
+        <label>Your Interest</label>
+        <iron-selector id="interests" multi attr-for-selected="name" selected-values='{{profile.interests}}'>
+          <div name="Java">Java</div>
+          <div name="Scala">Scala</div>
+          <div name="HTML">HTML</div>
+          <div name="CSS">CSS</div>
+          <div name="JavaScript">JavaScript</div>
+          <div name="Linux">Linux</div>
+          <div name="ShellScript">ShellScript</div>
+          <div name="Go">Go</div>
+          <div name="Ruby">Ruby</div>
+          <div name="Perl">Perl</div>
+          <div name="Python">Python</div>
+          <div name="Vim">Vim</div>
+          <div name="Emacs">Emacs</div>
+          <div name="Haskell">Haskell</div>
+        </iron-selector>
+        <div class="button-area">
+          <paper-spinner id="spinner"></paper-spinner>
+          <paper-button on-click="_updateProf">Save Profile</paper-button>
+          <paper-button dialog-dismiss>Cancel</paper-button>
+        </div>
+      </form>
+    </paper-dialog>
 
     <iron-ajax
       with-credentials
@@ -124,6 +278,22 @@
       method="GET"
       on-response="statusResponse"
       on-error="statusError"></iron-ajax>
+    <iron-ajax
+      with-credentials
+      id="profileAjax"
+      url="http://localhost:9000/authneeded"
+      method="GET"
+      on-response="profileResponse"
+      on-error="profileError"></iron-ajax>
+    <iron-ajax
+      with-credentials
+      id="updateAjax"
+      url="http://localhost:9000/users"
+      content-type="application/json"
+      handle-as="json"
+      method="PUT"
+      on-response="updateResponse"
+      on-error="updateError"></iron-ajax>
   </template>
 
   <script>
@@ -131,7 +301,8 @@
       Polymer({
         is: 'snip-account',
         properties: {
-          status: Object
+          status: Object,
+          profile: Object
         },
         ready: function() {
           var _this = this;
@@ -143,6 +314,12 @@
           if(location.href.match(/.*app$/)) {
             _this._sendAjax();
           }
+
+        },
+        _showEditProfModal: function() {
+          this._getProfileAjax();
+          this.modal = document.getElementById('edit-profile-modal');
+          this.modal.open();
         },
         _sendAjax: function(){
           var _this = this;
@@ -173,7 +350,32 @@
           this.fire('pleaseCountFollow');
           var menu = document.querySelector('#timeline-menu');
           menu.selected = 4;
-        }
+        },
+        _getProfileAjax: function() {
+          this.$.profileAjax.generateRequest();
+        },
+        profileResponse: function() {
+          console.log(this.$.profileAjax.lastResponse);
+          this.profile = this.$.profileAjax.lastResponse
+          this.$.editForm.validate();
+        },
+        profileError: function(e) {
+        },
+        _updateProf: function(){
+          this.$.spinner.toggleAttribute('active', true);
+          var data = this.$.editForm.serialize();
+          data.interests = this.$.interests.selectedValues;
+          console.log(data);
+          this.$.updateAjax.body = data;
+          this.$.updateAjax.generateRequest();
+        },
+        updateResponse: function(request) {
+          this.$.spinner.toggleAttribute('active', false);
+          this.modal.close();
+          this.fire('pleaseCountFollow');
+        },
+        updateError: function(e) {
+        },
 
       });
     })();
