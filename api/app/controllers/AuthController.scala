@@ -1,6 +1,7 @@
 package controllers
 
 import auth.AuthAction
+import models.User
 import models.User._
 import play.api.libs.Crypto._
 import play.api.libs.json._
@@ -13,6 +14,8 @@ import play.api.mvc.{Action, Controller}
 case class AuthArg(email: String, password: String)
 
 object AuthController extends Controller{
+
+  implicit val userFormat = Json.format[User]
 
   def login = Action(parse.json) { implicit rs =>
     val email = Json.stringify(rs.body \ "email").replaceAll("\"", "") // TODO 無理矢理感あるからあとで直す
@@ -29,7 +32,7 @@ object AuthController extends Controller{
             "accountName" -> user.accountName,
             "email" -> user.email,
             "interests" -> user.interests
-          )).withSession("auth" -> user.email) // TODO emailではなくIDを
+          )).withSession("auth" -> user.email)
         } else {
           BadRequest(Json.obj("result" -> "invalid"))
         }
@@ -45,12 +48,7 @@ object AuthController extends Controller{
   def authNeed = AuthAction { implicit rs =>
     selectUserBySession(rs) match {
       case Some(userData) => {
-        val user = userData._2
-        Ok(Json.obj(
-          "email"       -> user.email,
-          "accountName" -> user.accountName,
-          "interests"   -> user.interests
-        ))
+        Ok(Json.toJson(userData._2))
       }
       case None => BadRequest(Json.obj("result" -> "notAuthorized"))
     }

@@ -14,7 +14,7 @@
   <template>
     <template is="dom-repeat" items="{{recommends}}" as="data">
       <recommend-user-follow user-id="{{data.id}}">
-        <img src="/assets/images/dammy.jpeg" width="35" height="35">
+        <img src="{{data.user.imageUrl}}" width="35" height="35">
         <h2>{{data.user.accountName}}</h2>
         <code-tags-mini tags="{{data.user.interests}}"></code-tags-mini>
       </recommend-user-follow>  

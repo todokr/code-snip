@@ -9,7 +9,7 @@ import play.api.mvc.Request
  * @author shunsuke tadokoro
  */
 
-case class User(accountName: String, email: String, interests: Seq[String], password: String)
+case class User(accountName: String, email: String, interests: Seq[String], password: String, imageUrl: String)
 case class DisplayUser(id:String, user:User, isFollowing: Boolean)
 
 object User {
@@ -17,9 +17,9 @@ object User {
   val config = "code_snip" / "user"
   val url = "http://localhost:9200"
   
-  def setCrypted(accountName: String, email: String, interests: Seq[String], password: String): User = {
+  def setCrypted(accountName: String, email: String, interests: Seq[String], password: String, imageUrl: String): User = {
     val cryptedPassword = sign(password)
-    User(accountName, email, interests, cryptedPassword)
+    User(accountName, email, interests, cryptedPassword, imageUrl)
   }
 
   /** idを受け取ってUserを検索した結果を返す

@@ -24,6 +24,7 @@ object UsersController extends Controller {
   //                                                               actions
   //                                                               =======
   def create = Action(parse.json) { implicit rs =>
+    val defaultImgUrl = "/assets/images/default.gif"
     val email = Json.stringify(rs.body \ "email").replaceAll("\"", "")
     if(selectUserByEmail(email).isDefined) {
       BadRequest(Json.obj("result" -> "exist"))
@@ -32,7 +33,7 @@ object UsersController extends Controller {
       rs.body.validate[User].map { // TODO 失敗したらOkにしない
         case x:User =>
           ESClient.using(url) { client =>
-            client.insert(config, User.setCrypted(accountName = x.accountName, email = x.email, interests = x.interests, password = x.password))
+            client.insert(config, User.setCrypted(accountName = x.accountName, email = x.email, interests = x.interests, password = x.password, defaultImgUrl))
           }
         case _ => None
       }
@@ -64,7 +65,8 @@ object UsersController extends Controller {
           ESClient.using(url) { client =>
             Logger.error(x.toString)
             val pass = if(x.password.isEmpty) u._2.password else sign(x.password)
-            client.update(config, id, User.setCrypted(accountName = x.accountName, email = x.email, interests = x.interests, password = pass))
+            val img = if(x.imageUrl.isEmpty) u._2.imageUrl else x.imageUrl
+            client.update(config, id, User.setCrypted(accountName = x.accountName, email = x.email, interests = x.interests, password = pass, imageUrl = img))
           }
         case _ => None
       }
@@ -93,6 +95,7 @@ object UsersController extends Controller {
           "id"          -> id,
           "email"       -> user.email,
           "accountName" -> user.accountName,
+          "imageUrl"    -> user.imageUrl,
           "interests"   -> user.interests,
           "follow"      -> follow.size,
           "follower"    -> follower.size

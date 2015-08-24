@@ -204,11 +204,29 @@
       left: 10px;
     }
 
+    :host .thumb-field {
+      width: 100%;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    :host #thumb-canvas {
+      width: 70px;
+      height: 70px;
+      background: #fafafa;
+      float: left;
+    }
+
+    :host #thumb-input {
+      width: 260px;
+      float: left;
+      margin-left: 10px;
+    }
   </style>
   <template>
     <a href="javascript:void(0);" id="edit-account-btn" on-click="_showEditProfModal">
       <account-info-name>
-        <img src="/assets/images/dammy.jpeg" width="50" height="50">
+        <img src="{{status.imageUrl}}" width="50" height="50">
         <h2>{{status.accountName}}</h2>
       </account-info-name>
     </a>
@@ -236,6 +254,10 @@
     <paper-dialog id="edit-profile-modal" modal entry-animation="scale-up-animation" exit-animation="scale-down-animation">
       <h2>Edit Profile</h2>
       <form is="iron-form" id="editForm">
+        <div class="thumb-field">
+          <canvas id="thumb-canvas"></canvas>
+          <paper-input label="Thumbnail" type="file" id="thumb-input"></paper-input>
+        </div>
         <paper-input name="accountName" label="Name" required auto-validate value="{{profile.accountName}}"></paper-input>
         <gold-email-input label="Email" required name="email" auto-validate value="{{profile.email}}"></gold-email-input>
         <paper-input name="password" label="Password" type="password" value="" placeholder="Fill out if you want to change password."></paper-input>
@@ -315,12 +337,7 @@
             _this._sendAjax();
           }
 
-        },
-        _showEditProfModal: function() {
-          this._getProfileAjax();
-          this.modal = document.getElementById('edit-profile-modal');
-          this.modal.open();
-        },
+        },  
         _sendAjax: function(){
           var _this = this;
           setTimeout(function(){
@@ -356,16 +373,21 @@
         },
         profileResponse: function() {
           console.log(this.$.profileAjax.lastResponse);
-          this.profile = this.$.profileAjax.lastResponse
+          this.profile = this.$.profileAjax.lastResponse;
           this.$.editForm.validate();
         },
         profileError: function(e) {
+        },
+        _showEditProfModal: function() {
+          this._getProfileAjax();
+          console.log(status);
+          this.modal = document.getElementById('edit-profile-modal');
+          this.modal.open();
         },
         _updateProf: function(){
           this.$.spinner.toggleAttribute('active', true);
           var data = this.$.editForm.serialize();
           data.interests = this.$.interests.selectedValues;
-          console.log(data);
           this.$.updateAjax.body = data;
           this.$.updateAjax.generateRequest();
         },

@@ -39,7 +39,7 @@
       <template is="dom-repeat" items="{{followsOrFollower}}">
         <user-card user-id={{item.id}} is-following="{{item.isFollowing}}">
           <h3>{{item.user.accountName}}</h3>
-          <img src="/assets/images/dammy.jpeg" width="50" height="50">
+          <img src="{{item.user.imageUrl}}" width="50" height="50">
           <code-tags-mini tags="{{item.user.interests}}"></code-tags-mini>
         </user-card>
       </template>

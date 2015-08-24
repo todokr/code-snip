@@ -127,7 +127,8 @@ es POST user/o10kojukuedajima4649 '
   "accountName": "江田島平八",
   "email": "edajima@otoko-juku.ed.jp",
   "interests": ["Java", "Scala", "Node.js"],
-  "password": "276b3098174de28ef5877dacb412b825cf803192"
+  "password": "276b3098174de28ef5877dacb412b825cf803192",
+  "imageUrl": "/assets/images/default.gif"
 }'
              
 # konoaraiwotsukuttanohadareda        
@@ -136,7 +137,8 @@ es POST user/bishokuKurabuNoAruji '
   "accountName": "海原雄山",
   "email": "kaibara@bishoku.club",
   "interests": ["HTML", "CSS", "JavaScript", "Scalaz"],
-  "password": "276b3098174de28ef5877dacb412b825cf803192"
+  "password": "276b3098174de28ef5877dacb412b825cf803192",
+  "imageUrl": "/assets/images/default.gif"
 }'
 
 # watashihashicho
@@ -145,7 +147,8 @@ es POST user/metroCityNoSichodayo '
   "accountName": "マイク・ハガー",
   "email": "mike@metro-city.go.jp",
   "interests": ["Lisp", "Scala"],
-  "password": "276b3098174de28ef5877dacb412b825cf803192"
+  "password": "276b3098174de28ef5877dacb412b825cf803192",
+  "imageUrl": "/assets/images/default.gif"
 }'
 
 # musekinin
@@ -154,7 +157,8 @@ es POST user/spacedeka '
   "accountName": "宇宙刑事ギャバン",
   "email": "gaban@spacedeka.com",
   "interests": ["Scala", "Java"],
-  "password": "276b3098174de28ef5877dacb412b825cf803192"
+  "password": "276b3098174de28ef5877dacb412b825cf803192",
+  "imageUrl": "/assets/images/default.gif"
 }'
 
 es POST user/koukakuKidoutaiMitai '
@@ -162,7 +166,8 @@ es POST user/koukakuKidoutaiMitai '
   "accountName": "草薙素子",
   "email": "kusanagi@kouan-9.go.jp",
   "interests": ["Haskell", "Clojure", "Haxe", "Scala"],
-  "password": "276b3098174de28ef5877dacb412b825cf803192"
+  "password": "276b3098174de28ef5877dacb412b825cf803192",
+  "imageUrl": "/assets/images/default.gif"
 }'
 
 es POST user/kusamayayoi '
@@ -170,7 +175,8 @@ es POST user/kusamayayoi '
   "accountName": "草間彌生",
   "email": "kusama@yayoi.com",
   "interests": ["Vim", "Linux", "Scala", "Go"],
-  "password": "276b3098174de28ef5877dacb412b825cf803192"
+  "password": "276b3098174de28ef5877dacb412b825cf803192",
+  "imageUrl": "/assets/images/default.gif"
 }'
 
 es POST user/luckeyIkeda '
@@ -178,7 +184,8 @@ es POST user/luckeyIkeda '
   "accountName": "ラッキー池田",
   "email": "luckey@ikeda.com",
   "interests": ["Python", "Java", "Node.js"],
-  "password": "276b3098174de28ef5877dacb412b825cf803192"
+  "password": "276b3098174de28ef5877dacb412b825cf803192",
+  "imageUrl": "/assets/images/default.gif"
 }'
 
 es POST user/okawaEisaku '
@@ -186,7 +193,8 @@ es POST user/okawaEisaku '
   "accountName": "大川栄策",
   "email": "okawa@eisaku.com",
   "interests": ["Python", "Ruby", "Node.js"],
-  "password": "276b3098174de28ef5877dacb412b825cf803192"
+  "password": "276b3098174de28ef5877dacb412b825cf803192",
+  "imageUrl": "/assets/images/default.gif"
 }'
 
 es POST user/pomupomupurin '
@@ -194,7 +202,8 @@ es POST user/pomupomupurin '
   "accountName": "ポムポムプリン",
   "email": "pomupomu@purin.com",
   "interests": ["Ruby", "ShellScript", "Node.js"],
-  "password": "276b3098174de28ef5877dacb412b825cf803192"
+  "password": "276b3098174de28ef5877dacb412b825cf803192",
+  "imageUrl": "/assets/images/default.gif"
 }'
 
 es POST user/kanahei '
@@ -202,7 +211,8 @@ es POST user/kanahei '
   "accountName": "カナヘイ",
   "email": "kanahei@hey.com",
   "interests": ["Ruby", "ShellScript", "Node.js"],
-  "password": "276b3098174de28ef5877dacb412b825cf803192"
+  "password": "276b3098174de28ef5877dacb412b825cf803192",
+  "imageUrl": "/assets/images/default.gif"
 }'
 
 es POST user/dragonkid '
@@ -210,7 +220,8 @@ es POST user/dragonkid '
   "accountName": "ドラゴン・キッド",
   "email": "kid@dragon-gate.com",
   "interests": ["Emacs", "Scala", "Ruby"],
-  "password": "276b3098174de28ef5877dacb412b825cf803192"
+  "password": "276b3098174de28ef5877dacb412b825cf803192",
+  "imageUrl": "/assets/images/default.gif"
 }'
 
 es POST user/chocoboy '
@@ -218,7 +229,8 @@ es POST user/chocoboy '
   "accountName": "チョコボーイ山口",
   "email": "yamaguchi@choco-boy.com",
   "interests": ["ShellScript", "Linux", "Go"],
-  "password": "276b3098174de28ef5877dacb412b825cf803192"
+  "password": "276b3098174de28ef5877dacb412b825cf803192",
+  "imageUrl": "/assets/images/default.gif"
 }'
 
 # Insert Follow Data
@@ -320,7 +332,7 @@ es POST post '
 es POST post '
 {
   "userId": "metroCityNoSichodayo",
-  "code": "var x = \"123\";var y = +x;",
+  "code": "var x = \"123\";\nvar y = +x;",
   "description": "文字列を数値化",
   "tag": "JavaScript",
   "time": "2015/08/12 2:46"

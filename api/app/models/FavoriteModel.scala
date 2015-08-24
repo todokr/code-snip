@@ -34,7 +34,7 @@ object Favorite {
   }
 
   def selectFavoriteList(userId: String): List[ShownPost] = {
-    val emptyUser = User("", "", Seq(), "")
+    val emptyUser = User("", "", Seq(), "", "")
     val emptyPost = Post("", "", "", "", "")
     ESClient.using(url) { client =>
       client.list[Favorite](config) { searcher =>
