@@ -152,8 +152,14 @@
     ready: function() {
       var _this = this;
       this.bodyObj =  {"favoritePostId": null};
-      this.favoriteFlg = this.isFavorite || false;
-      this.toggleClass('favorite', this.favoriteFlg);
+      this.isFavorite = this.isFavorite || false;
+      this.toggleClass('favorite', this.isFavorite);
+      document.addEventListener('pleaseFavReload', function(){
+        setTimeout(function(){
+          _this.toggleClass('favorite', _this.isFavorite);
+        },1000);
+        console.log("FavReloadInvoked");
+      });
     },
     attached:function() {
       hljs.highlightBlock(this.$$('code'));
@@ -162,7 +168,7 @@
       this.$.star.toggleAttribute('disabled', true);
       var ajax = this.$.favoriteAjax;
       this.bodyObj.favoritePostId = this.postId;
-      if (this.favoriteFlg) {
+      if (this.isFavorite) {
         ajax.url = "http://localhost:9000/unfavorite";
       } else {
         ajax.url = "http://localhost:9000/favorite";
@@ -173,8 +179,7 @@
     handleResponse: function(){
       this.$.star.toggleAttribute('disabled', false);
       var _this = this;
-      this.favoriteFlg = !this.favoriteFlg;
-      this.toggleClass('favorite', this.favoriteFlg);
+      this.toggleClass('favorite', this.isFavorite);
       this.fire('pleaseTlReload');
     },
     errorResponse: function(e){

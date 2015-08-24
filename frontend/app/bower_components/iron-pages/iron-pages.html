@@ -89,6 +89,7 @@ Example:
 
     _selectedPageChanged: function(selected, old) {
       this.fire('pleaseTlReload');
+      this.fire('pleaseFavReload');
       this.async(this.notifyResize);
     }
   });

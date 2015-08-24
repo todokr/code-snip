@@ -53,8 +53,7 @@
       is: 'post-list',
       properties: {
         target: String,
-        notify: true,
-        observer: '_tabChanged'
+        posts: Object
       },
       ready: function() {
         this.$.postsAjax.url = "http://localhost:9000/" + this.target;
@@ -72,7 +71,6 @@
                _this.toggleClass('no-posts', false);
             }
             if(location.href.match(/.*app$/)) {
-              console.info('tlReloadInvoked');
               setTimeout(function(){    
                 _this.sendAjax();
               },1000);
