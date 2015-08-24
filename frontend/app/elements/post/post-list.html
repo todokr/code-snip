@@ -58,6 +58,7 @@
       ready: function() {
         this.$.postsAjax.url = "http://localhost:9000/" + this.target;
         var _this = this;
+        var busyNow = false;
 
         setInterval(function(){
           if(location.href.match(/.*app$/)) {
@@ -70,11 +71,13 @@
             if(_this.target === "timeline") {
                _this.toggleClass('no-posts', false);
             }
-            if(location.href.match(/.*app$/)) {
+            if(!busyNow && location.href.match(/.*app$/)){
               setTimeout(function(){    
                 _this.sendAjax();
-              },1000);
+                busyNow = false;
+              },1000); 
             }
+            busyNow = true;
           });
         });
       },

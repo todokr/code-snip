@@ -20,9 +20,7 @@ object UsersController extends Controller {
   implicit val userFormat = Json.format[User]
   implicit val iuFormat = Json.format[DisplayUser]
 
-  // =====================================================================
-  //                                                               actions
-  //                                                               =======
+  // ユーザーの作成
   def create = Action(parse.json) { implicit rs =>
     val email = Json.stringify(rs.body \ "email").replaceAll("\"", "")
     if(selectUserByEmail(email).isDefined) {
@@ -39,6 +37,7 @@ object UsersController extends Controller {
     }
   }
 
+  // ユーザーの詳細
   def show(id: String) = Action { implicit rs =>
     ESClient.using(url) { client =>
       selectUserById(id) match {
@@ -54,22 +53,12 @@ object UsersController extends Controller {
     }
   }
 
+  // ユーザー情報の更新
   def update = Action(parse.json) { implicit rs =>
     val id = selectUserBySession(rs).map(u => u._1).getOrElse("-1")
-
     selectUserById(id).map( u => {
       rs.body.validate[User].map {
-        case x: User =>
-          ESClient.using(url) { client =>
-            Logger.error(x.toString)
-            val pass = if(x.password.isEmpty) u._2.password else sign(x.password)
-            Logger.error(x.password)
-            Logger.error(sign(x.password))
-            Logger.error(u._2.password)
-            Logger.error(pass)
-            val img = if(x.imageUrl.isEmpty) u._2.imageUrl else x.imageUrl
-            client.update(config, id, User(accountName = x.accountName, email = x.email, interests = x.interests, password = pass, imageUrl = img))
-          }
+        case newUser: User => updateUser(id, newUser, u._2)
         case _ => None
       }
     }) match {
@@ -78,6 +67,7 @@ object UsersController extends Controller {
     }
   }
 
+  // ユーザーの削除
   def delete(id: String) = Action { implicit rs =>
     val result = ESClient.using(url) { client =>
       client.delete(config, id)
@@ -88,6 +78,7 @@ object UsersController extends Controller {
     }
   }
 
+  // アカウント表示用データの取得
   def accountStatus = AuthAction { implicit rs =>
     selectUserBySession(rs) match {
       case Some(userData) => {
@@ -107,15 +98,15 @@ object UsersController extends Controller {
     }
   }
 
+  // 嗜好の近いユーザーリストの取得
   def listNearInterestUser = AuthAction { implicit rs =>
-    val (id:String, interests:Seq[String]) =  selectUserBySession(rs) match {
-      case Some(userData) => (userData._1, userData._2.interests)
-      case None => None
+    val id =  selectUserBySession(rs) match {
+      case Some(userData) => userData._1
+      case None => ""
     }
     val followAndSelfList = Follow.selectFollowListByUserId(id) + id
-    val nearUserList = selectUserListFromInterests(id).filterNot(recomendUser => followAndSelfList.contains(recomendUser.id)).take(3)
+    val nearUserList = selectUserListFromInterests(id).filterNot(recomendUser => followAndSelfList.contains(recomendUser.id))
     Ok(Json.toJson(nearUserList))
-
   }
 }
 

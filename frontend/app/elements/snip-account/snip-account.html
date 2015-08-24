@@ -355,10 +355,15 @@
         },
         ready: function() {
           var _this = this;
+          var busyNow = false;
           document.addEventListener('pleaseCountFollow', function(){
-            setTimeout(function(){
-              _this._sendAjax();
-            }, 1000);
+            if(!busyNow) {
+              setTimeout(function(){
+                _this._sendAjax();
+                busyNow = false;
+              }, 1000);
+            }   
+            busyNow = true;
           });
           if(location.href.match(/.*app$/)) {
             _this._sendAjax();

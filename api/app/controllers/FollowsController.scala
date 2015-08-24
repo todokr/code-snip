@@ -16,7 +16,7 @@ object FollowsController extends Controller {
   implicit val userFormats = Json.format[User]
   implicit val iwuFormats = Json.format[DisplayUser]
 
-
+  // フォロー追加
   def follow = AuthAction(parse.json) { implicit rs =>
     val userId = selectUserBySession(rs).get._1
     val targetId = Json.stringify(rs.body \ "followToId").replaceAll("\"", "")
@@ -27,6 +27,7 @@ object FollowsController extends Controller {
     }
   }
 
+  // フォロー解除
   def unFollow = AuthAction(parse.json) { implicit rs =>
     val userId = selectUserBySession(rs).get._1
     val targetId = Json.stringify(rs.body \ "followToId").replaceAll("\"", "")
@@ -36,12 +37,14 @@ object FollowsController extends Controller {
     }
   }
 
+  // フォロー一覧
   def listFollowUsers = AuthAction { implicit rs =>
     val userId = selectUserBySession(rs).get._1
     val result = selectFollowListByUserId(userId).map(uid => selectUserById(uid)).flatten.map(u => DisplayUser(u._1, u._2, true))
     Ok(Json.toJson(result))
   }
 
+  // フォロワー一覧
   def listFollower = AuthAction { implicit rs =>
     val selfId = selectUserBySession(rs).get._1
     val followList = selectFollowListByUserId(selfId)
@@ -54,12 +57,14 @@ object FollowsController extends Controller {
     Ok(Json.toJson(result))
   }
 
+  // フォローとフォロワーを一度に取得
   def selectFollowUsers(userId: String): (List[User], List[User]) = {
     val followUsers = selectFollowListByUserId(userId).map(uid => selectUserById(uid)).flatten.map(_._2)
     val followerUsers = selectFollowerListByUserId(userId).map(uid => selectUserById(uid)).flatten.map(_._2)
     (followUsers, followerUsers)
   }
 
+  // フォローとフォロワーの数を一度に取得
   def selectFollowNumbers = AuthAction { implicit rs =>
     val (follow, follower) = selectFollowUsers(selectUserBySession(rs).get._1)
     Ok(Json.obj(

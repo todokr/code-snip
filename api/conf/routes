@@ -25,7 +25,6 @@ GET           /near-interests        controllers.UsersController.listNearInteres
 GET           /timeline              controllers.PostsController.followList
 GET           /wrote                 controllers.PostsController.list
 POST          /posts                 controllers.PostsController.create
-GET           /posts/:id             controllers.PostsController.show(id)
 DELETE        /posts/:id             controllers.PostsController.delete(id)
 
 # Follow

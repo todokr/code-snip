@@ -17,11 +17,12 @@ object AuthController extends Controller{
 
   implicit val userFormat = Json.format[User]
 
+  // ログイン
   def login = Action(parse.json) { implicit rs =>
     val email = Json.stringify(rs.body \ "email").replaceAll("\"", "") // TODO 無理矢理感あるからあとで直す
     val pass = Json.stringify(rs.body \ "password").replaceAll("\"", "") // TODO 無理矢理感あるからあとで直す
 
-    val result = selectUserByEmail(email) match {
+    selectUserByEmail(email) match {
       case Some(userData) =>
         if(userData._2.password == sign(pass)) {
           val id = userData._1
@@ -38,13 +39,14 @@ object AuthController extends Controller{
         }
       case None => BadRequest(Json.obj("result" -> "notExist"))
     }
-    result
   }
 
+  // ログアウト
   def logout = Action { implicit rs =>
     Ok(Json.obj("result" -> "logout")).withNewSession
   }
 
+  // 認証確認
   def authNeed = AuthAction { implicit rs =>
     selectUserBySession(rs) match {
       case Some(userData) => {
@@ -53,5 +55,4 @@ object AuthController extends Controller{
       case None => BadRequest(Json.obj("result" -> "notAuthorized"))
     }
   }
-
 }

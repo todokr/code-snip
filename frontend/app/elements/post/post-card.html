@@ -151,14 +151,18 @@
     },
     ready: function() {
       var _this = this;
+      var busyNow = false;
       this.bodyObj =  {"favoritePostId": null};
       this.isFavorite = this.isFavorite || false;
       this.toggleClass('favorite', this.isFavorite);
       document.addEventListener('pleaseFavReload', function(){
-        setTimeout(function(){
-          _this.toggleClass('favorite', _this.isFavorite);
-        },1000);
-        console.log("FavReloadInvoked");
+        if (!busyNow) {
+          setTimeout(function(){
+            _this.toggleClass('favorite', _this.isFavorite);
+            busyNow = false;
+          },1000);
+        }
+        busyNow = true;
       });
     },
     attached:function() {

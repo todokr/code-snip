@@ -22,10 +22,27 @@ object User {
     User(accountName, email, interests, cryptedPassword, imageUrl)
   }
 
+  /** 新規ユーザーを保存する
+    * @param user 新しく作成したユーザー
+    */
   def insertUser(user: User): Unit = {
     val defaultImgUrl = "/assets/images/default.gif"
     ESClient.using(url) { client =>
       client.insert(config, User.setCrypted(accountName = user.accountName, email = user.email, interests = user.interests, password = user.password, defaultImgUrl))
+    }
+  }
+
+  /** ユーザー情報を更新する
+    * @param userId 更新対象のユーザーID
+    * @param newUser 新しい情報になったユーザー
+    * @param currentUser 現在のユーザー
+    * @return (id, User)
+    */
+  def updateUser(userId: String, newUser: User, currentUser: User): Unit = {
+    ESClient.using(url) { client =>
+      val pass = if(newUser.password.isEmpty) currentUser.password else sign(newUser.password)
+      val img = if(newUser.imageUrl.isEmpty) currentUser.imageUrl else newUser.imageUrl
+      client.update(config, userId, User(accountName = newUser.accountName, email = newUser.email, interests = newUser.interests, password = pass, imageUrl = img))
     }
   }
 
