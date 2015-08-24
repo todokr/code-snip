@@ -62,14 +62,14 @@
 
         setInterval(function(){
           if(location.href.match(/.*app$/)) {
-            //_this.sendAjax();
+            _this.sendAjax();
           }
-        }, 10000);
+        }, 20000);
         
         document.addEventListener('WebComponentsReady', function(){
           document.addEventListener('pleaseTlReload', function(){
-            if(this.target === "timeline") {
-               this.toggleClass('no-posts', false);
+            if(_this.target === "timeline") {
+               _this.toggleClass('no-posts', false);
             }
             if(location.href.match(/.*app$/)) {
               console.info('tlReloadInvoked');
