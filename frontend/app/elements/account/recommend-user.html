@@ -7,7 +7,7 @@
     }
 
     :host recommend-user-follow {
-      margin-top: 20px;
+      margin-top: 10px;
     }
 
   </style>
@@ -37,8 +37,11 @@
       ready: function() {
         var _this = this;
         if(location.href.match(/.*app$/)) {
-            _this._sendAjax();
-          }
+          _this._sendAjax();
+        }
+        document.addEventListener('pleaseReloadRecommend', function(){
+          _this._sendAjax();
+        });
       },
       recommendResponse: function(){
         this.recommends = this.$.recommendAjax.lastResponse;

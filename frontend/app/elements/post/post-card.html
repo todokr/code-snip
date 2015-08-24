@@ -150,8 +150,8 @@
       code: String
     },
     ready: function() {
+      var _this = this;
       this.bodyObj =  {"favoritePostId": null};
-
       this.favoriteFlg = this.isFavorite || false;
       this.toggleClass('favorite', this.favoriteFlg);
     },
@@ -159,6 +159,7 @@
       hljs.highlightBlock(this.$$('code'));
     },
     handleFavorite: function(e){
+      this.$.star.toggleAttribute('disabled', true);
       var ajax = this.$.favoriteAjax;
       this.bodyObj.favoritePostId = this.postId;
       if (this.favoriteFlg) {
@@ -170,6 +171,8 @@
       ajax.generateRequest();
     },
     handleResponse: function(){
+      this.$.star.toggleAttribute('disabled', false);
+      var _this = this;
       this.favoriteFlg = !this.favoriteFlg;
       this.toggleClass('favorite', this.favoriteFlg);
       this.fire('pleaseTlReload');

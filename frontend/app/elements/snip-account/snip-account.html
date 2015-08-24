@@ -229,6 +229,22 @@
       margin-left: 10px;
       margin-top: 28px;
     }
+
+    :host .recommend-header h3 {
+      display: inline-block;
+    }
+
+    :host paper-icon-button {
+      padding: 0;
+      min-width: 0;
+      color: #aaa;
+      display: inline-block;
+    }
+
+    :host paper-icon-button::shadow iron-icon {
+      width: 18px;
+      height: 18px;
+    }
   </style>
   <template>
     <a href="javascript:void(0);" id="edit-account-btn" on-click="_showEditProfModal">
@@ -252,7 +268,10 @@
       <code-tags tags="{{status.interests}}"></code-tags>
     </div>
     <div class="account-recommend">
-      <h3>Recommend Users</h3>
+      <div class="recommend-header">
+        <h3>Recommend Users</h3>
+        <!-- <paper-icon-button icon="icons:autorenew" on-click="reloadRecommend"></paper-icon-button> -->
+      </div>
       <recommend-user></recommend-user>
     </div>
     <div class="account-option">
@@ -436,8 +455,10 @@
             console.log(dataUrl);
             _this.$.imageUrlContainer.value = dataUrl;
           };
-
-        }
+        },
+        reloadRecommend: function(){
+          this.fire('pleaseReloadRecommend');
+        },
       });
     })();
   </script>
