@@ -47,11 +47,17 @@ object Post {
     */
   def selectPostListByUserId(id: String): List[ShownPost] = {
    ESClient.using(url) { client =>
-      client.list[Post](config){ searcher =>
-        searcher.setQuery(matchQuery("userId", id)).addSort("_timestamp", SortOrder.DESC)
-      }
-    }.list.map(
-     x => ShownPost(x.id ,x.doc, User.selectUserById(x.doc.userId).get._2, Favorite.isFavorite(id, x.doc)))
+     client.list[Post](config){ searcher =>
+       searcher.setQuery(matchQuery("userId", id)).addSort("_timestamp", SortOrder.DESC)
+     }
+   }.list.map( x =>
+     ShownPost(
+       x.id,
+       x.doc,
+       User.selectUserById(x.doc.userId).map(u => u._2).getOrElse(User("","", Seq(), "", "")),
+       Favorite.isFavorite(id, x.doc)
+     )
+   )
   }
 
   /** フォローしているユーザーの投稿を検索する
@@ -63,7 +69,14 @@ object Post {
       client.list[Post](config){ searcher =>
         searcher.setQuery(matchQuery("userId", Follow.selectFollowListByUserId(id)))
       }
-    }.list.map(x => ShownPost(x.id ,x.doc, User.selectUserById(x.doc.userId).get._2, Favorite.isFavorite(id, x.doc)))
+    }.list.map( x =>
+      ShownPost(
+        x.id,
+        x.doc,
+        User.selectUserById(x.doc.userId).map(u => u._2).getOrElse(User("","", Seq(), "", "")),
+        Favorite.isFavorite(id, x.doc)
+      )
+    )
   }
 
   /** 現在の日時を取得する

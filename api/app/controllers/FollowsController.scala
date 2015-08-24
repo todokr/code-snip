@@ -29,7 +29,7 @@ object FollowsController extends Controller {
 
   // フォロー解除
   def unFollow = AuthAction(parse.json) { implicit rs =>
-    val userId = selectUserBySession(rs).get._1
+    val userId = selectUserBySession(rs).map(u => u._1).getOrElse("-1")
     val targetId = Json.stringify(rs.body \ "followToId").replaceAll("\"", "")
     removeFollow(userId, targetId) match {
       case Left => BadRequest(Json.obj("result" -> "failed"))
@@ -39,14 +39,14 @@ object FollowsController extends Controller {
 
   // フォロー一覧
   def listFollowUsers = AuthAction { implicit rs =>
-    val userId = selectUserBySession(rs).get._1
+    val userId = selectUserBySession(rs).map(u => u._1).getOrElse("-1")
     val result = selectFollowListByUserId(userId).map(uid => selectUserById(uid)).flatten.map(u => DisplayUser(u._1, u._2, true))
     Ok(Json.toJson(result))
   }
 
   // フォロワー一覧
   def listFollower = AuthAction { implicit rs =>
-    val selfId = selectUserBySession(rs).get._1
+    val selfId = selectUserBySession(rs).map(u => u._1).getOrElse("-1")
     val followList = selectFollowListByUserId(selfId)
     val result = selectFollowerListByUserId(selfId).map(followerId => {
       val isFollowing = followList.contains(followerId)
@@ -66,7 +66,7 @@ object FollowsController extends Controller {
 
   // フォローとフォロワーの数を一度に取得
   def selectFollowNumbers = AuthAction { implicit rs =>
-    val (follow, follower) = selectFollowUsers(selectUserBySession(rs).get._1)
+    val (follow, follower) = selectFollowUsers(selectUserBySession(rs).map(u => u._1).getOrElse("-1"))
     Ok(Json.obj(
       "follow" -> follow.size,
       "follower" -> follower.size
