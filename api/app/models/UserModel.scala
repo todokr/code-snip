@@ -22,6 +22,13 @@ object User {
     User(accountName, email, interests, cryptedPassword, imageUrl)
   }
 
+  def insertUser(user: User): Unit = {
+    val defaultImgUrl = "/assets/images/default.gif"
+    ESClient.using(url) { client =>
+      client.insert(config, User.setCrypted(accountName = user.accountName, email = user.email, interests = user.interests, password = user.password, defaultImgUrl))
+    }
+  }
+
   /** idを受け取ってUserを検索した結果を返す
     * @param id Userのid (NotNull)
     * @return Optionに詰めた検索結果
