@@ -201,7 +201,11 @@
     :host paper-spinner {
       position: relative;
       top: 8px;
-      left: 10px;
+      left: 0;
+      --paper-spinner-layer-1-color: var(--paper-teal-400);
+      --paper-spinner-layer-2-color: var(--paper-teal-400);
+      --paper-spinner-layer-3-color: var(--paper-teal-400);
+      --paper-spinner-layer-4-color: var(--paper-teal-400);
     }
 
     :host .thumb-field {
@@ -211,16 +215,19 @@
     }
 
     :host #thumb-canvas {
+      display: block;
       width: 70px;
       height: 70px;
       background: #fafafa;
       float: left;
+      border-radius: 6px;
     }
 
-    :host #thumb-input {
+    :host #thumbnailInput {
       width: 260px;
       float: left;
       margin-left: 10px;
+      margin-top: 28px;
     }
   </style>
   <template>
@@ -256,7 +263,8 @@
       <form is="iron-form" id="editForm">
         <div class="thumb-field">
           <canvas id="thumb-canvas"></canvas>
-          <paper-input label="Thumbnail" type="file" id="thumb-input"></paper-input>
+          <input label="Thumbnail" type="file" id="thumbnailInput" on-change="imageSelectChanged" />
+          <input type="hidden" name="imageUrl" id="imageUrlContainer" value="">
         </div>
         <paper-input name="accountName" label="Name" required auto-validate value="{{profile.accountName}}"></paper-input>
         <gold-email-input label="Email" required name="email" auto-validate value="{{profile.email}}"></gold-email-input>
@@ -372,15 +380,23 @@
           this.$.profileAjax.generateRequest();
         },
         profileResponse: function() {
-          console.log(this.$.profileAjax.lastResponse);
           this.profile = this.$.profileAjax.lastResponse;
           this.$.editForm.validate();
         },
         profileError: function(e) {
         },
         _showEditProfModal: function() {
+          // canvas
+          var canvas = document.getElementById('thumb-canvas');
+          canvas.width = 70;
+          canvas.height = 70;
+          var ctx = canvas.getContext('2d');
+          var img = new Image();
+          img.src = this.status.imageUrl;
+          ctx.drawImage(img, 0, 0, 70, 70);
+
+          // modal
           this._getProfileAjax();
-          console.log(status);
           this.modal = document.getElementById('edit-profile-modal');
           this.modal.open();
         },
@@ -398,7 +414,30 @@
         },
         updateError: function(e) {
         },
+        imageSelectChanged: function(e) {
+          var _this = this;
+          var fileList = this.$.thumbnailInput.files;
+          if(fileList.length < 1){
+            return false ;
+          }
+          var file = fileList[0];
+          var canvas = document.getElementById('thumb-canvas');
+          var fr = new FileReader();
+          var ctx = canvas.getContext('2d');
+          var img = new Image();
+          var dataUrl;
+          fr.readAsDataURL(file);
+          fr.onload = function() {
+            dataUrl = fr.result;
+            img.src = dataUrl;
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+            console.log(dataUrl);
+            _this.$.imageUrlContainer.value = dataUrl;
+          };
 
+        }
       });
     })();
   </script>
