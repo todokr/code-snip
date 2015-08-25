@@ -6,38 +6,40 @@
 #OPTIONS        /*path               controllers.Application.options(path)
 
 # Map static resources from the /public folder to the /assets URL path
-GET           /assets/*file          controllers.Assets.at(path="/public", file)
+GET            /assets/*file          controllers.Assets.at(path="/public", file)
+
+OPTIONS        /*all                  controllers.Application.preFlight(all: String)
 
 # Auth
-POST          /auth                  controllers.AuthController.login
-GET           /logout                controllers.AuthController.logout
-GET           /authneeded            controllers.AuthController.authNeed
+POST           /auth                  controllers.AuthController.login
+GET            /logout                controllers.AuthController.logout
+GET            /authneeded            controllers.AuthController.authNeed
 
 # User
-GET           /status                controllers.UsersController.accountStatus
-POST          /users                 controllers.UsersController.create
-GET           /users/:id             controllers.UsersController.show(id)
-PUT           /users                 controllers.UsersController.update
-DELETE        /users/:id             controllers.UsersController.delete(id)
-GET           /near-interests        controllers.UsersController.listNearInterestUser
+GET            /status                controllers.UsersController.accountStatus
+POST           /users                 controllers.UsersController.create
+GET            /users/:id             controllers.UsersController.show(id)
+PUT            /users                 controllers.UsersController.update
+DELETE         /users/:id             controllers.UsersController.delete(id)
+GET            /near-interests        controllers.UsersController.listNearInterestUser
 
 # Post
-GET           /timeline              controllers.PostsController.followList
-GET           /wrote                 controllers.PostsController.list
-POST          /posts                 controllers.PostsController.create
-DELETE        /posts/:id             controllers.PostsController.delete(id)
+GET            /timeline              controllers.PostsController.followList
+GET            /wrote                 controllers.PostsController.list
+POST           /posts                 controllers.PostsController.create
+DELETE         /posts/:id             controllers.PostsController.delete(id)
 
 # Follow
-GET           /follow                controllers.FollowsController.listFollowUsers
-GET           /follower              controllers.FollowsController.listFollower
-GET           /followNum             controllers.FollowsController.selectFollowNumbers
-POST          /follow                controllers.FollowsController.follow
-POST          /unfollow              controllers.FollowsController.unFollow
+GET            /follow                controllers.FollowsController.listFollowUsers
+GET            /follower              controllers.FollowsController.listFollower
+GET            /followNum             controllers.FollowsController.selectFollowNumbers
+POST           /follow                controllers.FollowsController.follow
+POST           /unfollow              controllers.FollowsController.unFollow
 
 # Favorite
-GET           /favorite              controllers.FavoritesController.list
-POST          /favorite              controllers.FavoritesController.addFavorite
-POST          /unfavorite            controllers.FavoritesController.removeFavorite
+GET            /favorite              controllers.FavoritesController.list
+POST           /favorite              controllers.FavoritesController.addFavorite
+POST           /unfavorite            controllers.FavoritesController.removeFavorite
 
 
 # Dummy

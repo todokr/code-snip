@@ -126,7 +126,7 @@ es POST user/o10kojukuedajima4649 '
 {
   "accountName": "江田島平八",
   "email": "edajima@otoko-juku.ed.jp",
-  "interests": ["Java", "Scala", "Node.js"],
+  "interests": ["Java", "Scala", "Perl"],
   "password": "276b3098174de28ef5877dacb412b825cf803192",
   "imageUrl": "/assets/images/default.gif"
 }'
@@ -136,7 +136,7 @@ es POST user/bishokuKurabuNoAruji '
 {
   "accountName": "海原雄山",
   "email": "kaibara@bishoku.club",
-  "interests": ["HTML", "CSS", "JavaScript", "Scalaz"],
+  "interests": ["HTML", "CSS", "JavaScript"],
   "password": "276b3098174de28ef5877dacb412b825cf803192",
   "imageUrl": "/assets/images/default.gif"
 }'
@@ -183,7 +183,7 @@ es POST user/luckeyIkeda '
 {
   "accountName": "ラッキー池田",
   "email": "luckey@ikeda.com",
-  "interests": ["Python", "Java", "Node.js"],
+  "interests": ["Python", "Java", "Perl"],
   "password": "276b3098174de28ef5877dacb412b825cf803192",
   "imageUrl": "/assets/images/default.gif"
 }'
@@ -192,7 +192,7 @@ es POST user/okawaEisaku '
 {
   "accountName": "大川栄策",
   "email": "okawa@eisaku.com",
-  "interests": ["Python", "Ruby", "Node.js"],
+  "interests": ["Python", "Ruby", "Perl"],
   "password": "276b3098174de28ef5877dacb412b825cf803192",
   "imageUrl": "/assets/images/default.gif"
 }'
@@ -201,34 +201,7 @@ es POST user/pomupomupurin '
 {
   "accountName": "ポムポムプリン",
   "email": "pomupomu@purin.com",
-  "interests": ["Ruby", "ShellScript", "Node.js"],
-  "password": "276b3098174de28ef5877dacb412b825cf803192",
-  "imageUrl": "/assets/images/default.gif"
-}'
-
-es POST user/kanahei '
-{
-  "accountName": "カナヘイ",
-  "email": "kanahei@hey.com",
-  "interests": ["Ruby", "ShellScript", "Node.js"],
-  "password": "276b3098174de28ef5877dacb412b825cf803192",
-  "imageUrl": "/assets/images/default.gif"
-}'
-
-es POST user/dragonkid '
-{
-  "accountName": "ドラゴン・キッド",
-  "email": "kid@dragon-gate.com",
-  "interests": ["Emacs", "Scala", "Ruby"],
-  "password": "276b3098174de28ef5877dacb412b825cf803192",
-  "imageUrl": "/assets/images/default.gif"
-}'
-
-es POST user/chocoboy '
-{
-  "accountName": "チョコボーイ山口",
-  "email": "yamaguchi@choco-boy.com",
-  "interests": ["ShellScript", "Linux", "Go"],
+  "interests": ["Ruby", "ShellScript", "Perl"],
   "password": "276b3098174de28ef5877dacb412b825cf803192",
   "imageUrl": "/assets/images/default.gif"
 }'
@@ -304,8 +277,17 @@ es POST post '
 
 es POST post '
 {
+  "userId": "o10kojukuedajima4649",
+  "code": "戦え我等は仲間！ どんな組織でも一枚岩など・・・ ",
+  "description": "エモい感じで",
+  "tag": "ポエム",
+  "time": "2015/08/23 12:46"
+}'
+
+es POST post '
+{
   "userId": "bishokuKurabuNoAruji",
-  "code": "User.findByArray(this))",
+  "code": "User.findByArray(this)",
   "description": "この洗いを作ったのは誰かを探す",
   "tag": "Ruby",
   "time": "2015/08/12 1:46"
@@ -322,17 +304,35 @@ es POST post '
 
 es POST post '
 {
+  "userId": "bishokuKurabuNoAruji",
+  "code": "window.addEventListener(\"WebComponentsReady\", function(){\n  // ここになにか処理\n});",
+  "description": "カスタムエレメントの構築が完了した時点で何からの処理をする",
+  "tag": "JavaScript",
+  "time": "2015/08/12 1:41"
+}'
+
+es POST post '
+{
   "userId": "metroCityNoSichodayo",
   "code": "kill 9999",
   "description": "9999番のプロセスを殺す",
-  "tag": "ShellScript",
+  "tag": "Linux",
   "time": "2015/03/12 12:46"
 }'
 
 es POST post '
 {
   "userId": "metroCityNoSichodayo",
-  "code": "var x = \"123\";\nvar y = +x;",
+  "code": "lsusb",
+  "description": "USBポートに接続されているデバイスを表示",
+  "tag": "Linux",
+  "time": "2015/03/12 12:46"
+}'
+
+es POST post '
+{
+  "userId": "metroCityNoSichodayo",
+  "code": "var x = \"123\"; \nvar y = +x;",
   "description": "文字列を数値化",
   "tag": "JavaScript",
   "time": "2015/08/12 2:46"
@@ -340,38 +340,165 @@ es POST post '
 
 es POST post '
 {
+  "userId": "spacedeka",
+  "code": "String wakasa = \"振り向かないこと\";",
+  "description": "若さって何だ",
+  "tag": "Java",
+  "time": "2015/08/23 2:12"
+}'
+
+es POST post '
+{
+  "userId": "spacedeka",
+  "code": "String ai = \"ためらわないこと\";",
+  "description": "愛って何だ",
+  "tag": "Java",
+  "time": "2015/08/23 2:14"
+}'
+
+es POST post '
+{
+  "userId": "spacedeka",
+  "code": "{\n  \"message\": \"Validation Failed\",\n    \"errors\": [\n      {\n        \"resource\": \"Issue\",\n        \"field\": \"title\",\n      \"code\": \"missing_field\"\n    }\n    ]\n}",
+  "description": "GitHubのエラー時のJSONレスポンス",
+  "tag": "JavaScript",
+  "time": "2015/08/24 2:14"
+}'
+
+es POST post '
+{
   "userId": "koukakuKidoutaiMitai",
-  "code": "brew install ghosthack",
-  "description": "ゴーストハックが使えるようになる",
-  "tag": "brew",
+  "code": "yum install ghosthack",
+  "description": "ゴーストハックをインストール",
+  "tag": "Linux",
   "time": "2015/08/10 12:46"
 }'
 
 es POST post '
 {
-  "userId": "metroCityNoSichodayo",
-  "code": "sudo brew install -g ghosthack",
-  "description": "グローバルに使えたほうがいい",
-  "tag": "brew",
-  "time": "2015/08/12 12:46"
+  "userId": "koukakuKidoutaiMitai",
+  "code": "世の中に不満があるなら自分を変えろ！それが嫌なら、耳と目を閉じ、口をつぐんで孤独に暮らせ！！",
+  "description": "世の中に不満があるなら",
+  "tag": "ポエム",
+  "time": "2015/08/20 12:46"
 }'
+
+es POST post '
+{
+  "userId": "koukakuKidoutaiMitai",
+  "code": "Ghost.whisper(\"そうしろ\")",
+  "description": "そうしろと囁くのよ、私のゴーストが",
+  "tag": "Scala",
+  "time": "2015/08/21 12:46"
+}'
+
+es POST post '
+{
+  "userId": "kusamayayoi",
+  "code": "地球、月、太陽、そして人間も、全ては水玉で出来ているの。無数の水玉によってね。",
+  "description": "全ては",
+  "tag": "ポエム",
+  "time": "2015/08/21 10:21"
+}'
+
+es POST post '
+{
+  "userId": "kusamayayoi",
+  "code": "歳をとったからできなくなったことを嘆くよりも、\n前にはなかったエネルギーをたくさん作って、挑戦を続けたい。",
+  "description": "求めれば求めるほど、星は遠く見える",
+  "tag": "ポエム",
+  "time": "2015/08/22 11:30"
+}'
+
+es POST post '
+{
+  "userId": "kusamayayoi",
+  "code": "いま大切なのは、\n無や宇宙に対する人生観を立ち上げること、\n不老不死の人生観を立ち上げること。\nその中に、平和や愛を入れます。\n一番心がけることは、死を恐れないことです。",
+  "description": "いま大切なのは",
+  "tag": "ポエム",
+  "time": "2015/08/23 12:12"
+}'
+
 
 es POST post '
 {
   "userId": "luckeyIkeda",
   "code": "Math.sin()",
   "description": "いい感じにモタったりハシったりすることでグルーヴが生まれるんだ！",
-  "tag": "Dance",
-  "time": "2015/08/18 12:46"
+  "tag": "JavaScript",
+  "time": "2015/08/23 12:46"
 }'
 
 es POST post '
 {
   "userId": "luckeyIkeda",
-  "code": "Math.cos()",
-  "description": "こちらも同様",
+  "code": "var NS = window.NS || {};",
+  "description": "名前空間を作る",
+  "tag": "JavaScript",
+  "time": "2015/08/24 15:23"
+}'
+
+es POST post '
+{
+  "userId": "luckeyIkeda",
+  "code": "python -m SimpleHTTPServer 8080",
+  "description": "簡易的なローカルサーバーをポート8080番で立ち上げる",
   "tag": "Dance",
-  "time": "2015/08/12 12:46"
+  "time": "2015/08/25 5:16"
+}'
+
+es POST post '
+{
+  "userId": "okawaEisaku",
+  "code": "$ echo \"hoge\"",
+  "description": "hogeと出力する例",
+  "tag": "Linux",
+  "time": "2015/08/25 5:16"
+}'
+
+es POST post '
+{
+  "userId": "okawaEisaku",
+  "code": "ruby -ne \"puts $_\" hoge.txt fuge.txt",
+  "description": "hoge.txtとfuge.txtの内容を表示するワンライナー",
+  "tag": "Ruby",
+  "time": "2015/08/25 11:32"
+}'
+
+es POST post '
+{
+  "userId": "okawaEisaku",
+  "code": "ruby -r open-uri -e \"open(\"http://www.yahoo.co.jp\") {|f| puts f.read}\",
+  "description": "yahooのhtmlを取得するワンライナー",
+  "tag": "Ruby",
+  "time": "2015/08/25 13:12"
+}'
+
+es POST post '
+{
+  "userId": "pomupomupurin",
+  "code": "sleep 1000",
+  "description": "1000msだけプログラムの実行を停止する",
+  "tag": "Ruby",
+  "time": "2015/08/22 19:26"
+}'
+
+es POST post '
+{
+  "userId": "pomupomupurin",
+  "code": "STDIN.each {|line| puts line }",
+  "description": "標準入力から読み込んで1行ずつ順繰りにputsする",
+  "tag": "Ruby",
+  "time": "2015/08/24 19:06"
+}'
+
+es POST post '
+{
+  "userId": "pomupomupurin",
+  "code": "ruby -r open-uri -r json -e \"open(\"http://graph.facebook.com/zuck\") {|f| p JSON.parse(f.read)}\"",
+  "description": "facebookのapiからマークザッカーバーグのJSONを取得しハッシュに変換",
+  "tag": "Ruby",
+  "time": "2015/08/24 11:22"
 }'
 
 # Message
