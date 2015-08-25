@@ -173,9 +173,9 @@
       var ajax = this.$.favoriteAjax;
       this.bodyObj.favoritePostId = this.postId;
       if (this.isFavorite) {
-        ajax.url = "http://localhost:9000/unfavorite";
+        ajax.url = "http://10.199.30.146:9000/unfavorite";
       } else {
-        ajax.url = "http://localhost:9000/favorite";
+        ajax.url = "http://10.199.30.146:9000/favorite";
       }
       ajax.body = JSON.stringify(this.bodyObj);
       ajax.generateRequest();

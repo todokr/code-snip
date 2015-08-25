@@ -116,9 +116,9 @@
       var ajax = this.$.followAjax;
       this.bodyObj.followToId = this.userId;
       if (this.isFollowing) {
-        ajax.url = "http://localhost:9000/unfollow";
+        ajax.url = "http://10.199.30.146:9000/unfollow";
       } else {
-        ajax.url = "http://localhost:9000/follow";
+        ajax.url = "http://10.199.30.146:9000/follow";
       }
       ajax.body = JSON.stringify(this.bodyObj);
       ajax.generateRequest();
