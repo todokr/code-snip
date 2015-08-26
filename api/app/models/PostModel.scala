@@ -60,14 +60,15 @@ object Post {
    )
   }
 
-  /** フォローしているユーザーの投稿を検索する
+  /** フォローしているユーザー+自分の投稿を検索する
     * @param id ユーザーのID
     * @return 検索結果
     */
-  def selectFollowPost(id: String): List[ShownPost] = {
+  def selectTimeline(id: String): List[ShownPost] = {
     ESClient.using(url) { client =>
       client.list[Post](config){ searcher =>
-        searcher.setQuery(matchQuery("userId", Follow.selectFollowListByUserId(id)))
+        val targetUserList = Follow.selectFollowListByUserId(id) + id
+        searcher.setQuery(matchQuery("userId", targetUserList))
       }
     }.list.map( x =>
       ShownPost(

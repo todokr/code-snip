@@ -112,25 +112,19 @@
       position: relative;
       top: 8px;
       left: 10px;
+      --paper-spinner-layer-1-color: var(--paper-teal-500);
+      --paper-spinner-layer-2-color: var(--paper-teal-500);
+      --paper-spinner-layer-3-color: var(--paper-teal-500);
+      --paper-spinner-layer-4-color: var(--paper-teal-500);
     }
 
   </style>
   <template>
-    <iron-ajax
-      with-credentials
-      id="signupAjax"
-      url="http://10.199.30.146:9000/users"
-      method="POST"
-      content-type="application/json"
-      handle-as="json"
-      on-response="handleResponse"
-      on-error="handleError"
-      last-response="{{ajaxResponse}}"></iron-ajax>
     <div class="inner">
       <h2>Sign Up</h2>
       <form is="iron-form" id="signupForm">
         <paper-input name="accountName" label="Name" required auto-validate value=""></paper-input>
-        <gold-email-input label="Email" required name="email" auto-validate value=""></gold-email-input>
+        <gold-email-input label="Email" required name="email" auto-validate value="" id="email"></gold-email-input>
         <paper-input name="password" label="Password" type="password" required auto-validate value=""></paper-input>
         <label>Your Interest</label>
         <iron-selector id="interests" multi attr-for-selected="name" selected-values='["Emacs"]'>
@@ -157,6 +151,24 @@
         <a href="/login">Already have a account?</a>
       </form>
     </div>
+    <iron-ajax
+      with-credentials
+      id="signupAjax"
+      url="http://10.199.30.146:9000/users"
+      method="POST"
+      content-type="application/json"
+      handle-as="json"
+      on-response="signupResponse"
+      on-error="signupError"></iron-ajax>
+     <iron-ajax
+      with-credentials
+      id="loginAjax"
+      url="http://10.199.30.146:9000/auth"
+      method="POST"
+      content-type="application/json"
+      handle-as="json"
+      on-response="loginResponse"
+      on-error="loginError"></iron-ajax> 
   </template>
 </dom-module>
 <script>
@@ -164,27 +176,47 @@
     is: 'signup-form',
     sendAjax: function() {
       if (this.$.signupForm.validate()) {
+        this.$.spinner.toggleAttribute('active', true);
         var data = this.$.signupForm.serialize();
         data.interests = this.$.interests.selectedValues;
-        console.log(data);
         this.$.signupAjax.body = data;
         this.$.signupAjax.generateRequest();
-        this.$.spinner.toggleAttribute('active', true);
+        
       } else {
         var toast = document.querySelector('#errorToast');
         toast.text = "Something invalid! Check your input, please!";
         toast.show();
       }
     },
-    handleResponse: function() {
-      this.$.spinner.toggleAttribute('active', false);
+    signupResponse: function() {
+      var _this = this;
       var loginData = this.$.signupForm.serialize();
-      var toast = document.querySelector('#toast');
-      toast.text = "Your Account is created! Please Log in!";
-      toast.show();
-      window.app.route = "login";
+      setTimeout(function(){
+        _this.tryLogin(loginData);
+      },1500);
     },
-    handleError: function(mes) {
+    signupError: function(mes) {
+      this.$.spinner.toggleAttribute('active', false);
+      var toast = document.querySelector('#errorToast');
+      toast.text = "Something Wrong!";
+      toast.show();
+    },
+    tryLogin: function(createData) {
+      //{accountName: "hoge", email: "test@test.com", password: "hoge", imageUrl: "", interests: Array[2]}
+      var loginData = {
+        "email": createData.email,
+        "password": createData.password
+      };
+      this.$.loginAjax.body = loginData;
+      this.$.loginAjax.generateRequest();
+    },
+    loginResponse: function() {
+      localStorage.setItem('cs_mail', this.$.email.value);
+      this.$.spinner.toggleAttribute('active', false);
+      location.href = '/#!/app';
+      location.reload();
+    },
+    loginError: function() {
       this.$.spinner.toggleAttribute('active', false);
       var toast = document.querySelector('#errorToast');
       toast.text = "Something Wrong!";

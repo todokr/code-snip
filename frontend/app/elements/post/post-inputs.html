@@ -106,10 +106,13 @@
       },
       pressHandler: function() {
         var eToast = document.querySelector('#errorToast');
+        var title = this.$.title.value.trim();
+        var lang = this.$.lang.value.trim();
+        var content = this.$.codeTextarea.value.trim();
         if (
-          this.$.title.value.length > 0 &&
-          this.$.lang.value.length > 0 &&
-          this.$.codeTextarea.value.length > 0
+          title.length > 0 &&
+          lang.length > 0 &&
+          content.length > 0
         ){
           if (this.$.codeTextarea.value.length <= 140) {
             this.sendAjax();
