@@ -106,7 +106,9 @@
       isFollowing: {
         type: Boolean
       },
-      btnText: String
+      btnText: {
+        type: String,
+      }
     },
     ready: function() {
       this.bodyObj =  {"followToId": null};
@@ -120,12 +122,13 @@
       } else {
         ajax.url = "http://10.199.30.146:9000/follow";
       }
+
       ajax.body = JSON.stringify(this.bodyObj);
       ajax.generateRequest();
     },
     followResponse: function() {
-      this.flg = !this.flg;
-      this.toggleClass('followed', this.flg);
+      this.isFollowing = !this.isFollowing;
+      this.btnText = (this.isFollowing) ? "Remove" : "Follow";
       this.fire("pleaseCountFollow");
     },
     errorResponse: function() {

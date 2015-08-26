@@ -71,10 +71,10 @@
           case 'follower': this.pageName = 'Your Follower'; break;
         }
         
-        document.addEventListener('pleaseCountFollow', function(){
+        document.addEventListener('pleaseReloadFollow', function(){
           setTimeout(function(){    
             _this.sendAjax();
-          },500);
+          },1000);
         });
       },
       sendAjax: function() {

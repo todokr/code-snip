@@ -1,5 +1,4 @@
 <link rel="import" href="../account/account-info-name.html">
-<link rel="import" href="../account/account-option.html">
 <link rel="import" href="../post/code-tags.html">
 <link rel="import" href="../post/code-tags-mini.html">
 <link rel="import" href="../account/recommend-user.html">
@@ -10,6 +9,8 @@
     :host {
       display: block;
       padding: 20px;
+      position: relative;
+      padding-bottom: 80px;
     }
 
     :host .account-follow {
@@ -312,7 +313,6 @@
         </div>
       </form>
     </paper-dialog>
-
     <iron-ajax
       with-credentials
       id="logoutAjax"
@@ -391,12 +391,12 @@
         statusError: function(e) {
         },
         _showFollow: function() {
-          this.fire('pleaseCountFollow');
+          this.fire('pleaseReloadFollow');
           var menu = document.querySelector('#timeline-menu');
           menu.selected = 3;
         },
         _showFollower: function() {
-          this.fire('pleaseCountFollow');
+          this.fire('pleaseReloadFollow');
           var menu = document.querySelector('#timeline-menu');
           menu.selected = 4;
         },
@@ -449,17 +449,21 @@
           var canvas = document.getElementById('thumb-canvas');
           var fr = new FileReader();
           var ctx = canvas.getContext('2d');
-          var img = new Image();
+          var x = 100;
+          var y = 100;
+          var img = new Image(x, y);
           var dataUrl;
           fr.readAsDataURL(file);
           fr.onload = function() {
             dataUrl = fr.result;
             img.src = dataUrl;
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx.drawImage(img, 0, 0);
-            console.log(dataUrl);
-            _this.$.imageUrlContainer.value = dataUrl;
+            img.width = x;
+            img.height = y;
+            canvas.width = x;
+            canvas.height = y;
+            ctx.drawImage(img, 0, 0, x, y);
+            var base64_resized = canvas.toDataURL( "image/png" );
+            _this.$.imageUrlContainer.value = base64_resized;
           };
         },
         reloadRecommend: function(){

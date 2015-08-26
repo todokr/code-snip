@@ -100,11 +100,11 @@
     },
     followResponse: function() {
       this.followFlg = !this.followFlg;
-      this.toggleClass('followed', this.followFlg);
       this.btnText = (this.followFlg) ? "Remove" : "Follow";
-      this.$.followBtn.toggleAttribute('disabled', false);
       this.fire("pleaseCountFollow");
-      this.fire("pleaseTlReload");
+      this.fire("pleaseReloadFollow");
+      this.fire("pleaseReloadTl");
+      this.$.followBtn.toggleAttribute('disabled', false);
     },
     errorResponse: function() {
       var toast = document.querySelector('#errorToast');

@@ -68,7 +68,7 @@ object Post {
     ESClient.using(url) { client =>
       client.list[Post](config){ searcher =>
         val targetUserList = Follow.selectFollowListByUserId(id) + id
-        searcher.setQuery(matchQuery("userId", targetUserList))
+        searcher.setQuery(matchQuery("userId", targetUserList)).addSort("_timestamp", SortOrder.DESC)
       }
     }.list.map( x =>
       ShownPost(
