@@ -28,7 +28,7 @@ object FavoritesController extends Controller{
     val userId = User.selectUserBySession(rs).map(u => u._1).getOrElse("")
     val postId = Json.stringify(rs.body \ "favoritePostId").replaceAll("\"", "")
     Favorite.insertFavorite(userId, postId) match {
-      case Right => Ok(Json.obj("result" -> "success"))
+      case Right(_) => Ok(Json.obj("result" -> "success"))
       case _ => BadRequest(Json.obj("result" -> "failed"))
     }
   }
@@ -38,7 +38,7 @@ object FavoritesController extends Controller{
     val userId = User.selectUserBySession(rs).map(u => u._1).getOrElse("")
     val targetPostId = Json.stringify(rs.body \ "favoritePostId").replaceAll("\"", "")
     Favorite.removeFavorite(userId, targetPostId) match {
-      case Right => Ok(Json.obj("result" -> "success"))
+      case Right(_) => Ok(Json.obj("result" -> "success"))
       case _ => BadRequest(Json.obj("result" -> "failed"))
     }
   }
