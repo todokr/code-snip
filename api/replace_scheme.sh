@@ -467,15 +467,6 @@ es POST post '
 
 es POST post '
 {
-  "userId": "okawaEisaku",
-  "code": "ruby -r open-uri -e \"open(\"http://www.yahoo.co.jp\") {|f| puts f.read}\",
-  "description": "yahooのhtmlを取得するワンライナー",
-  "tag": "Ruby",
-  "time": "2015/08/25 13:12"
-}'
-
-es POST post '
-{
   "userId": "pomupomupurin",
   "code": "sleep 1000",
   "description": "1000msだけプログラムの実行を停止する",

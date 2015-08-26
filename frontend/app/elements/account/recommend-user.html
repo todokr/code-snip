@@ -40,7 +40,9 @@
           _this._sendAjax();
         }
         document.addEventListener('pleaseReloadRecommend', function(){
-          _this._sendAjax();
+          setTimeout(function(){
+            _this._sendAjax();
+          },1200);
         });
       },
       recommendResponse: function(){

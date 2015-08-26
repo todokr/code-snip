@@ -433,6 +433,7 @@
         },
         updateResponse: function(request) {
           this.$.spinner.toggleAttribute('active', false);
+          this.fire('pleaseReloadRecommend');
           this.modal.close();
           this.fire('pleaseCountFollow');
         },
