@@ -103,5 +103,9 @@ object User {
     val email =  selectEmailBySession(request)
     selectUserByEmail(email)
   }
+
+  def selectInterestListByUserId(userId: String): Option[Seq[String]] = {
+    selectUserById(userId).map(u => u._2.interests)
+  }
 }
 

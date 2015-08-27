@@ -7,7 +7,7 @@
   <style>
     :host {
       display: block;
-      height: 200px;
+      height: 220px;
       box-sizing: border-box;
       border-top: 1px solid rgba(0, 0, 0, 0.22);
       background: #fff;
@@ -63,11 +63,25 @@
       clear: both;
     }
 
-    :host #contentLengthIndicator {
-      text-align: right;
-      font-size: 14px;
+    :host .input-bellow {
       margin-top: 5px;
+      text-align: right;
+    }
+
+    :host #contentLengthIndicator {
+      display: inline-block;
+      font-size: 14px;
       color: #999;
+    }
+
+    :host .input-bellow paper-button {
+      background: var(--paper-deep-purple-200);
+      color: #fff;
+      font-size: 14px;
+    }
+
+    :host .input-bellow paper-button ::content paper-material {
+      padding: 0;
     }
 
     :host #contentLengthIndicator.error {
@@ -78,11 +92,14 @@
   <template>
     <div class="writing-inner">
       <form is="iron-form" id="postForm">
-        <paper-input id="title" name="description" label="Title" type="text" required value=""></paper-input>
-        <paper-input id="lang" name="tag" label="Language" type="text" required value=""></paper-input>
+        <paper-input id="title" name="description" label="Title" type="text" auto-validate required value=""></paper-input>
+        <paper-input id="lang" name="tag" label="Language" type="text" auto-validate required value=""></paper-input>
         <textarea placeholder="Ctrl + Enter to Submit." name="code" id="codeTextarea" tabindex="1"></textarea>
       </form>
-      <p id="contentLengthIndicator">140</p>
+      <div class="input-bellow">
+        <p id="contentLengthIndicator">140</p>
+        <paper-button id="submit" on-click="postHandler">Post</paper-button>
+      </div>
     </div>
     <iron-ajax
       with-credentials
@@ -93,7 +110,7 @@
       handle-as="json"
       on-response="postResponse"
       on-error="postError"></iron-ajax>
-    <iron-a11y-keys target="{{}}" keys="ctrl+enter" on-keys-pressed="pressHandler" onkey></iron-a11y-keys>
+    <iron-a11y-keys target="{{}}" keys="ctrl+enter" on-keys-pressed="postHandler" onkey></iron-a11y-keys>
   </template>
 
   <script>
@@ -104,7 +121,7 @@
         this.$.postAjax.body = data;
         this.$.postAjax.generateRequest();
       },
-      pressHandler: function() {
+      postHandler: function() {
         var eToast = document.querySelector('#errorToast');
         var title = this.$.title.value.trim();
         var lang = this.$.lang.value.trim();

@@ -82,6 +82,16 @@ object Post {
     )
   }
 
+  /** 投稿を削除する
+    * @param postId 投稿のID
+    * @return 削除の結果
+    */
+  def deletePost(postId: String): Either[Map[String, _], Map[String, _]] = {
+    ESClient.using(url) { client =>
+      client.delete(config, postId)
+    }
+  }
+
   /** 現在の日時を取得する
     * @return 現在日時(yyyy/MM/dd HH:mm)
     */

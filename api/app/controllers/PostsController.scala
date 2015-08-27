@@ -1,12 +1,9 @@
 package controllers
 
 import auth.AuthAction
-import jp.co.bizreach.elasticsearch4s.ESClient
 import models._
 import models.User._
 import models.Post._
-import models.Post.{config, url}
-import play.api.libs.functional.syntax._
 import play.api.libs.json.{Json, _}
 import play.api.mvc._
 
@@ -46,11 +43,8 @@ object PostsController extends Controller{
   }
 
   // 投稿の削除
-  def delete(id: String) = AuthAction { implicit rs =>
-    val result = ESClient.using(url) { client =>
-      client.delete(config, id)
-    }
-    result match {
+  def delete(postId: String) = AuthAction { implicit rs =>
+    deletePost(postId) match {
       case Right(map) => Ok(Json.obj("result" -> "success"))
       case Left(_) => NotFound(Json.obj("result" -> "notFound"))
     }

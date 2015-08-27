@@ -24,19 +24,19 @@
       --paper-spinner-layer-3-color: var(--paper-teal-300);
       --paper-spinner-layer-4-color: var(--paper-teal-300);
     }
+
+    :host .edit-post-box ::content paper-material {
+      padding: 0 5px;
+    }
+
+    :host .edit-post-box ::content paper-material img {
+      position: relative;
+      top: 4px;
+    }
   </style>
   <template>
-    <iron-ajax
-      with-credentials
-      id="postsAjax"
-      url="http://10.199.30.146:9000/timeline"
-      method="GET"
-      handle-as="json"
-      on-response="handleResponse"
-      on-error="handleError"></iron-ajax>
-
     <template is="dom-repeat" items="{{posts}}">
-      <post-card post-id={{item.id}} is-favorite="{{item.isFavorite}}" code="{{item.post.code}}">
+      <post-card post-id={{item.id}} is-favorite="{{item.isFavorite}}" code="{{item.post.code}}" is-promoted="{{item.isPromoted}}" link="{{item.post.linkUrl}}">
         <h2>{{item.user.accountName}}</h2>
         <img src="{{item.user.imageUrl}}" width="50" height="50">
         <code>{{item.post.code}}</code>
@@ -46,6 +46,21 @@
       </post-card>
     </template>
     <paper-spinner id="spinner" active></paper-spinner>
+    <iron-ajax
+      with-credentials
+      id="postsAjax"
+      method="GET"
+      handle-as="json"
+      on-response="handleResponse"
+      on-error="handleError"></iron-ajax>
+    <iron-ajax
+      with-credentials
+      id="promoAjax"
+      url="http://localhost:9000/promo"
+      method="GET"
+      handle-as="json"
+      on-response="promoResponse"
+      on-error="promoError"></iron-ajax>
   </template>
 
   <script>
@@ -53,18 +68,20 @@
       is: 'post-list',
       properties: {
         target: String,
-        posts: Object
+        posts: Object,
+        promoted: Object
       },
       ready: function() {
-        this.$.postsAjax.url = "http://10.199.30.146:9000/" + this.target;
+        // this.$.postsAjax.url = "http://10.199.30.146:9000/" + this.target;
+        this.$.postsAjax.url = "http://localhost:9000/" + this.target;
         var _this = this;
         var busyNow = false;
 
-        setInterval(function(){
-          if(location.href.match(/.*app$/)) {
-            _this.sendAjax();
-          }
-        }, 20000);
+        // setInterval(function(){
+        //   if(location.href.match(/.*app$/)) {
+        //     _this.sendAjax();
+        //   }
+        // }, 20000);
         
         document.addEventListener('pleaseReloadTl', function(){
           if(_this.target === "timeline") {
@@ -88,14 +105,28 @@
       },
       handleResponse: function(request) {
         var res = this.$.postsAjax.lastResponse;
-        this.posts = res;
+        if (this.target === "timeline" ) {
+          this.timelinePosts =  res;
+          this.$.promoAjax.generateRequest();
+        } else {
+          this.posts = res;
+          this.$.spinner.toggleAttribute('active', false);
+        }
+      },
+      handleError: function() {
+        
+      },
+      promoResponse: function(request) {
+        var res = this.$.promoAjax.lastResponse;
+        this.timelinePosts.splice(2, 0, res[0]);
+        this.posts = this.timelinePosts;
         this.$.spinner.toggleAttribute('active', false);
         if(this.target === "timeline" && this.posts.length <= 0) {
            this.toggleClass('no-posts', true);
         }
       },
-      handleError: function() {
-        
+      promoError: function(){
+
       }
     });
   </script>

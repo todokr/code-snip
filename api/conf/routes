@@ -41,6 +41,8 @@ GET            /favorite              controllers.FavoritesController.list
 POST           /favorite              controllers.FavoritesController.addFavorite
 POST           /unfavorite            controllers.FavoritesController.removeFavorite
 
+# promoted
+GET            /promo                 controllers.PromotedPostsController.showPromotedPost
 
 # Dummy
 

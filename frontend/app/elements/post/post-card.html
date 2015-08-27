@@ -48,7 +48,7 @@
 
     :host .card-body {
       width: 100%;
-      padding: 14px 20px;
+      padding: 14px 14px;
       display: table;
       table-layout: fixed;
       box-sizing: border-box;
@@ -107,6 +107,31 @@
       border-width: 9px 7px 9px 0;
     }
 
+    :host #promo-area {
+      display: table-cell;
+      width: 145px;
+      padding-left: 14px;
+      vertical-align: middle;
+    }
+
+    :host #promo-area a {
+      font-size: 14px;
+    }
+
+    :host #delete-area ::content paper-material {
+      /*height: 1em;*/
+    }    
+
+    :host #delete-area ::content paper-button {
+      min-width: 0;
+      height: 40px;
+    }
+
+    :host #delete-area ::content paper-button img {
+      position: relative;
+      top: -2px;
+    }
+
   </style>
   <template>
     <div class="card-head">
@@ -114,7 +139,6 @@
       <content select="p"></content>
       <ul class="buttons">
         <li><paper-icon-button id="star" icon="icons:star" on-click="handleFavorite"></paper-icon-button></li>
-        <li></li>
       </ul>
     </div>
     <div class="card-body">
@@ -127,6 +151,11 @@
       <div class="content">
         <pre><code>{{code}}</code></pre>
       </div>
+      <template is="dom-if" if="{{isPromoted}}">
+        <div id="promo-area">
+          <a href="{{link}}" target="_blank"><paper-button raised><iron-icon icon="icons:exit-to-app"></iron-icon> More Detail</paper-button></a>
+        </div>
+      </template>
     </div>
     <div class="card-footer">
       <content select="time"></content>
@@ -147,6 +176,7 @@
     properties: {
       postId: String,
       isFavorite: Boolean,
+      isOwn: Boolean,
       code: String
     },
     ready: function() {
@@ -164,9 +194,6 @@
         }
         busyNow = true;
       });
-    },
-    attached:function() {
-      //hljs.highlightBlock(this.$$('code'));
     },
     handleFavorite: function(e){
       this.$.star.toggleAttribute('disabled', true);

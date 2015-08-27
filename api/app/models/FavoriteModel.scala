@@ -65,6 +65,15 @@ object Favorite {
     selectFavoriteList(userId).map(fav => fav.post).contains(post)
   }
 
+  /** プロモツイートがお気に入りかどうかの判定
+    * @param userId ユーザーのID
+    * @param post お気に入りかどうか判定されるプロモーテッドポスト
+    * @return 判定結果
+    */
+  def isPromoFavorite(userId: String, post: PromotedPost): Boolean = {
+    selectFavoriteList(userId).map(fav => fav.post).contains(post)
+  }
+
   /** ユーザーIDと投稿からお気に入りIDを取得
     * @param userId ユーザーのID
     * @param postId 投稿のID
