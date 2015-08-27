@@ -72,16 +72,15 @@
         promoted: Object
       },
       ready: function() {
-        // this.$.postsAjax.url = "http://10.199.30.146:9000/" + this.target;
-        this.$.postsAjax.url = "http://localhost:9000/" + this.target;
+        this.$.postsAjax.url = "http://10.199.30.146:9000/" + this.target;
         var _this = this;
         var busyNow = false;
 
-        // setInterval(function(){
-        //   if(location.href.match(/.*app$/)) {
-        //     _this.sendAjax();
-        //   }
-        // }, 20000);
+        setInterval(function(){
+          if(location.href.match(/.*app$/)) {
+            _this.sendAjax();
+          }
+        }, 20000);
         
         document.addEventListener('pleaseReloadTl', function(){
           if(_this.target === "timeline") {
