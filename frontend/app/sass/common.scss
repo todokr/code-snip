@@ -64,3 +64,18 @@ a {
   background: #FFEFEF;
   color: #DB4437;
 }
+
+.back-to-top {
+  margin-top: 20px;
+  text-align: center;
+  
+  a {
+    font-weight: normal;
+    font-size: 14px;
+    color: #fff;
+    opacity: 0.8;
+    &:hover {
+      opacity: 0.4;
+    }
+  }
+}

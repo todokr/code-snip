@@ -66,19 +66,21 @@
           }
         }, 20000);
         
+        document.addEventListener('pleaseReloadTl', function(){
+          if(_this.target === "timeline") {
+             _this.toggleClass('no-posts', false);
+          }
+          if(!busyNow && location.href.match(/.*app$/)){
+            setTimeout(function(){    
+              _this.sendAjax();
+              busyNow = false;
+            },1000); 
+          }
+          busyNow = true;
+        });
+
         document.addEventListener('WebComponentsReady', function(){
-          document.addEventListener('pleaseReloadTl', function(){
-            if(_this.target === "timeline") {
-               _this.toggleClass('no-posts', false);
-            }
-            if(!busyNow && location.href.match(/.*app$/)){
-              setTimeout(function(){    
-                _this.sendAjax();
-                busyNow = false;
-              },1000); 
-            }
-            busyNow = true;
-          });
+          _this.sendAjax();
         });
       },
       sendAjax: function() {

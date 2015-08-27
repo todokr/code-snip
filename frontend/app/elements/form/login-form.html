@@ -8,11 +8,14 @@
   <style>
     :host {
       display: block;
+      width: 380px;
+      margin: 100px auto 0;
+    }
+
+    :host .inner {
       background: #fff;
       box-shadow: 0 1px 2px rgba(0,0,0,0.3);
-      width: 340px;
       padding: 20px;
-      margin: 100px auto 0;
     }
 
     * + :host {
@@ -66,17 +69,19 @@
       on-response="handleResponse"
       on-error="handleError"
       last-response="{{ajaxResponse}}"></iron-ajax>
-    <h2>Login</h2>
-    <form is="iron-form" id="loginForm">
-      <gold-email-input id="email" label="Email" required name="email" auto-validate value=""></gold-email-input>
-      <paper-input id="pass" name="password" label="Password" type="password" required auto-validate value=""></paper-input>
+    <div class="inner">
+      <h2>Login</h2>
+      <form is="iron-form" id="loginForm">
+        <gold-email-input id="email" label="Email" required name="email" auto-validate value=""></gold-email-input>
+        <paper-input id="pass" name="password" label="Password" type="password" required auto-validate value=""></paper-input>
 
-      <div class="button-area">
-        <paper-spinner id="spinner"></paper-spinner>
-        <paper-button on-click="sendAjax" raised>Submit</paper-button>
-      </div>
-      <a href="/signup">Don't have a account?</a>
-    </form>
+        <div class="button-area">
+          <paper-spinner id="spinner"></paper-spinner>
+          <paper-button on-click="sendAjax" raised>Submit</paper-button>
+        </div>
+        <a href="/signup">Don't have a account?</a>
+      </form>
+    </div>
   </template>
 </dom-module>
 <script>
