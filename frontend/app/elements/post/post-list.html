@@ -125,7 +125,11 @@
         }
       },
       promoError: function(){
-
+        this.posts = this.timelinePosts;
+        this.$.spinner.toggleAttribute('active', false);
+        if(this.target === "timeline" && this.posts.length <= 0) {
+           this.toggleClass('no-posts', true);
+        }
       }
     });
   </script>
