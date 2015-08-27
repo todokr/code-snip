@@ -11,7 +11,7 @@ import play.api.libs.json.{JsError, JsResult}
 
 case class FromViewPost(code: String, description: String, tag: String)
 case class Post(userId: String, code: String, description: String, tag: String, time: String)
-case class ShownPost(id: String, post: Post, user: User, isFavorite: Boolean)
+case class ShownPost(id: String, post: Post, user: User, isFavorite: Boolean, isOwn: Boolean)
 
 object Post {
 
@@ -55,7 +55,8 @@ object Post {
        x.id,
        x.doc,
        User.selectUserById(x.doc.userId).map(u => u._2).getOrElse(User("","", Seq(), "", "")),
-       Favorite.isFavorite(id, x.doc)
+       Favorite.isFavorite(id, x.doc),
+       id == x.doc.userId
      )
    )
   }
@@ -75,7 +76,8 @@ object Post {
         x.id,
         x.doc,
         User.selectUserById(x.doc.userId).map(u => u._2).getOrElse(User("","", Seq(), "", "")),
-        Favorite.isFavorite(id, x.doc)
+        Favorite.isFavorite(id, x.doc),
+        id == x.doc.userId
       )
     )
   }
