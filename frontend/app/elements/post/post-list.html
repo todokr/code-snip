@@ -120,9 +120,11 @@
         if (this.target === "timeline" && this.timelinePosts.length <= 0) {
           this.toggleClass('no-posts', true);
         } else {
-          this.timelinePosts.splice(2, 0, res[0]);
+          if (res.length >= 1) {
+            this.timelinePosts.splice(2, 0, res[0]);  
+          }
           this.posts = this.timelinePosts;  
-        };
+        }
         this.$.spinner.toggleAttribute('active', false);
       },
       promoError: function(){
