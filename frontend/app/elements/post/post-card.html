@@ -122,9 +122,13 @@
       /*height: 1em;*/
     }    
 
-    :host #delete-area ::content paper-button {
-      min-width: 0;
-      height: 40px;
+    :host #promo-area paper-button {
+      background: var(--paper-deep-purple-200);
+      color: #fff;
+    }
+
+    :host #promo-area iron-icon {
+      margin-left: 0;
     }
 
     :host #delete-area ::content paper-button img {
@@ -159,7 +163,7 @@
       </div>
       <template is="dom-if" if="{{isPromoted}}">
         <div id="promo-area">
-          <a href="{{link}}" target="_blank"><paper-button raised><iron-icon icon="icons:exit-to-app"></iron-icon> More Detail</paper-button></a>
+          <a href="{{link}}" target="_blank"><paper-button><iron-icon icon="icons:exit-to-app"></iron-icon>More Detail </paper-button></a>
         </div>
       </template>
     </div>

@@ -526,7 +526,7 @@ es POST post '
 es POST promoted '
 {
   "userId": "bizreach",
-  "code": "var hoge = if(!fuga.isEmpty).get \n// → Bizreachに転職だ。",
+  "code": "var hoge = if(!fuga.isEmpty).get // → Bizreachに転職だ。",
   "description": "こんなコードに嫌気が差したら",
   "tag": "Scala",
   "time": "2015/08/26 11:22",
