@@ -132,12 +132,18 @@
       top: -2px;
     }
 
+    :host .promotedIndicater {
+      display: inline-block;
+      float: left;
+      color: #bdbdbd;
+    }
+
   </style>
   <template>
     <div class="card-head">
       <content select="i"></content>
       <content select="p"></content>
-      <ul class="buttons">
+      <ul class="buttons" hidden$="{{isPromoted}}">
         <li><paper-icon-button id="star" icon="icons:star" on-click="handleFavorite"></paper-icon-button></li>
       </ul>
     </div>
@@ -158,6 +164,9 @@
       </template>
     </div>
     <div class="card-footer">
+      <template is="dom-if" if="{{isPromoted}}">
+        <p class="promotedIndicater">Promoted Post by <span>{{promotedBy}}</span></p>
+      </template>
       <content select="time"></content>
     </div>
     <iron-ajax
@@ -177,7 +186,8 @@
       postId: String,
       isFavorite: Boolean,
       isOwn: Boolean,
-      code: String
+      code: String,
+      promotedBy: String
     },
     ready: function() {
       var _this = this;

@@ -36,7 +36,7 @@
   </style>
   <template>
     <template is="dom-repeat" items="{{posts}}">
-      <post-card post-id={{item.id}} is-favorite="{{item.isFavorite}}" code="{{item.post.code}}" is-promoted="{{item.isPromoted}}" link="{{item.post.linkUrl}}">
+      <post-card post-id={{item.id}} is-favorite="{{item.isFavorite}}" code="{{item.post.code}}" promoted-by="{{item.user.accountName}}" is-promoted="{{item.isPromoted}}" link="{{item.post.linkUrl}}">
         <h2>{{item.user.accountName}}</h2>
         <img src="{{item.user.imageUrl}}" width="50" height="50">
         <code>{{item.post.code}}</code>
