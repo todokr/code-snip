@@ -160,7 +160,7 @@
         <a href="/login">Already have a account?</a>
       </form>
     </div>
-    <paper-toast id="signupToast" text="Your draft has been discarded."></paper-toast>
+    
     <iron-ajax
       with-credentials
       id="signupAjax"
@@ -179,6 +179,7 @@
       handle-as="json"
       on-response="loginResponse"
       on-error="loginError"></iron-ajax> 
+      <paper-toast id="signupToast" text="Your draft has been discarded."></paper-toast>
   </template>
 </dom-module>
 <script>
@@ -191,7 +192,6 @@
         data.interests = this.$.interests.selectedValues;
         this.$.signupAjax.body = data;
         this.$.signupAjax.generateRequest();
-        
       } else {
         var toast = document.querySelector('#signupToast');
         toast.text = "Fill out ALL field, please!";

@@ -93,7 +93,7 @@
           <paper-spinner id="spinner"></paper-spinner>
           <paper-button on-click="sendAjax" raised>Submit</paper-button>
         </div>
-        <a href="/signup">Don't have a account?</a>
+        <a href="/">Don't have a account?</a>
       </form>
     </div>
     <paper-toast id="loginToast" text="Your draft has been discarded."></paper-toast>
@@ -103,13 +103,13 @@
   Polymer({
     is: 'login-form',
     sendAjax: function() {
+      var toast = document.querySelector('#loginToast');
       if(this.$.loginForm.validate()) {
         this.$.spinner.toggleAttribute('active', true);
         var data = this.$.loginForm.serialize();
         this.$.loginAjax.body = data;
         this.$.loginAjax.generateRequest();
       } else {
-        var toast = document.querySelector('#loginToast');
         if (this.$.email.value.length <= 0 || this.$.pass.value.length <= 0) {
           toast.text = "Fill out ALL field, please!";  
         } else {
