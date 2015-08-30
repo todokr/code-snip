@@ -22,7 +22,7 @@ object UsersController extends Controller {
 
   // ユーザーの作成
   def create = Action(parse.json) { implicit rs =>
-    val email = Json.stringify(rs.body \ "email").replaceAll("\"", "")
+    val email = (rs.body \ "email").as[String]
     if(selectUserByEmail(email).isDefined) {
       BadRequest(Json.obj("result" -> "exist"))
     } else {

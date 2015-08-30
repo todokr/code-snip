@@ -19,8 +19,8 @@ object FollowsController extends Controller {
   // フォロー追加
   def follow = AuthAction(parse.json) { implicit rs =>
     val userId = selectUserBySession(rs).get._1
-    val targetId = Json.stringify(rs.body \ "followToId").replaceAll("\"", "")
-    if (userId == targetId) { BadRequest(Json.obj("result" -> "(・´з`・)"))}
+    val targetId = (rs.body \ "followToId").as[String]
+    if (userId == targetId) { BadRequest(Json.obj("result" -> "Cannot follow yourself"))}
     addFollow(userId, targetId) match {
       case Left => BadRequest(Json.obj("result" -> "failed"))
       case _ => Ok(Json.obj("result" -> "success"))
@@ -30,7 +30,7 @@ object FollowsController extends Controller {
   // フォロー解除
   def unFollow = AuthAction(parse.json) { implicit rs =>
     val userId = selectUserBySession(rs).map(u => u._1).getOrElse("-1")
-    val targetId = Json.stringify(rs.body \ "followToId").replaceAll("\"", "")
+    val targetId = (rs.body \ "followToId").as[String]
     removeFollow(userId, targetId) match {
       case Left => BadRequest(Json.obj("result" -> "failed"))
       case _ => Ok(Json.obj("result" -> "success"))

@@ -19,8 +19,8 @@ object AuthController extends Controller{
 
   // ログイン
   def login = Action(parse.json) { implicit rs =>
-    val email = Json.stringify(rs.body \ "email").replaceAll("\"", "") // TODO 無理矢理感あるからあとで直す
-    val pass = Json.stringify(rs.body \ "password").replaceAll("\"", "") // TODO 無理矢理感あるからあとで直す
+    val email = (rs.body \ "email").as[String]
+    val pass = (rs.body \ "password").as[String]
 
     selectUserByEmail(email) match {
       case Some(userData) =>
