@@ -10,36 +10,38 @@ import play.api.mvc.Controller
  */
 object FavoritesController extends Controller{
 
-  implicit val favFormat = Json.format[Favorite]
-  implicit val userFormat = Json.format[User]
-  implicit val postFormat = Json.format[Post]
-  implicit val shownFavFormat = Json.format[ShownFavorite]
+  implicit val favFormat       = Json.format[Favorite]
+  implicit val userFormat      = Json.format[User]
+  implicit val postFormat      = Json.format[Post]
+  implicit val shownFavFormat  = Json.format[ShownFavorite]
   implicit val shownPostFormat = Json.format[ShownPost]
 
   // お気に入りリスト
   def list = AuthAction { implicit rs =>
-    val userId = User.selectUserBySession(rs).map(u => u._1).getOrElse("")
-    val result = Favorite.selectFavoriteList(userId)
-    Ok(Json.toJson(result))
+    User.selectUserBySession(rs).map(u => u._1).map { userId =>
+      Ok(Json.toJson(Favorite.selectFavoriteList(userId)))
+    }.getOrElse(NotFound(Json.obj("result" -> "notFound")))
   }
 
   // お気に入り追加
   def addFavorite = AuthAction(parse.json) { implicit rs =>
-    val userId = User.selectUserBySession(rs).map(u => u._1).getOrElse("")
     val postId = (rs.body \ "favoritePostId").as[String]
-    Favorite.insertFavorite(userId, postId) match {
-      case Right(_) => Ok(Json.obj("result" -> "success"))
-      case _ => BadRequest(Json.obj("result" -> "failed"))
-    }
+    User.selectUserBySession(rs).map(u => u._1).map { userId =>
+      Favorite.insertFavorite(userId, postId) match {
+        case Right(_) => Ok(Json.obj("result" -> "success"))
+        case _        => BadRequest(Json.obj("result" -> "failed"))
+      }
+    }.getOrElse(NotFound(Json.obj("result" -> "notFound")))
   }
 
   // お気に入り削除
   def removeFavorite = AuthAction(parse.json) { implicit rs =>
-    val userId = User.selectUserBySession(rs).map(u => u._1).getOrElse("")
     val targetPostId = (rs.body \ "favoritePostId").as[String]
-    Favorite.removeFavorite(userId, targetPostId) match {
-      case Right(_) => Ok(Json.obj("result" -> "success"))
-      case _ => BadRequest(Json.obj("result" -> "failed"))
-    }
+    User.selectUserBySession(rs).map(u => u._1).map { userId =>
+      Favorite.removeFavorite(userId, targetPostId) match {
+        case Right(_) => Ok(Json.obj("result" -> "success"))
+        case _        => BadRequest(Json.obj("result" -> "failed"))
+      }
+    }.getOrElse(NotFound(Json.obj("result" -> "notFound")))
   }
 }

@@ -14,47 +14,51 @@ import models.Follow._
 object FollowsController extends Controller {
 
   implicit val userFormats = Json.format[User]
-  implicit val iwuFormats = Json.format[DisplayUser]
+  implicit val iwuFormats  = Json.format[DisplayUser]
 
   // フォロー追加
   def follow = AuthAction(parse.json) { implicit rs =>
-    val userId = selectUserBySession(rs).get._1
     val targetId = (rs.body \ "followToId").as[String]
-    if (userId == targetId) { BadRequest(Json.obj("result" -> "Cannot follow yourself"))}
-    addFollow(userId, targetId) match {
-      case Left => BadRequest(Json.obj("result" -> "failed"))
-      case _ => Ok(Json.obj("result" -> "success"))
-    }
+    selectUserBySession(rs).map(u => u._1).map { userId =>
+      if (userId == targetId) { BadRequest(Json.obj("result" -> "cannotFollowYourself")) }
+      addFollow(userId, targetId) match {
+        case Right(_) => Ok(Json.obj("result" -> "success"))
+        case _        => BadRequest(Json.obj("result" -> "failed"))
+      }
+    }.getOrElse(NotFound(Json.obj("result" -> "notFound")))
   }
 
   // フォロー解除
   def unFollow = AuthAction(parse.json) { implicit rs =>
-    val userId = selectUserBySession(rs).map(u => u._1).getOrElse("-1")
     val targetId = (rs.body \ "followToId").as[String]
-    removeFollow(userId, targetId) match {
-      case Left => BadRequest(Json.obj("result" -> "failed"))
-      case _ => Ok(Json.obj("result" -> "success"))
-    }
+    selectUserBySession(rs).map(u => u._1).map { userId =>
+      removeFollow(userId, targetId) match {
+        case Right(_) => Ok(Json.obj("result" -> "success"))
+        case _        => BadRequest(Json.obj("result" -> "failed"))
+      }
+    }.getOrElse(NotFound(Json.obj("result" -> "notFound")))
   }
 
   // フォロー一覧
   def listFollowUsers = AuthAction { implicit rs =>
-    val userId = selectUserBySession(rs).map(u => u._1).getOrElse("-1")
-    val result = selectFollowListByUserId(userId).map(uid => selectUserById(uid)).flatten.map(u => DisplayUser(u._1, u._2, true))
-    Ok(Json.toJson(result))
+    selectUserBySession(rs).map(u => u._1).map { userId =>
+      val result = selectFollowListByUserId(userId).map(uid => selectUserById(uid)).flatten.map(u => DisplayUser(u._1, u._2, true))
+      Ok(Json.toJson(result))
+    }.getOrElse(NotFound(Json.obj("result" -> "notFound")))
   }
 
   // フォロワー一覧
   def listFollower = AuthAction { implicit rs =>
-    val selfId = selectUserBySession(rs).map(u => u._1).getOrElse("-1")
-    val followList = selectFollowListByUserId(selfId)
-    val result = selectFollowerListByUserId(selfId).map(followerId => {
-      val isFollowing = followList.contains(followerId)
-      selectUserById(followerId).map(follower => {
-        DisplayUser(follower._1, follower._2, isFollowing)
+    selectUserBySession(rs).map(u => u._1).map { userId =>
+      val followList = selectFollowListByUserId(userId)
+      val result = selectFollowerListByUserId(userId).map(followerId => {
+        val isFollowing = followList.contains(followerId)
+        selectUserById(followerId).map(follower => {
+          DisplayUser(follower._1, follower._2, isFollowing)
+        })
       })
-    })
-    Ok(Json.toJson(result))
+      Ok(Json.toJson(result))
+    }.getOrElse(NotFound(Json.obj("result" -> "notFound")))
   }
 
   // フォローとフォロワーを一度に取得
@@ -66,10 +70,12 @@ object FollowsController extends Controller {
 
   // フォローとフォロワーの数を一度に取得
   def selectFollowNumbers = AuthAction { implicit rs =>
-    val (follow, follower) = selectFollowUsers(selectUserBySession(rs).map(u => u._1).getOrElse("-1"))
-    Ok(Json.obj(
-      "follow" -> follow.size,
-      "follower" -> follower.size
-    ))
+    selectUserBySession(rs).map(u => u._1).map { userId =>
+      val (follow, follower) = selectFollowUsers(userId)
+      Ok(Json.obj(
+        "follow"   -> follow.size,
+        "follower" -> follower.size
+      ))
+    }.getOrElse(NotFound(Json.obj("result" -> "notFound")))
   }
 }
