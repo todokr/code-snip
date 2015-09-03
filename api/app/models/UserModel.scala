@@ -33,15 +33,16 @@ object User {
   }
 
   /** ユーザー情報を更新する
-    * @param userTuple 更新対象のユーザーIDとユーザーのタプル
+    * @param userId 更新対象のユーザーID
+    * @param currentUser 現在のユーザーオブジェクト
     * @param newUser 新しい情報になったユーザー
     * @return (id, User)
     */
-  def updateUser(userTuple:(String, User), newUser: User): Either[Map[String,_], Map[String,_]] = {
+  def updateUser(userId: String, currentUser: User, newUser: User): Either[Map[String,_], Map[String,_]] = {
     ESClient.using(url) { client =>
-      val pass = if(newUser.password.isEmpty) userTuple._2.password else sign(newUser.password)
-      val img = if(newUser.imageUrl.isEmpty) userTuple._2.imageUrl else newUser.imageUrl
-      client.update(config, userTuple._1, User(accountName = newUser.accountName, email = newUser.email, interests = newUser.interests, password = pass, imageUrl = img))
+      val pass = if(newUser.password.isEmpty) currentUser.password else sign(newUser.password)
+      val img = if(newUser.imageUrl.isEmpty) currentUser.imageUrl else newUser.imageUrl
+      client.update(config, userId, User(accountName = newUser.accountName, email = newUser.email, interests = newUser.interests, password = pass, imageUrl = img))
     }
   }
 

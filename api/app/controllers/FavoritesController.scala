@@ -18,15 +18,16 @@ object FavoritesController extends Controller{
 
   // お気に入りリスト
   def list = AuthAction { implicit rs =>
-    User.selectUserBySession(rs).map(u => u._1).map { userId =>
-      Ok(Json.toJson(Favorite.selectFavoriteList(userId)))
+    User.selectUserBySession(rs).map { case (userId, _) =>
+        Ok(Json.toJson(Favorite.selectFavoriteList(userId)))
     }.getOrElse(NotFound(Json.obj("result" -> "notFound")))
   }
 
   // お気に入り追加
   def addFavorite = AuthAction(parse.json) { implicit rs =>
     val postId = (rs.body \ "favoritePostId").as[String]
-    User.selectUserBySession(rs).map(u => u._1).map { userId =>
+
+    User.selectUserBySession(rs).map { case (userId, _) =>
       Favorite.insertFavorite(userId, postId) match {
         case Right(_) => Ok(Json.obj("result" -> "success"))
         case _        => BadRequest(Json.obj("result" -> "failed"))
@@ -37,7 +38,7 @@ object FavoritesController extends Controller{
   // お気に入り削除
   def removeFavorite = AuthAction(parse.json) { implicit rs =>
     val targetPostId = (rs.body \ "favoritePostId").as[String]
-    User.selectUserBySession(rs).map(u => u._1).map { userId =>
+    User.selectUserBySession(rs).map { case (userId, _) =>
       Favorite.removeFavorite(userId, targetPostId) match {
         case Right(_) => Ok(Json.obj("result" -> "success"))
         case _        => BadRequest(Json.obj("result" -> "failed"))

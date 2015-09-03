@@ -39,35 +39,26 @@ object UsersController extends Controller {
 
   // ユーザー情報の更新
   def update = Action(parse.json) { implicit rs =>
-    selectUserBySession(rs).map(currentUserTuple =>
+    selectUserBySession(rs).map { case (userId, currentUser) =>
       rs.body.validate[User].map { newUser =>
-        updateUser(currentUserTuple, newUser)
+        updateUser(userId, currentUser, newUser)
       } match {
-        case JsSuccess(_,_) => Ok(Json.obj("result" -> "success"))
-        case _              => NotFound(Json.obj("result" -> "notFound"))
-      }).getOrElse(NotFound(Json.obj("result" -> "notFound")))
-  }
-
-  // ユーザーの削除
-  def delete(id: String) = Action { implicit rs =>
-    ESClient.using(url) { client =>
-      client.delete(config, id)
-    } match {
-      case Right(_) => Ok(Json.obj("result" -> "success"))
-      case _        => NotFound(Json.obj("result" -> "notFound"))
-    }
+        case JsSuccess(_, _) => Ok(Json.obj("result" -> "success"))
+        case _ => NotFound(Json.obj("result" -> "notFound"))
+      }
+    }.getOrElse(NotFound(Json.obj("result" -> "notFound")))
   }
 
   // アカウント表示用データの取得
   def accountStatus = AuthAction { implicit rs =>
-    selectUserBySession(rs).map{ userData =>
-      val (follow, follower) = FollowsController.selectFollowUsers(userData._1)
+    selectUserBySession(rs).map{ case (userId, user) =>
+      val (follow, follower) = FollowsController.selectFollowUsers(userId)
       Ok(Json.obj(
-        "id"          -> userData._1,
-        "email"       -> userData._2.email,
-        "accountName" -> userData._2.accountName,
-        "imageUrl"    -> userData._2.imageUrl,
-        "interests"   -> userData._2.interests,
+        "id"          -> userId,
+        "email"       -> user.email,
+        "accountName" -> user.accountName,
+        "imageUrl"    -> user.imageUrl,
+        "interests"   -> user.interests,
         "follow"      -> follow.size,
         "follower"    -> follower.size
       ))
@@ -76,9 +67,9 @@ object UsersController extends Controller {
 
   // 嗜好の近いユーザーリストの取得
   def listNearInterestUser = AuthAction { implicit rs =>
-    selectUserBySession(rs).map { userData =>
-      val followAndSelfList = Follow.selectFollowerListByUserId(userData._1)
-      val nearUserList = selectUserListFromInterests(userData._1).filterNot(recomUser => followAndSelfList.contains(recomUser.id))
+    selectUserBySession(rs).map { case (userId, _) =>
+      val followAndSelfList = Follow.selectFollowerListByUserId(userId)
+      val nearUserList = selectUserListFromInterests(userId).filterNot(recomUser => followAndSelfList.contains(recomUser.id))
       Ok(Json.toJson(nearUserList))
     }.getOrElse(NotFound(Json.obj("result" -> "notFound")))
   }

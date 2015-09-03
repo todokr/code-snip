@@ -19,15 +19,15 @@ object PostsController extends Controller{
 
   // 自分の投稿一覧
   def list = AuthAction { implicit rs =>
-    selectUserBySession(rs).map(u => u._1).map { userId =>
-      val posts = selectPostListByUserId(userId);
+    selectUserBySession(rs).map { case (userId, _) =>
+      val posts = selectPostListByUserId(userId)
       Ok(Json.toJson(posts))
     }.getOrElse(NotFound(Json.obj("result" -> "notFound")))
   }
 
   // 自分がフォローしているユーザー+自分の投稿一覧
   def followList = AuthAction { implicit rs =>
-    selectUserBySession(rs).map(u => u._1).map { userId =>
+    selectUserBySession(rs).map { case (userId, _) =>
       val posts = selectTimeline(userId)
       Ok(Json.toJson(posts))
     }.getOrElse(NotFound(Json.obj("result" -> "notFound")))
@@ -35,7 +35,7 @@ object PostsController extends Controller{
 
   // 投稿の新規作成
   def create = AuthAction(parse.json) { implicit rs =>
-    selectUserBySession(rs).map(u => u._1).map { userId =>
+    selectUserBySession(rs).map { case (userId, _) =>
       rs.body.validate[FromViewPost].map { post =>
         insertPost(userId, post)
       } match {

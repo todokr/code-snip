@@ -19,7 +19,7 @@ object FollowsController extends Controller {
   // フォロー追加
   def follow = AuthAction(parse.json) { implicit rs =>
     val targetId = (rs.body \ "followToId").as[String]
-    selectUserBySession(rs).map(u => u._1).map { userId =>
+    selectUserBySession(rs).map { case (userId, _) =>
       if (userId == targetId) { BadRequest(Json.obj("result" -> "cannotFollowYourself")) }
       addFollow(userId, targetId) match {
         case Right(_) => Ok(Json.obj("result" -> "success"))
@@ -31,7 +31,7 @@ object FollowsController extends Controller {
   // フォロー解除
   def unFollow = AuthAction(parse.json) { implicit rs =>
     val targetId = (rs.body \ "followToId").as[String]
-    selectUserBySession(rs).map(u => u._1).map { userId =>
+    selectUserBySession(rs).map { case (userId, _) =>
       removeFollow(userId, targetId) match {
         case Right(_) => Ok(Json.obj("result" -> "success"))
         case _        => BadRequest(Json.obj("result" -> "failed"))
@@ -41,7 +41,7 @@ object FollowsController extends Controller {
 
   // フォロー一覧
   def listFollowUsers = AuthAction { implicit rs =>
-    selectUserBySession(rs).map(u => u._1).map { userId =>
+    selectUserBySession(rs).map{ case (userId, _) =>
       val result = selectFollowListByUserId(userId).map(uid => selectUserById(uid)).flatten.map(u => DisplayUser(u._1, u._2, true))
       Ok(Json.toJson(result))
     }.getOrElse(NotFound(Json.obj("result" -> "notFound")))
@@ -49,7 +49,7 @@ object FollowsController extends Controller {
 
   // フォロワー一覧
   def listFollower = AuthAction { implicit rs =>
-    selectUserBySession(rs).map(u => u._1).map { userId =>
+    selectUserBySession(rs).map { case (userId, _) =>
       val followList = selectFollowListByUserId(userId)
       val result = selectFollowerListByUserId(userId).map(followerId => {
         val isFollowing = followList.contains(followerId)
@@ -70,7 +70,7 @@ object FollowsController extends Controller {
 
   // フォローとフォロワーの数を一度に取得
   def selectFollowNumbers = AuthAction { implicit rs =>
-    selectUserBySession(rs).map(u => u._1).map { userId =>
+    selectUserBySession(rs).map { case (userId, _) =>
       val (follow, follower) = selectFollowUsers(userId)
       Ok(Json.obj(
         "follow"   -> follow.size,

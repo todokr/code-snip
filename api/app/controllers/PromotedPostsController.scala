@@ -18,7 +18,7 @@ object PromotedPostsController extends Controller {
 
 
   def showPromotedPost = AuthAction { implicit rs =>
-    selectUserBySession(rs).map(u => u._1).map { userId =>
+    selectUserBySession(rs).map { case (userId, _) =>
       val promotedPost: List[ShownPromotedPost] = selectPromotedPost(userId)
       Ok(Json.toJson(promotedPost))
     }.getOrElse(NotFound(Json.obj("result" -> "notFound")))
