@@ -18,9 +18,7 @@ GET            /authneeded            controllers.AuthController.authNeed
 # User
 GET            /status                controllers.UsersController.accountStatus
 POST           /users                 controllers.UsersController.create
-GET            /users/:id             controllers.UsersController.show(id)
 PUT            /users                 controllers.UsersController.update
-DELETE         /users/:id             controllers.UsersController.delete(id)
 GET            /near-interests        controllers.UsersController.listNearInterestUser
 
 # Post

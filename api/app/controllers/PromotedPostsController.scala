@@ -12,14 +12,15 @@ import play.api.mvc.Controller
  */
 object PromotedPostsController extends Controller {
 
-  implicit val userFormat = Json.format[User]
-  implicit val promoFormat = Json.format[PromotedPost]
+  implicit val userFormat       = Json.format[User]
+  implicit val promoFormat      = Json.format[PromotedPost]
   implicit val shownPromoFormat = Json.format[ShownPromotedPost]
 
 
   def showPromotedPost = AuthAction { implicit rs =>
-    val uid = selectUserBySession(rs).map(u => u._1).getOrElse("")
-    val promotedPost: List[ShownPromotedPost] = selectPromotedPost(uid)
-    Ok(Json.toJson(promotedPost))
+    selectUserBySession(rs).map { case (userId, _) =>
+      val promotedPost: List[ShownPromotedPost] = selectPromotedPost(userId)
+      Ok(Json.toJson(promotedPost))
+    }.getOrElse(NotFound(Json.obj("result" -> "notFound")))
   }
 }

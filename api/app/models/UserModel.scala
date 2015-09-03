@@ -34,11 +34,11 @@ object User {
 
   /** ユーザー情報を更新する
     * @param userId 更新対象のユーザーID
+    * @param currentUser 現在のユーザーオブジェクト
     * @param newUser 新しい情報になったユーザー
-    * @param currentUser 現在のユーザー
     * @return (id, User)
     */
-  def updateUser(userId: String, newUser: User, currentUser: User): Unit = {
+  def updateUser(userId: String, currentUser: User, newUser: User): Either[Map[String,_], Map[String,_]] = {
     ESClient.using(url) { client =>
       val pass = if(newUser.password.isEmpty) currentUser.password else sign(newUser.password)
       val img = if(newUser.imageUrl.isEmpty) currentUser.imageUrl else newUser.imageUrl
