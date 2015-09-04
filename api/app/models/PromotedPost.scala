@@ -2,7 +2,6 @@ package models
 
 import jp.co.bizreach.elasticsearch4s._
 import org.elasticsearch.search.sort.SortOrder
-
 /**
  * @author Shunsuke Tadokoro
  */
@@ -10,10 +9,10 @@ import org.elasticsearch.search.sort.SortOrder
 case class PromotedPost(userId: String, code: String, description: String, tag: String, time: String, linkUrl: String)
 case class ShownPromotedPost(id: String, post: PromotedPost, user: User, isFavorite: Boolean, isPromoted: Boolean)
 
-object PromotedPost {
+object PromotedPost extends SnipConfProvider {
 
-  val config = "code_snip" / "promoted"
-  val url = "http://localhost:9200"
+  val config = snipConf.es.promotedPostsConfig.config
+  val url = snipConf.es.promotedPostsConfig.url
 
   /** プロモーテッドポストを1件取得する（嗜好に近い順）
     * @param userId ユーザーID

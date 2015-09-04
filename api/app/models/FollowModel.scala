@@ -8,10 +8,10 @@ import jp.co.bizreach.elasticsearch4s._
 case class Follow(followFromId: String, followToId: String)
 case class DisplayFollow(id: String, followFromId: String, followToId: String)
 
-object Follow {
+object Follow extends SnipConfProvider {
 
-  val config = "code_snip" / "follow"
-  val url = "http://localhost:9200"
+  val config = snipConf.es.followsConfig.config
+  val url = snipConf.es.followsConfig.url
 
   /** フォローの追加
     * @param userId フォローする側のユーザーID

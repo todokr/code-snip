@@ -13,10 +13,10 @@ case class FromViewPost(code: String, description: String, tag: String)
 case class Post(userId: String, code: String, description: String, tag: String, time: String)
 case class ShownPost(id: String, post: Post, user: User, isFavorite: Boolean, isOwn: Boolean)
 
-object Post {
+object Post extends SnipConfProvider {
 
-  val config = "code_snip" / "post"
-  val url = "http://localhost:9200"
+  val config = snipConf.es.postsConfig.config
+  val url = snipConf.es.postsConfig.config
 
   /** 新規投稿を保存する
     * @param userId 投稿したユーザーのID

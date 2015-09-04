@@ -12,10 +12,10 @@ import play.api.mvc.Request
 case class User(accountName: String, email: String, interests: Seq[String], password: String, imageUrl: String)
 case class DisplayUser(id:String, user:User, isFollowing: Boolean)
 
-object User {
+object User extends SnipConfProvider {
 
-  val config = "code_snip" / "user"
-  val url = "http://localhost:9200"
+  val config = snipConf.es.usersConfig.config
+  val url = snipConf.es.usersConfig.url
   
   def setCrypted(accountName: String, email: String, interests: Seq[String], password: String, imageUrl: String): User = {
     val cryptedPassword = sign(password)

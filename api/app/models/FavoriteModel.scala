@@ -10,10 +10,10 @@ import play.Logger
 case class Favorite(userId: String, postId: String)
 case class ShownFavorite(id: String, post: Post, user: User)
 
-object Favorite {
+object Favorite extends SnipConfProvider {
 
-  val config = "code_snip" / "favorite"
-  val url = "http://localhost:9200"
+  val config = snipConf.es.favoriteConfig.config
+  val url = snipConf.es.favoriteConfig.url
 
   /** お気に入りを保存する
     * @param userId お気に入りを追加するユーザーのID
